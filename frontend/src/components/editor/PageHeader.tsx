@@ -171,7 +171,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
         value={page.title || ''}
         onChange={handleTitleChange}
         placeholder="Untitled"
-        className="w-full text-4xl sm:text-5xl font-black bg-transparent outline-none text-[#1c1917] placeholder-[#a8a29e] tracking-tight font-['Outfit']"
+        className="w-full text-4xl sm:text-5xl font-extrabold bg-transparent outline-none text-[#1c1917] placeholder-[#a8a29e] tracking-tight font-['Sora']"
       />
     </div>
   );
