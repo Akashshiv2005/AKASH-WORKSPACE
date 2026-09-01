@@ -1,0 +1,203 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #fdfbf7;
+    color: #1c1917;
+  }
+
+  /* Custom subtle warm amber scrollbars */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 122, 0, 0.4);
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 122, 0, 0.8);
+  }
+}
+
+/* Keyframes for Warm Cream & Amber Orange Animations */
+@keyframes orange-pulse {
+  0%, 100% {
+    box-shadow: 0 0 12px rgba(255, 122, 0, 0.3), 0 0 24px rgba(255, 149, 0, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(255, 122, 0, 0.5), 0 0 36px rgba(255, 149, 0, 0.3);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes text-float {
+  0%, 100% {
+    transform: translateY(0px);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+@keyframes text-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ChatGPT Theme Utility Classes */
+.orange-pulse {
+  animation: orange-pulse 3s infinite ease-in-out;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
+}
+
+.animate-text-float {
+  animation: text-float 3s ease-in-out infinite;
+}
+
+.shimmer-text-orange {
+  background: linear-gradient(90deg, #ff7a00 0%, #ffaa00 50%, #ff7a00 100%);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  animation: text-shimmer 4s linear infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Warm Cream & White Cards */
+.stark-hud-card {
+  background: #ffffff;
+  border: 1px solid #f2e8da;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+.dark .stark-hud-card {
+  background: #ffffff;
+  border: 1px solid #f2e8da;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+.glass-card {
+  background: #ffffff;
+  border: 1px solid #f2e8da;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.dark .glass-card {
+  background: #ffffff;
+  border: 1px solid #f2e8da;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.glass-header {
+  background: rgba(253, 251, 247, 0.95);
+  backdrop-filter: blur(16px);
+}
+
+.dark .glass-header {
+  background: rgba(253, 251, 247, 0.95);
+  backdrop-filter: blur(16px);
+}
+
+/* Active Page Pill Highlight (Exact ChatGPT Warm Light Orange Tint) */
+.active-page-pill {
+  position: relative;
+  background: #fff3e5;
+  border: 1px solid #ffe0c2;
+  color: #ff7a00;
+  font-weight: 700;
+}
+
+.dark .active-page-pill {
+  background: #fff3e5;
+  border: 1px solid #ffe0c2;
+  color: #ff7a00;
+  font-weight: 700;
+}
+
+.active-page-pill::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 15%;
+  bottom: 15%;
+  width: 3.5px;
+  border-radius: 0 4px 4px 0;
+  background: linear-gradient(180deg, #ff7a00 0%, #ff9500 100%);
+}
+
+/* Tiptap editor minimal Notion styling */
+.ProseMirror {
+  outline: none;
+  min-height: 150px;
+}
+
+.ProseMirror p.is-editor-empty:first-child::before {
+  color: #a8a29e;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}

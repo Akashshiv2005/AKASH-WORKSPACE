@@ -1,0 +1,100 @@
+import uuid
+import enum
+from typing import List, TYPE_CHECKING
+from sqlalchemy import String, ForeignKey, Enum as SQLEnum, UniqueConstraint
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from app.db.base import Base, TimestampMixin
+
+if TYPE_CHECKING:
+    from app.models.user import User
+    from app.models.page import Page
+
+
+class WorkspaceRole(str, enum.Enum):
+    OWNER = "owner"
+    ADMIN = "admin"
+    MEMBER = "member"
+    VIEWER = "viewer"
+
+
+class Workspace(Base, TimestampMixin):
+    __tablename__ = "workspaces"
+
+    id: Mapped[str] = mapped_column(
+        String(36),
+        primary_key=True,
+        default=lambda: str(uuid.uuid4()),
+        index=True,
+    )
+    name: Mapped[str] = mapped_column(
+        String(255),
+        nullable=False,
+    )
+    icon: Mapped[str | None] = mapped_column(
+        String(255),
+        nullable=True,
+        default="🚀",
+    )
+    owner_id: Mapped[str] = mapped_column(
+        String(36),
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+
+    # Relationships
+    owner: Mapped["User"] = relationship(
+        "User",
+        back_populates="owned_workspaces",
+    )
+    members: Mapped[List["WorkspaceMember"]] = relationship(
+        "WorkspaceMember",
+        back_populates="workspace",
+        cascade="all, delete-orphan",
+    )
+    pages: Mapped[List["Page"]] = relationship(
+        "Page",
+        back_populates="workspace",
+        cascade="all, delete-orphan",
+    )
+
+
+class WorkspaceMember(Base, TimestampMixin):
+    __tablename__ = "workspace_members"
+    __table_args__ = (
+        UniqueConstraint("workspace_id", "user_id", name="uq_workspace_user"),
+    )
+
+    id: Mapped[str] = mapped_column(
+        String(36),
+        primary_key=True,
+        default=lambda: str(uuid.uuid4()),
+        index=True,
+    )
+    workspace_id: Mapped[str] = mapped_column(
+        String(36),
+        ForeignKey("workspaces.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    user_id: Mapped[str] = mapped_column(
+        String(36),
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
+    role: Mapped[WorkspaceRole] = mapped_column(
+        SQLEnum(WorkspaceRole, name="workspacerole", native_enum=False),
+        nullable=False,
+        default=WorkspaceRole.MEMBER,
+    )
+
+    # Relationships
+    workspace: Mapped["Workspace"] = relationship(
+        "Workspace",
+        back_populates="members",
+    )
+    user: Mapped["User"] = relationship(
+        "User",
+        back_populates="workspace_memberships",
+    )
