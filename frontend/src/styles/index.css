@@ -10,18 +10,20 @@
   body {
     margin: 0;
     padding: 0;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Outfit', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: #fdfbf7;
     color: #1c1917;
+    font-size: 15px;
+    line-height: 1.6;
   }
 
   /* Custom subtle warm amber scrollbars */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
   }
 
   ::-webkit-scrollbar-track {
@@ -38,13 +40,22 @@
   }
 }
 
-/* Keyframes for Warm Cream & Amber Orange Animations */
+/* Keyframes for Right-to-Left Text Flow & Premium Animations */
+@keyframes flow-rtl {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
 @keyframes orange-pulse {
   0%, 100% {
-    box-shadow: 0 0 12px rgba(255, 122, 0, 0.3), 0 0 24px rgba(255, 149, 0, 0.15);
+    box-shadow: 0 0 14px rgba(255, 122, 0, 0.35), 0 0 28px rgba(255, 149, 0, 0.2);
   }
   50% {
-    box-shadow: 0 0 24px rgba(255, 122, 0, 0.5), 0 0 36px rgba(255, 149, 0, 0.3);
+    box-shadow: 0 0 28px rgba(255, 122, 0, 0.6), 0 0 42px rgba(255, 149, 0, 0.35);
   }
 }
 
@@ -97,7 +108,13 @@
   }
 }
 
-/* ChatGPT Theme Utility Classes */
+/* Utility Classes */
+.animate-flow-rtl {
+  display: inline-block;
+  white-space: nowrap;
+  animation: flow-rtl 18s linear infinite;
+}
+
 .orange-pulse {
   animation: orange-pulse 3s infinite ease-in-out;
 }
@@ -130,25 +147,25 @@
 .stark-hud-card {
   background: #ffffff;
   border: 1px solid #f2e8da;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
 }
 
 .dark .stark-hud-card {
   background: #ffffff;
   border: 1px solid #f2e8da;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
 }
 
 .glass-card {
   background: #ffffff;
   border: 1px solid #f2e8da;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
 .dark .glass-card {
   background: #ffffff;
   border: 1px solid #f2e8da;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
 }
 
 .glass-header {
@@ -161,7 +178,7 @@
   backdrop-filter: blur(16px);
 }
 
-/* Active Page Pill Highlight (Exact ChatGPT Warm Light Orange Tint) */
+/* Active Page Pill Highlight */
 .active-page-pill {
   position: relative;
   background: #fff3e5;
@@ -183,7 +200,7 @@
   left: 0;
   top: 15%;
   bottom: 15%;
-  width: 3.5px;
+  width: 4px;
   border-radius: 0 4px 4px 0;
   background: linear-gradient(180deg, #ff7a00 0%, #ff9500 100%);
 }
@@ -192,6 +209,8 @@
 .ProseMirror {
   outline: none;
   min-height: 150px;
+  font-size: 16px;
+  line-height: 1.7;
 }
 
 .ProseMirror p.is-editor-empty:first-child::before {

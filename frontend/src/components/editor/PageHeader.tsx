@@ -13,10 +13,10 @@ interface PageHeaderProps {
 const COMMON_EMOJIS = ['🚀', '🎯', '🔥', '⚡', '📖', '🧘', '🏋️', '💻', '💡', '📋', '🏆', '⭐'];
 
 const COVER_GRADIENTS = [
-  'linear-gradient(135deg, #e62429 0%, #ff8c00 100%)',
-  'linear-gradient(135deg, #8b0000 0%, #ffd700 100%)',
-  'linear-gradient(135deg, #111319 0%, #dc2626 100%)',
-  'linear-gradient(135deg, #1a1c29 0%, #f59e0b 100%)',
+  'linear-gradient(135deg, #ff7a00 0%, #ffaa00 100%)',
+  'linear-gradient(135deg, #1c1917 0%, #ff7a00 100%)',
+  'linear-gradient(135deg, #05080c 0%, #00ff66 100%)',
+  'linear-gradient(135deg, #0f172a 0%, #6366f1 100%)',
 ];
 
 export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
@@ -48,15 +48,22 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
   };
 
   return (
-    <div className="relative group select-none max-w-4xl mx-auto pt-6 px-16">
-      {/* Optional Page Cover Image (ONLY shown if user explicitly sets cover_image) */}
+    <div className="relative group select-none max-w-4xl mx-auto pt-6 px-12 sm:px-16">
+      {/* Right-to-Left Floating Ticker Bar in Title Area */}
+      <div className="w-full overflow-hidden whitespace-nowrap py-1.5 px-3 rounded-xl bg-[#fff3e5] border border-[#ffe0c2] text-[#ff7a00] text-xs font-bold mb-4 shadow-xs">
+        <div className="animate-flow-rtl">
+          ✨ {page.title || 'Akash Workspace'} • Live Activity & Task Execution • Build Consistency • Akash Shiv's Connected Workspace ✨
+        </div>
+      </div>
+
+      {/* Optional Page Cover Image */}
       {page.cover_image && (
-        <div className="relative w-full h-36 rounded-2xl overflow-hidden mb-6 group/cover shadow-md">
+        <div className="relative w-full h-40 rounded-2xl overflow-hidden mb-6 group/cover shadow-md">
           <div
             className="w-full h-full"
             style={{ background: page.cover_image }}
           />
-          <div className="absolute top-3 right-3 opacity-0 group-hover/cover:opacity-100 transition-opacity flex items-center space-x-2 bg-black/60 backdrop-blur-md px-2.5 py-1 rounded-xl text-xs text-white">
+          <div className="absolute top-3 right-3 opacity-0 group-hover/cover:opacity-100 transition-opacity flex items-center space-x-2 bg-black/60 backdrop-blur-md px-3 py-1 rounded-xl text-xs text-white">
             <button
               onClick={() => setShowCoverPicker(!showCoverPicker)}
               className="hover:text-amber-400 font-semibold"
@@ -76,11 +83,11 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
 
       {/* Cover Picker Dropdown */}
       {showCoverPicker && (
-        <div className="mb-4 p-3 rounded-2xl bg-[#141722] border border-amber-500/30 shadow-2xl space-y-2 z-30 animate-fade-in-up">
-          <div className="flex items-center justify-between text-xs font-bold text-amber-400">
+        <div className="mb-4 p-3 rounded-2xl bg-white border border-[#f2e8da] shadow-xl space-y-2 z-30 animate-fade-in-up">
+          <div className="flex items-center justify-between text-xs font-bold text-[#ff7a00]">
             <span>Select Cover Gradient</span>
             <button onClick={() => setShowCoverPicker(false)}>
-              <X className="w-4 h-4 text-gray-400 hover:text-white" />
+              <X className="w-4 h-4 text-gray-400 hover:text-black" />
             </button>
           </div>
           <div className="grid grid-cols-4 gap-2">
@@ -89,7 +96,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
                 key={i}
                 onClick={() => handleSelectCover(grad)}
                 style={{ background: grad }}
-                className="h-10 rounded-xl hover:scale-105 transition-transform border border-white/20"
+                className="h-10 rounded-xl hover:scale-105 transition-transform border border-black/10"
               />
             ))}
           </div>
@@ -97,11 +104,11 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
       )}
 
       {/* Hover Action Bar to Add Icon / Cover if missing */}
-      <div className="flex items-center space-x-2 text-xs font-semibold text-gray-500 dark:text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity mb-2 h-6">
+      <div className="flex items-center space-x-2 text-xs font-semibold text-[#a8a29e] opacity-0 group-hover:opacity-100 transition-opacity mb-2 h-6">
         {!page.icon && (
           <button
             onClick={() => setShowIconPicker(true)}
-            className="flex items-center space-x-1 hover:text-amber-400 px-2 py-1 rounded hover:bg-white/10"
+            className="flex items-center space-x-1 hover:text-[#ff7a00] px-2 py-1 rounded hover:bg-[#fff3e5]"
           >
             <Smile className="w-3.5 h-3.5" />
             <span>Add icon</span>
@@ -110,7 +117,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
         {!page.cover_image && (
           <button
             onClick={() => setShowCoverPicker(true)}
-            className="flex items-center space-x-1 hover:text-red-400 px-2 py-1 rounded hover:bg-white/10"
+            className="flex items-center space-x-1 hover:text-[#ff7a00] px-2 py-1 rounded hover:bg-[#fff3e5]"
           >
             <ImageIcon className="w-3.5 h-3.5" />
             <span>Add cover</span>
@@ -123,17 +130,17 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
         <div className="relative inline-block mb-3">
           <button
             onClick={() => setShowIconPicker(!showIconPicker)}
-            className="text-4xl hover:scale-110 transition-transform p-1 rounded-xl hover:bg-white/10"
+            className="text-5xl hover:scale-110 transition-transform p-1.5 rounded-2xl hover:bg-[#fff3e5]"
           >
             {page.icon}
           </button>
 
           {showIconPicker && (
-            <div className="absolute top-12 left-0 bg-[#141722] border border-amber-500/30 rounded-2xl shadow-2xl p-3 z-50 w-64 space-y-2 text-xs animate-fade-in-up">
-              <div className="flex items-center justify-between text-amber-400 font-bold">
+            <div className="absolute top-14 left-0 bg-white border border-[#f2e8da] rounded-2xl shadow-2xl p-3 z-50 w-64 space-y-2 text-xs animate-fade-in-up">
+              <div className="flex items-center justify-between text-[#ff7a00] font-bold">
                 <span>Select Icon</span>
                 <button onClick={() => setShowIconPicker(false)}>
-                  <X className="w-4 h-4 text-gray-400 hover:text-white" />
+                  <X className="w-4 h-4 text-gray-400 hover:text-black" />
                 </button>
               </div>
               <div className="grid grid-cols-6 gap-2">
@@ -149,7 +156,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
               </div>
               <button
                 onClick={handleRemoveIcon}
-                className="w-full text-center py-1 text-red-400 hover:underline text-[11px] font-semibold"
+                className="w-full text-center py-1 text-red-500 hover:underline text-[11px] font-semibold"
               >
                 Remove icon
               </button>
@@ -158,13 +165,13 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
         </div>
       )}
 
-      {/* Page Title Input */}
+      {/* Page Title Input (Enlarged Outfit Font) */}
       <input
         type="text"
         value={page.title || ''}
         onChange={handleTitleChange}
         placeholder="Untitled"
-        className="w-full text-3xl font-extrabold bg-transparent outline-none text-[#37352f] dark:text-white placeholder-[#b4b4b0] dark:placeholder-gray-600 tracking-tight"
+        className="w-full text-4xl sm:text-5xl font-black bg-transparent outline-none text-[#1c1917] placeholder-[#a8a29e] tracking-tight font-['Outfit']"
       />
     </div>
   );
