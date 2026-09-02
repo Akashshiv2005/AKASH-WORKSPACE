@@ -15,9 +15,11 @@ interface TaskState {
   addTask: (title: string, priority: 'High' | 'Medium' | 'Low') => void;
   updateStatus: (taskId: string, status: 'todo' | 'in_progress' | 'completed') => void;
   deleteTask: (taskId: string) => void;
+  resetBoard: () => void;
+  clearAllTasks: () => void;
 }
 
-const INITIAL_TASKS: TaskItem[] = [
+const DEFAULT_TASKS: TaskItem[] = [
   {
     id: 'task-1',
     title: 'Design Q3 Product Architecture & Wireframes',
@@ -63,7 +65,7 @@ const INITIAL_TASKS: TaskItem[] = [
 export const useTaskStore = create<TaskState>()(
   persist(
     (set) => ({
-      tasks: INITIAL_TASKS,
+      tasks: DEFAULT_TASKS,
 
       addTask: (title, priority) => {
         const newTask: TaskItem = {
@@ -85,6 +87,14 @@ export const useTaskStore = create<TaskState>()(
 
       deleteTask: (taskId) => {
         set((state) => ({ tasks: state.tasks.filter((t) => t.id !== taskId) }));
+      },
+
+      resetBoard: () => {
+        set({ tasks: DEFAULT_TASKS });
+      },
+
+      clearAllTasks: () => {
+        set({ tasks: [] });
       },
     }),
     {

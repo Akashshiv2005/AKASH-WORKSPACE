@@ -5,12 +5,14 @@ import {
   Trash2,
   CheckCircle2,
   Circle,
-  Layout
+  Layout,
+  RotateCcw,
+  Eraser
 } from 'lucide-react';
 import { useTaskStore } from '../../store/useTaskStore';
 
 export const TodoPlanner: React.FC = () => {
-  const { tasks, addTask, updateStatus, deleteTask } = useTaskStore();
+  const { tasks, addTask, updateStatus, deleteTask, resetBoard, clearAllTasks } = useTaskStore();
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [newTaskPriority, setNewTaskPriority] = useState<'High' | 'Medium' | 'Low'>('Medium');
   const [isAdding, setIsAdding] = useState(false);
@@ -40,8 +42,8 @@ export const TodoPlanner: React.FC = () => {
 
   return (
     <div className="my-6 space-y-6 select-none animate-fade-in-up font-['Sora']">
-      {/* Header Bar */}
-      <div className="flex items-center justify-between p-4 rounded-2xl border border-[#f2e8da] bg-white shadow-xs stark-hud-card">
+      {/* Header Bar with Dynamic Controls */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl border border-[#f2e8da] bg-white shadow-xs stark-hud-card">
         <div className="flex items-center space-x-3">
           <div className="p-2.5 rounded-xl bg-gradient-to-br from-[#ff7a00] to-[#ff9500] text-white shadow-xs">
             <Layout className="w-5 h-5 text-white" />
@@ -56,13 +58,34 @@ export const TodoPlanner: React.FC = () => {
           </div>
         </div>
 
-        <button
-          onClick={() => setIsAdding(true)}
-          className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#ff7a00] to-[#ff9500] hover:from-[#e66e00] hover:to-[#e68600] text-white text-xs font-black shadow-xs transition-all hover:scale-105 orange-pulse"
-        >
-          <Plus className="w-4 h-4 text-white" />
-          <span>New Task</span>
-        </button>
+        {/* Action Controls */}
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={resetBoard}
+            className="flex items-center space-x-1 px-3 py-1.5 rounded-xl border border-[#f0e8dc] hover:bg-[#faf7f2] text-xs font-semibold text-[#78716c] transition-all"
+            title="Reset Board to Default Tasks"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            <span>Reset Board</span>
+          </button>
+
+          <button
+            onClick={clearAllTasks}
+            className="flex items-center space-x-1 px-3 py-1.5 rounded-xl border border-red-200 hover:bg-red-50 text-xs font-semibold text-red-600 transition-all"
+            title="Clear all tasks for a blank slate"
+          >
+            <Eraser className="w-3.5 h-3.5" />
+            <span>Clear All</span>
+          </button>
+
+          <button
+            onClick={() => setIsAdding(true)}
+            className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#ff7a00] to-[#ff9500] hover:from-[#e66e00] hover:to-[#e68600] text-white text-xs font-black shadow-xs transition-all hover:scale-105 orange-pulse"
+          >
+            <Plus className="w-4 h-4 text-white" />
+            <span>New Task</span>
+          </button>
+        </div>
       </div>
 
       {/* Add Task Inline Form */}
@@ -118,44 +141,50 @@ export const TodoPlanner: React.FC = () => {
           </div>
 
           <div className="space-y-2.5">
-            {todoTasks.map((task) => (
-              <div
-                key={task.id}
-                className="p-3.5 rounded-xl bg-[#faf7f2] border border-[#f0e8dc] shadow-xs space-y-2.5 group hover:border-[#ff7a00] hover:scale-[1.02] transition-all"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start space-x-2">
+            {todoTasks.length === 0 ? (
+              <div className="p-4 text-center text-xs text-[#a8a29e] border border-dashed border-[#f0e8dc] rounded-xl">
+                No tasks to do
+              </div>
+            ) : (
+              todoTasks.map((task) => (
+                <div
+                  key={task.id}
+                  className="p-3.5 rounded-xl bg-[#faf7f2] border border-[#f0e8dc] shadow-xs space-y-2.5 group hover:border-[#ff7a00] hover:scale-[1.02] transition-all"
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start space-x-2">
+                      <button
+                        onClick={() => updateStatus(task.id, 'in_progress')}
+                        className="mt-0.5 text-[#a8a29e] hover:text-[#ff7a00] transition-colors"
+                      >
+                        <Circle className="w-4 h-4" />
+                      </button>
+                      <span className="text-xs font-semibold text-[#1c1917]">
+                        {task.title}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => deleteTask(task.id)}
+                      className="p-1 opacity-0 group-hover:opacity-100 text-[#a8a29e] hover:text-red-500 transition-opacity"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-1 text-[11px]">
+                    <span className={`px-2 py-0.5 rounded-md border font-black ${getPriorityBadge(task.priority)}`}>
+                      {task.priority}
+                    </span>
                     <button
                       onClick={() => updateStatus(task.id, 'in_progress')}
-                      className="mt-0.5 text-[#a8a29e] hover:text-[#ff7a00] transition-colors"
+                      className="text-[#ff7a00] font-extrabold hover:underline"
                     >
-                      <Circle className="w-4 h-4" />
+                      Initiate →
                     </button>
-                    <span className="text-xs font-semibold text-[#1c1917]">
-                      {task.title}
-                    </span>
                   </div>
-                  <button
-                    onClick={() => deleteTask(task.id)}
-                    className="p-1 opacity-0 group-hover:opacity-100 text-[#a8a29e] hover:text-red-500 transition-opacity"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
                 </div>
-
-                <div className="flex items-center justify-between pt-1 text-[11px]">
-                  <span className={`px-2 py-0.5 rounded-md border font-black ${getPriorityBadge(task.priority)}`}>
-                    {task.priority}
-                  </span>
-                  <button
-                    onClick={() => updateStatus(task.id, 'in_progress')}
-                    className="text-[#ff7a00] font-extrabold hover:underline"
-                  >
-                    Initiate →
-                  </button>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
 
@@ -172,44 +201,50 @@ export const TodoPlanner: React.FC = () => {
           </div>
 
           <div className="space-y-2.5">
-            {inProgressTasks.map((task) => (
-              <div
-                key={task.id}
-                className="p-3.5 rounded-xl bg-[#faf7f2] border border-[#f0e8dc] shadow-xs space-y-2.5 group hover:border-[#ff7a00] hover:scale-[1.02] transition-all"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start space-x-2">
+            {inProgressTasks.length === 0 ? (
+              <div className="p-4 text-center text-xs text-[#a8a29e] border border-dashed border-[#f0e8dc] rounded-xl">
+                No active tasks
+              </div>
+            ) : (
+              inProgressTasks.map((task) => (
+                <div
+                  key={task.id}
+                  className="p-3.5 rounded-xl bg-[#faf7f2] border border-[#f0e8dc] shadow-xs space-y-2.5 group hover:border-[#ff7a00] hover:scale-[1.02] transition-all"
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start space-x-2">
+                      <button
+                        onClick={() => updateStatus(task.id, 'completed')}
+                        className="mt-0.5 text-amber-600 hover:text-emerald-600 transition-colors"
+                      >
+                        <Clock className="w-4 h-4" />
+                      </button>
+                      <span className="text-xs font-semibold text-[#1c1917]">
+                        {task.title}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => deleteTask(task.id)}
+                      className="p-1 opacity-0 group-hover:opacity-100 text-[#a8a29e] hover:text-red-500 transition-opacity"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-1 text-[11px]">
+                    <span className={`px-2 py-0.5 rounded-md border font-black ${getPriorityBadge(task.priority)}`}>
+                      {task.priority}
+                    </span>
                     <button
                       onClick={() => updateStatus(task.id, 'completed')}
-                      className="mt-0.5 text-amber-600 hover:text-emerald-600 transition-colors"
+                      className="text-emerald-600 font-extrabold hover:underline"
                     >
-                      <Clock className="w-4 h-4" />
+                      Complete ✓
                     </button>
-                    <span className="text-xs font-semibold text-[#1c1917]">
-                      {task.title}
-                    </span>
                   </div>
-                  <button
-                    onClick={() => deleteTask(task.id)}
-                    className="p-1 opacity-0 group-hover:opacity-100 text-[#a8a29e] hover:text-red-500 transition-opacity"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
                 </div>
-
-                <div className="flex items-center justify-between pt-1 text-[11px]">
-                  <span className={`px-2 py-0.5 rounded-md border font-black ${getPriorityBadge(task.priority)}`}>
-                    {task.priority}
-                  </span>
-                  <button
-                    onClick={() => updateStatus(task.id, 'completed')}
-                    className="text-emerald-600 font-extrabold hover:underline"
-                  >
-                    Complete ✓
-                  </button>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
 
@@ -226,44 +261,50 @@ export const TodoPlanner: React.FC = () => {
           </div>
 
           <div className="space-y-2.5">
-            {completedTasks.map((task) => (
-              <div
-                key={task.id}
-                className="p-3.5 rounded-xl bg-[#faf7f2] border border-[#f0e8dc] shadow-xs space-y-2.5 opacity-80 group hover:opacity-100 transition-opacity"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex items-start space-x-2">
+            {completedTasks.length === 0 ? (
+              <div className="p-4 text-center text-xs text-[#a8a29e] border border-dashed border-[#f0e8dc] rounded-xl">
+                No completed tasks
+              </div>
+            ) : (
+              completedTasks.map((task) => (
+                <div
+                  key={task.id}
+                  className="p-3.5 rounded-xl bg-[#faf7f2] border border-[#f0e8dc] shadow-xs space-y-2.5 opacity-80 group hover:opacity-100 transition-opacity"
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start space-x-2">
+                      <button
+                        onClick={() => updateStatus(task.id, 'todo')}
+                        className="mt-0.5 text-emerald-600 transition-colors"
+                      >
+                        <CheckCircle2 className="w-4 h-4 fill-emerald-100" />
+                      </button>
+                      <span className="text-xs font-semibold text-[#1c1917] line-through opacity-70">
+                        {task.title}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => deleteTask(task.id)}
+                      className="p-1 opacity-0 group-hover:opacity-100 text-[#a8a29e] hover:text-red-500 transition-opacity"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-1 text-[11px]">
+                    <span className={`px-2 py-0.5 rounded-md border font-black ${getPriorityBadge(task.priority)}`}>
+                      {task.priority}
+                    </span>
                     <button
                       onClick={() => updateStatus(task.id, 'todo')}
-                      className="mt-0.5 text-emerald-600 transition-colors"
+                      className="text-[#78716c] hover:underline font-medium"
                     >
-                      <CheckCircle2 className="w-4 h-4 fill-emerald-100" />
+                      Reopen
                     </button>
-                    <span className="text-xs font-semibold text-[#1c1917] line-through opacity-70">
-                      {task.title}
-                    </span>
                   </div>
-                  <button
-                    onClick={() => deleteTask(task.id)}
-                    className="p-1 opacity-0 group-hover:opacity-100 text-[#a8a29e] hover:text-red-500 transition-opacity"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
                 </div>
-
-                <div className="flex items-center justify-between pt-1 text-[11px]">
-                  <span className={`px-2 py-0.5 rounded-md border font-black ${getPriorityBadge(task.priority)}`}>
-                    {task.priority}
-                  </span>
-                  <button
-                    onClick={() => updateStatus(task.id, 'todo')}
-                    className="text-[#78716c] hover:underline font-medium"
-                  >
-                    Reopen
-                  </button>
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
       </div>

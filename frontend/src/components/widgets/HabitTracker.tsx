@@ -20,6 +20,7 @@ export const HabitTracker: React.FC = () => {
     addHabit,
     deleteHabit,
     resetWeek,
+    clearAllHabits,
     getTotalCheckmarks,
     getMaxPossibleCheckmarks,
     getOverallPercentage,
@@ -104,6 +105,14 @@ export const HabitTracker: React.FC = () => {
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Reset Week</span>
+            </button>
+
+            <button
+              onClick={clearAllHabits}
+              className="flex items-center space-x-1 px-3 py-1.5 rounded-xl border border-red-200 hover:bg-red-50 text-xs font-semibold text-red-600 transition-all"
+              title="Clear all habits for a blank slate"
+            >
+              <span>Clear All</span>
             </button>
 
             <button

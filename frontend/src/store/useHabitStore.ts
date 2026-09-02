@@ -17,6 +17,8 @@ interface HabitState {
   addHabit: (name: string, icon: string) => void;
   deleteHabit: (habitId: string) => void;
   resetWeek: () => void;
+  clearAllHabits: () => void;
+  resetDefaultHabits: () => void;
 
   // Dynamic Getters
   getTotalCheckmarks: () => number;
@@ -25,15 +27,15 @@ interface HabitState {
   getBestStreak: () => number;
 }
 
-const INITIAL_HABITS: Habit[] = [
+const DEFAULT_HABITS: Habit[] = [
   {
     id: 'habit-1',
     name: 'Morning Workout & Stretch',
     category: 'Fitness',
     icon: '🏋️',
     color: 'from-[#ff7a00] to-[#ffaa00]',
-    completedDays: [true, true, true, false, true, false, false],
-    streak: 3,
+    completedDays: [false, false, false, false, false, false, false],
+    streak: 0,
   },
   {
     id: 'habit-2',
@@ -41,8 +43,8 @@ const INITIAL_HABITS: Habit[] = [
     category: 'Learning',
     icon: '📖',
     color: 'from-[#ff7a00] to-[#ffaa00]',
-    completedDays: [true, true, true, true, true, true, false],
-    streak: 6,
+    completedDays: [false, false, false, false, false, false, false],
+    streak: 0,
   },
   {
     id: 'habit-3',
@@ -50,8 +52,8 @@ const INITIAL_HABITS: Habit[] = [
     category: 'Mental Health',
     icon: '🧘',
     color: 'from-[#ff7a00] to-[#ffaa00]',
-    completedDays: [true, false, true, true, false, false, false],
-    streak: 2,
+    completedDays: [false, false, false, false, false, false, false],
+    streak: 0,
   },
   {
     id: 'habit-4',
@@ -59,8 +61,8 @@ const INITIAL_HABITS: Habit[] = [
     category: 'Health',
     icon: '💧',
     color: 'from-[#ff7a00] to-[#ffaa00]',
-    completedDays: [true, true, true, true, true, true, true],
-    streak: 7,
+    completedDays: [false, false, false, false, false, false, false],
+    streak: 0,
   },
   {
     id: 'habit-5',
@@ -68,15 +70,15 @@ const INITIAL_HABITS: Habit[] = [
     category: 'Productivity',
     icon: '💻',
     color: 'from-[#ff7a00] to-[#ffaa00]',
-    completedDays: [true, true, false, true, true, false, false],
-    streak: 2,
+    completedDays: [false, false, false, false, false, false, false],
+    streak: 0,
   },
 ];
 
 export const useHabitStore = create<HabitState>()(
   persist(
     (set, get) => ({
-      habits: INITIAL_HABITS,
+      habits: DEFAULT_HABITS,
 
       toggleDay: (habitId, dayIndex) => {
         set((state) => ({
@@ -121,6 +123,14 @@ export const useHabitStore = create<HabitState>()(
             streak: 0,
           })),
         }));
+      },
+
+      clearAllHabits: () => {
+        set({ habits: [] });
+      },
+
+      resetDefaultHabits: () => {
+        set({ habits: DEFAULT_HABITS });
       },
 
       getTotalCheckmarks: () => {
