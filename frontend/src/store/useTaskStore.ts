@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 export interface TaskItem {
   id: string;
@@ -59,28 +60,36 @@ const INITIAL_TASKS: TaskItem[] = [
   },
 ];
 
-export const useTaskStore = create<TaskState>((set) => ({
-  tasks: INITIAL_TASKS,
+export const useTaskStore = create<TaskState>()(
+  persist(
+    (set) => ({
+      tasks: INITIAL_TASKS,
 
-  addTask: (title, priority) => {
-    const newTask: TaskItem = {
-      id: `task-${Date.now()}`,
-      title: title.trim(),
-      category: 'General',
-      priority,
-      status: 'todo',
-      dueDate: 'Today',
-    };
-    set((state) => ({ tasks: [...state.tasks, newTask] }));
-  },
+      addTask: (title, priority) => {
+        const newTask: TaskItem = {
+          id: `task-${Date.now()}`,
+          title: title.trim(),
+          category: 'General',
+          priority,
+          status: 'todo',
+          dueDate: 'Today',
+        };
+        set((state) => ({ tasks: [...state.tasks, newTask] }));
+      },
 
-  updateStatus: (taskId, status) => {
-    set((state) => ({
-      tasks: state.tasks.map((t) => (t.id === taskId ? { ...t, status } : t)),
-    }));
-  },
+      updateStatus: (taskId, status) => {
+        set((state) => ({
+          tasks: state.tasks.map((t) => (t.id === taskId ? { ...t, status } : t)),
+        }));
+      },
 
-  deleteTask: (taskId) => {
-    set((state) => ({ tasks: state.tasks.filter((t) => t.id !== taskId) }));
-  },
-}));
+      deleteTask: (taskId) => {
+        set((state) => ({ tasks: state.tasks.filter((t) => t.id !== taskId) }));
+      },
+    }),
+    {
+      name: 'akash-tasks-storage',
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+);

@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 export interface Habit {
   id: string;
@@ -31,8 +32,8 @@ const INITIAL_HABITS: Habit[] = [
     category: 'Fitness',
     icon: '🏋️',
     color: 'from-[#ff7a00] to-[#ffaa00]',
-    completedDays: [false, false, false, false, false, false, false],
-    streak: 0,
+    completedDays: [true, true, true, false, true, false, false],
+    streak: 3,
   },
   {
     id: 'habit-2',
@@ -40,8 +41,8 @@ const INITIAL_HABITS: Habit[] = [
     category: 'Learning',
     icon: '📖',
     color: 'from-[#ff7a00] to-[#ffaa00]',
-    completedDays: [false, false, false, false, false, false, false],
-    streak: 0,
+    completedDays: [true, true, true, true, true, true, false],
+    streak: 6,
   },
   {
     id: 'habit-3',
@@ -49,8 +50,8 @@ const INITIAL_HABITS: Habit[] = [
     category: 'Mental Health',
     icon: '🧘',
     color: 'from-[#ff7a00] to-[#ffaa00]',
-    completedDays: [false, false, false, false, false, false, false],
-    streak: 0,
+    completedDays: [true, false, true, true, false, false, false],
+    streak: 2,
   },
   {
     id: 'habit-4',
@@ -58,8 +59,8 @@ const INITIAL_HABITS: Habit[] = [
     category: 'Health',
     icon: '💧',
     color: 'from-[#ff7a00] to-[#ffaa00]',
-    completedDays: [false, false, false, false, false, false, false],
-    streak: 0,
+    completedDays: [true, true, true, true, true, true, true],
+    streak: 7,
   },
   {
     id: 'habit-5',
@@ -67,77 +68,85 @@ const INITIAL_HABITS: Habit[] = [
     category: 'Productivity',
     icon: '💻',
     color: 'from-[#ff7a00] to-[#ffaa00]',
-    completedDays: [false, false, false, false, false, false, false],
-    streak: 0,
+    completedDays: [true, true, false, true, true, false, false],
+    streak: 2,
   },
 ];
 
-export const useHabitStore = create<HabitState>((set, get) => ({
-  habits: INITIAL_HABITS,
+export const useHabitStore = create<HabitState>()(
+  persist(
+    (set, get) => ({
+      habits: INITIAL_HABITS,
 
-  toggleDay: (habitId, dayIndex) => {
-    set((state) => ({
-      habits: state.habits.map((h) => {
-        if (h.id !== habitId) return h;
-        const newCompleted = [...h.completedDays];
-        newCompleted[dayIndex] = !newCompleted[dayIndex];
+      toggleDay: (habitId, dayIndex) => {
+        set((state) => ({
+          habits: state.habits.map((h) => {
+            if (h.id !== habitId) return h;
+            const newCompleted = [...h.completedDays];
+            newCompleted[dayIndex] = !newCompleted[dayIndex];
 
-        let streak = 0;
-        for (let i = newCompleted.length - 1; i >= 0; i--) {
-          if (newCompleted[i]) streak++;
-          else if (i < dayIndex) break;
-        }
+            let streak = 0;
+            for (let i = newCompleted.length - 1; i >= 0; i--) {
+              if (newCompleted[i]) streak++;
+              else if (i < dayIndex) break;
+            }
 
-        return { ...h, completedDays: newCompleted, streak };
-      }),
-    }));
-  },
+            return { ...h, completedDays: newCompleted, streak };
+          }),
+        }));
+      },
 
-  addHabit: (name, icon) => {
-    const newHabit: Habit = {
-      id: `habit-${Date.now()}`,
-      name: name.trim(),
-      category: 'General',
-      icon: icon || '🎯',
-      color: 'from-[#ff7a00] to-[#ffaa00]',
-      completedDays: [false, false, false, false, false, false, false],
-      streak: 0,
-    };
-    set((state) => ({ habits: [...state.habits, newHabit] }));
-  },
+      addHabit: (name, icon) => {
+        const newHabit: Habit = {
+          id: `habit-${Date.now()}`,
+          name: name.trim(),
+          category: 'General',
+          icon: icon || '🎯',
+          color: 'from-[#ff7a00] to-[#ffaa00]',
+          completedDays: [false, false, false, false, false, false, false],
+          streak: 0,
+        };
+        set((state) => ({ habits: [...state.habits, newHabit] }));
+      },
 
-  deleteHabit: (habitId) => {
-    set((state) => ({ habits: state.habits.filter((h) => h.id !== habitId) }));
-  },
+      deleteHabit: (habitId) => {
+        set((state) => ({ habits: state.habits.filter((h) => h.id !== habitId) }));
+      },
 
-  resetWeek: () => {
-    set((state) => ({
-      habits: state.habits.map((h) => ({
-        ...h,
-        completedDays: [false, false, false, false, false, false, false],
-        streak: 0,
-      })),
-    }));
-  },
+      resetWeek: () => {
+        set((state) => ({
+          habits: state.habits.map((h) => ({
+            ...h,
+            completedDays: [false, false, false, false, false, false, false],
+            streak: 0,
+          })),
+        }));
+      },
 
-  getTotalCheckmarks: () => {
-    return get().habits.reduce(
-      (acc, h) => acc + h.completedDays.filter(Boolean).length,
-      0
-    );
-  },
+      getTotalCheckmarks: () => {
+        return get().habits.reduce(
+          (acc, h) => acc + h.completedDays.filter(Boolean).length,
+          0
+        );
+      },
 
-  getMaxPossibleCheckmarks: () => {
-    return get().habits.length * 7;
-  },
+      getMaxPossibleCheckmarks: () => {
+        return get().habits.length * 7;
+      },
 
-  getOverallPercentage: () => {
-    const total = get().getTotalCheckmarks();
-    const max = get().getMaxPossibleCheckmarks();
-    return max > 0 ? Math.round((total / max) * 100) : 0;
-  },
+      getOverallPercentage: () => {
+        const total = get().getTotalCheckmarks();
+        const max = get().getMaxPossibleCheckmarks();
+        return max > 0 ? Math.round((total / max) * 100) : 0;
+      },
 
-  getBestStreak: () => {
-    return get().habits.reduce((max, h) => Math.max(max, h.streak), 0);
-  },
-}));
+      getBestStreak: () => {
+        return get().habits.reduce((max, h) => Math.max(max, h.streak), 0);
+      },
+    }),
+    {
+      name: 'akash-habits-storage',
+      storage: createJSONStorage(() => localStorage),
+    }
+  )
+);
