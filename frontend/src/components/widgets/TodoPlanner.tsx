@@ -7,61 +7,10 @@ import {
   Circle,
   Layout
 } from 'lucide-react';
-
-export interface TaskItem {
-  id: string;
-  title: string;
-  category: string;
-  priority: 'High' | 'Medium' | 'Low';
-  status: 'todo' | 'in_progress' | 'completed';
-  dueDate?: string;
-}
-
-const INITIAL_TASKS: TaskItem[] = [
-  {
-    id: 'task-1',
-    title: 'Design Q3 Product Architecture & Wireframes',
-    category: 'Design',
-    priority: 'High',
-    status: 'in_progress',
-    dueDate: '2026-09-05',
-  },
-  {
-    id: 'task-2',
-    title: 'Refactor Auth Service & JWT token refresh flow',
-    category: 'Engineering',
-    priority: 'High',
-    status: 'completed',
-    dueDate: '2026-09-02',
-  },
-  {
-    id: 'task-3',
-    title: 'Draft Product Launch Announcement Post',
-    category: 'Marketing',
-    priority: 'Medium',
-    status: 'todo',
-    dueDate: '2026-09-10',
-  },
-  {
-    id: 'task-4',
-    title: 'Perform Security Audit on Database Migrations',
-    category: 'Security',
-    priority: 'High',
-    status: 'todo',
-    dueDate: '2026-09-12',
-  },
-  {
-    id: 'task-5',
-    title: 'Set up automated E2E tests for Tiptap block editor',
-    category: 'QA',
-    priority: 'Low',
-    status: 'in_progress',
-    dueDate: '2026-09-15',
-  },
-];
+import { useTaskStore } from '../../store/useTaskStore';
 
 export const TodoPlanner: React.FC = () => {
-  const [tasks, setTasks] = useState<TaskItem[]>(INITIAL_TASKS);
+  const { tasks, addTask, updateStatus, deleteTask } = useTaskStore();
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [newTaskPriority, setNewTaskPriority] = useState<'High' | 'Medium' | 'Low'>('Medium');
   const [isAdding, setIsAdding] = useState(false);
@@ -69,29 +18,9 @@ export const TodoPlanner: React.FC = () => {
   const handleAddTask = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTaskTitle.trim()) return;
-
-    const newTask: TaskItem = {
-      id: `task-${Date.now()}`,
-      title: newTaskTitle.trim(),
-      category: 'General',
-      priority: newTaskPriority,
-      status: 'todo',
-      dueDate: 'Today',
-    };
-
-    setTasks([...tasks, newTask]);
+    addTask(newTaskTitle, newTaskPriority);
     setNewTaskTitle('');
     setIsAdding(false);
-  };
-
-  const updateStatus = (taskId: string, newStatus: 'todo' | 'in_progress' | 'completed') => {
-    setTasks(
-      tasks.map((t) => (t.id === taskId ? { ...t, status: newStatus } : t))
-    );
-  };
-
-  const deleteTask = (taskId: string) => {
-    setTasks(tasks.filter((t) => t.id !== taskId));
   };
 
   const todoTasks = tasks.filter((t) => t.status === 'todo');
@@ -110,7 +39,7 @@ export const TodoPlanner: React.FC = () => {
   };
 
   return (
-    <div className="my-6 space-y-6 select-none animate-fade-in-up">
+    <div className="my-6 space-y-6 select-none animate-fade-in-up font-['Sora']">
       {/* Header Bar */}
       <div className="flex items-center justify-between p-4 rounded-2xl border border-[#f2e8da] bg-white shadow-xs stark-hud-card">
         <div className="flex items-center space-x-3">

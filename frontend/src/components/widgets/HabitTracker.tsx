@@ -9,135 +9,43 @@ import {
   TrendingUp,
   RotateCcw
 } from 'lucide-react';
-
-export interface Habit {
-  id: string;
-  name: string;
-  category: string;
-  icon: string;
-  color: string;
-  completedDays: boolean[]; // 7 days: Mon (0) -> Sun (6)
-  streak: number;
-}
-
-const INITIAL_HABITS: Habit[] = [
-  {
-    id: 'habit-1',
-    name: 'Morning Workout & Stretch',
-    category: 'Fitness',
-    icon: '🏋️',
-    color: 'from-[#ff7a00] to-[#ffaa00]',
-    completedDays: [true, true, true, false, true, false, false],
-    streak: 3,
-  },
-  {
-    id: 'habit-2',
-    name: 'Read 20 Pages of a Book',
-    category: 'Learning',
-    icon: '📖',
-    color: 'from-[#ff7a00] to-[#ffaa00]',
-    completedDays: [true, true, true, true, true, true, false],
-    streak: 6,
-  },
-  {
-    id: 'habit-3',
-    name: 'Mindfulness & Meditation',
-    category: 'Mental Health',
-    icon: '🧘',
-    color: 'from-[#ff7a00] to-[#ffaa00]',
-    completedDays: [true, false, true, true, false, false, false],
-    streak: 2,
-  },
-  {
-    id: 'habit-4',
-    name: 'Drink 2.5L Water Daily',
-    category: 'Health',
-    icon: '💧',
-    color: 'from-[#ff7a00] to-[#ffaa00]',
-    completedDays: [true, true, true, true, true, true, true],
-    streak: 7,
-  },
-  {
-    id: 'habit-5',
-    name: 'Code Side Project 45m',
-    category: 'Productivity',
-    icon: '💻',
-    color: 'from-[#ff7a00] to-[#ffaa00]',
-    completedDays: [true, true, false, true, true, false, false],
-    streak: 2,
-  },
-];
+import { useHabitStore } from '../../store/useHabitStore';
 
 const DAYS_OF_WEEK = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 export const HabitTracker: React.FC = () => {
-  const [habits, setHabits] = useState<Habit[]>(INITIAL_HABITS);
+  const {
+    habits,
+    toggleDay,
+    addHabit,
+    deleteHabit,
+    resetWeek,
+    getTotalCheckmarks,
+    getMaxPossibleCheckmarks,
+    getOverallPercentage,
+    getBestStreak,
+  } = useHabitStore();
+
   const [isAddingHabit, setIsAddingHabit] = useState(false);
   const [newHabitName, setNewHabitName] = useState('');
   const [newHabitIcon, setNewHabitIcon] = useState('🎯');
 
-  const toggleDay = (habitId: string, dayIndex: number) => {
-    setHabits((prev) =>
-      prev.map((h) => {
-        if (h.id !== habitId) return h;
-        const newCompleted = [...h.completedDays];
-        newCompleted[dayIndex] = !newCompleted[dayIndex];
-        
-        let streak = 0;
-        for (let i = newCompleted.length - 1; i >= 0; i--) {
-          if (newCompleted[i]) streak++;
-          else if (i < dayIndex) break;
-        }
-
-        return { ...h, completedDays: newCompleted, streak };
-      })
-    );
-  };
-
   const handleAddHabit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newHabitName.trim()) return;
-
-    const newHabit: Habit = {
-      id: `habit-${Date.now()}`,
-      name: newHabitName.trim(),
-      category: 'General',
-      icon: newHabitIcon,
-      color: 'from-[#ff7a00] to-[#ffaa00]',
-      completedDays: [false, false, false, false, false, false, false],
-      streak: 0,
-    };
-
-    setHabits([...habits, newHabit]);
+    addHabit(newHabitName, newHabitIcon);
     setNewHabitName('');
     setIsAddingHabit(false);
   };
 
-  const deleteHabit = (habitId: string) => {
-    setHabits(habits.filter((h) => h.id !== habitId));
-  };
-
-  const resetWeek = () => {
-    setHabits(
-      habits.map((h) => ({
-        ...h,
-        completedDays: [false, false, false, false, false, false, false],
-        streak: 0,
-      }))
-    );
-  };
-
-  const totalCheckmarks = habits.reduce(
-    (acc, h) => acc + h.completedDays.filter(Boolean).length,
-    0
-  );
-  const maxPossible = habits.length * 7;
-  const overallPercentage = maxPossible > 0 ? Math.round((totalCheckmarks / maxPossible) * 100) : 0;
-  const bestStreak = habits.reduce((max, h) => Math.max(max, h.streak), 0);
+  const totalCheckmarks = getTotalCheckmarks();
+  const maxPossible = getMaxPossibleCheckmarks();
+  const overallPercentage = getOverallPercentage();
+  const bestStreak = getBestStreak();
 
   return (
-    <div className="my-6 space-y-6 select-none animate-fade-in-up">
-      {/* Header Summary Cards */}
+    <div className="my-6 space-y-6 select-none animate-fade-in-up font-['Sora']">
+      {/* Header Summary Cards (Fully Dynamic) */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* Weekly Completion Rate */}
         <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] flex items-center space-x-4 shadow-xs hover:scale-[1.02] transition-all stark-hud-card">
@@ -179,7 +87,7 @@ export const HabitTracker: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Habit Table Container (Exact ChatGPT Screenshot Grid Design) */}
+      {/* Main Habit Table Container */}
       <div className="rounded-2xl border border-[#f2e8da] bg-white shadow-xs overflow-hidden stark-hud-card">
         {/* Table Controls */}
         <div className="p-4 border-b border-[#f2e8da] flex items-center justify-between">
@@ -280,7 +188,7 @@ export const HabitTracker: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Days Checkboxes (Exact ChatGPT Round Orange Checkmarks) */}
+                {/* Days Checkboxes */}
                 <div className="col-span-7 grid grid-cols-7 text-center">
                   {habit.completedDays.map((isDone, idx) => (
                     <div key={idx} className="flex justify-center">
