@@ -12,8 +12,8 @@ import { useWorkspaceStore } from './store/useWorkspaceStore';
 import { useAuthStore } from './store/useAuthStore';
 
 export const App: React.FC = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 768);
+  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(window.innerWidth > 768);
   const [darkMode, setDarkMode] = useState(false);
 
   const { fetchCurrentUser } = useAuthStore();
@@ -46,7 +46,10 @@ export const App: React.FC = () => {
       {/* Left Sidebar */}
       <Sidebar
         isOpen={isSidebarOpen}
-        toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+        toggleSidebar={() => {
+          setIsSidebarOpen(!isSidebarOpen);
+          if (!isSidebarOpen && window.innerWidth <= 768) setIsRightSidebarOpen(false);
+        }}
       />
 
       {/* Center Layout Area */}
@@ -54,9 +57,15 @@ export const App: React.FC = () => {
         {/* Header Bar */}
         <HeaderBar
           isSidebarOpen={isSidebarOpen}
-          toggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+          toggleSidebar={() => {
+            setIsSidebarOpen(!isSidebarOpen);
+            if (!isSidebarOpen && window.innerWidth <= 768) setIsRightSidebarOpen(false);
+          }}
           isRightSidebarOpen={isRightSidebarOpen}
-          toggleRightSidebar={() => setIsRightSidebarOpen(!isRightSidebarOpen)}
+          toggleRightSidebar={() => {
+            setIsRightSidebarOpen(!isRightSidebarOpen);
+            if (!isRightSidebarOpen && window.innerWidth <= 768) setIsSidebarOpen(false);
+          }}
           darkMode={darkMode}
           setDarkMode={setDarkMode}
         />
@@ -87,7 +96,10 @@ export const App: React.FC = () => {
       {/* Right Productivity Dock Side Panel */}
       <RightSidebar
         isOpen={isRightSidebarOpen}
-        toggleRightSidebar={() => setIsRightSidebarOpen(!isRightSidebarOpen)}
+        toggleRightSidebar={() => {
+          setIsRightSidebarOpen(!isRightSidebarOpen);
+          if (!isRightSidebarOpen && window.innerWidth <= 768) setIsSidebarOpen(false);
+        }}
       />
 
       {/* Global Floating AI Assistant Orb */}
