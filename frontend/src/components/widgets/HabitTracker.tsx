@@ -163,11 +163,8 @@ export const HabitTracker: React.FC = () => {
           </form>
         )}
 
-        <div className="overflow-x-auto">
-          <div className="min-w-[600px]">
-
-        {/* Days Header */}
-        <div className="grid grid-cols-12 gap-2 p-3 bg-[#faf7f2] text-xs font-black text-[#ff7a00] border-b border-[#f0e8dc]">
+        {/* Days Header (Desktop Only) */}
+        <div className="hidden sm:grid grid-cols-12 gap-2 p-3 bg-[#faf7f2] text-xs font-black text-[#ff7a00] border-b border-[#f0e8dc]">
           <div className="col-span-4 pl-2 text-[#ff7a00]">Habit Target</div>
           <div className="col-span-7 grid grid-cols-7 text-center text-[#78716c]">
             {DAYS_OF_WEEK.map((day) => (
@@ -186,44 +183,64 @@ export const HabitTracker: React.FC = () => {
             return (
               <div
                 key={habit.id}
-                className="grid grid-cols-12 gap-2 p-3 items-center hover:bg-[#fffaf3] transition-colors group"
+                className="flex flex-col sm:grid sm:grid-cols-12 gap-3 sm:gap-2 p-4 sm:p-3 items-start sm:items-center hover:bg-[#fffaf3] transition-colors group"
               >
                 {/* Habit Info & Progress */}
-                <div className="col-span-4 flex items-center space-x-3 pl-2 min-w-0">
-                  <span className="text-xl shrink-0 hover:scale-125 transition-transform">{habit.icon}</span>
-                  <div className="min-w-0 flex-1">
-                    <div className="text-xs font-bold text-[#1c1917] truncate">
-                      {habit.name}
+                <div className="w-full sm:col-span-4 flex items-center justify-between sm:justify-start space-x-3 sm:pl-2 min-w-0">
+                  <div className="flex items-center space-x-3 min-w-0 flex-1">
+                    <span className="text-xl shrink-0 hover:scale-125 transition-transform">{habit.icon}</span>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-xs font-bold text-[#1c1917] truncate">
+                        {habit.name}
+                      </div>
+                      <div className="w-full bg-[#f0e8dc] h-2 rounded-full mt-1 overflow-hidden">
+                        <div
+                          style={{ width: `${progressPct}%` }}
+                          className="h-full bg-gradient-to-r from-[#ff7a00] to-[#ffaa00] transition-all duration-500 shadow-xs"
+                        />
+                      </div>
                     </div>
-                    <div className="w-full bg-[#f0e8dc] h-2 rounded-full mt-1 overflow-hidden">
-                      <div
-                        style={{ width: `${progressPct}%` }}
-                        className="h-full bg-gradient-to-r from-[#ff7a00] to-[#ffaa00] transition-all duration-500 shadow-xs"
-                      />
-                    </div>
+                  </div>
+
+                  {/* Mobile Streak & Delete */}
+                  <div className="sm:hidden flex items-center space-x-2">
+                    <span className="inline-flex items-center space-x-0.5 px-2 py-0.5 rounded-full text-xs font-extrabold bg-[#fff3e5] text-[#ff7a00] border border-[#ffe0c2]">
+                      <Flame className="w-3 h-3 fill-[#ff7a00]" />
+                      <span>{habit.streak}</span>
+                    </span>
+                    <button
+                      onClick={() => deleteHabit(habit.id)}
+                      className="p-1 text-[#a8a29e] hover:text-red-500 transition-opacity"
+                      title="Delete habit"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
                   </div>
                 </div>
 
                 {/* Days Checkboxes */}
-                <div className="col-span-7 grid grid-cols-7 text-center items-center">
+                <div className="w-full sm:col-span-7 grid grid-cols-7 text-center items-center mt-2 sm:mt-0">
                   {habit.completedDays.map((isDone, idx) => (
-                    <div key={idx} className="flex justify-center">
+                    <div key={idx} className="flex flex-col items-center justify-center space-y-1.5">
+                      <span className="sm:hidden text-[10px] font-bold text-[#a8a29e] uppercase">
+                        {DAYS_OF_WEEK[idx].charAt(0)}
+                      </span>
                       <button
                         onClick={() => toggleDay(habit.id, idx)}
-                        className={`w-10 h-10 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all duration-200 ${
+                        className={`w-9 h-9 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all duration-200 ${
                           isDone
                             ? `bg-gradient-to-br from-[#ff7a00] to-[#ff9500] text-white shadow-sm scale-105 orange-pulse`
                             : 'bg-white hover:bg-[#faf7f2] text-transparent border-2 border-[#e7dfd4]'
                         }`}
                       >
-                        <Check className="w-5 h-5 sm:w-4 sm:h-4 stroke-[3]" />
+                        <Check className="w-4 h-4 stroke-[3]" />
                       </button>
                     </div>
                   ))}
                 </div>
 
-                {/* Streak Counter & Delete */}
-                <div className="col-span-1 flex items-center justify-center space-x-1">
+                {/* Desktop Streak Counter & Delete */}
+                <div className="hidden sm:flex col-span-1 items-center justify-center space-x-1">
                   <span className="inline-flex items-center space-x-0.5 px-2 py-0.5 rounded-full text-xs font-extrabold bg-[#fff3e5] text-[#ff7a00] border border-[#ffe0c2]">
                     <Flame className="w-3 h-3 fill-[#ff7a00]" />
                     <span>{habit.streak}</span>
@@ -239,8 +256,6 @@ export const HabitTracker: React.FC = () => {
               </div>
             );
           })}
-        </div>
-          </div>
         </div>
       </div>
     </div>
