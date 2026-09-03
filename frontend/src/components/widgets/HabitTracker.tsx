@@ -205,18 +205,18 @@ export const HabitTracker: React.FC = () => {
                 </div>
 
                 {/* Days Checkboxes */}
-                <div className="col-span-7 grid grid-cols-7 text-center">
+                <div className="col-span-7 grid grid-cols-7 text-center items-center">
                   {habit.completedDays.map((isDone, idx) => (
                     <div key={idx} className="flex justify-center">
                       <button
                         onClick={() => toggleDay(habit.id, idx)}
-                        className={`w-7 h-7 rounded-full flex items-center justify-center transition-all duration-200 ${
+                        className={`w-10 h-10 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all duration-200 ${
                           isDone
                             ? `bg-gradient-to-br from-[#ff7a00] to-[#ff9500] text-white shadow-sm scale-105 orange-pulse`
-                            : 'bg-white hover:bg-[#faf7f2] text-transparent border border-[#e7dfd4]'
+                            : 'bg-white hover:bg-[#faf7f2] text-transparent border-2 border-[#e7dfd4]'
                         }`}
                       >
-                        <Check className="w-4 h-4 stroke-[3]" />
+                        <Check className="w-5 h-5 sm:w-4 sm:h-4 stroke-[3]" />
                       </button>
                     </div>
                   ))}
