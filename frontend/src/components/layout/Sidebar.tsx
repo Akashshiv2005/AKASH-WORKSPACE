@@ -195,7 +195,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
   };
 
   return (
-    <aside className="w-60 h-screen bg-[#faf7f2] border-r border-[#f0e8dc] flex flex-col shrink-0 select-none transition-colors">
+    <>
+      {/* Mobile Backdrop */}
+      <div 
+        className="fixed inset-0 bg-black/20 z-40 md:hidden" 
+        onClick={toggleSidebar}
+      />
+      <aside className="fixed left-0 md:relative z-50 w-60 h-screen bg-[#faf7f2] border-r border-[#f0e8dc] flex flex-col shrink-0 select-none transition-colors">
       {/* Workspace Switcher Header (Clean ChatGPT Layout Alignment) */}
       <div className="p-3 border-b border-[#f0e8dc] relative">
         <div
@@ -458,5 +464,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         )}
       </div>
     </aside>
+    </>
   );
 };

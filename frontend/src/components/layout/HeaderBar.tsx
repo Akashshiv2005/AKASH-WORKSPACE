@@ -89,11 +89,11 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           )}
 
           {/* Workspace Shield Logo */}
-          <div className="flex items-center space-x-2 shrink-0">
+          <div className="hidden sm:flex items-center space-x-2 shrink-0">
             <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[#ff7a00] to-[#ff9500] text-white flex items-center justify-center shadow-xs">
               <Shield className="w-3.5 h-3.5 text-white" />
             </div>
-            <span className="text-xs font-bold text-[#1c1917] truncate">
+            <span className="text-xs font-bold text-[#1c1917] truncate max-w-[120px] md:max-w-none">
               {activeWorkspace?.name || "Akash Shiv's Workspace"}
             </span>
           </div>
@@ -117,11 +117,11 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           {/* Ask JARVIS Button (ChatGPT Orange Accent) */}
           <button
             onClick={() => setIsAiModalOpen(true)}
-            className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#ff7a00] to-[#ff9500] hover:from-[#e66e00] hover:to-[#e68600] text-white text-xs font-black shadow-sm transition-all hover:scale-105 orange-pulse"
+            className="flex items-center space-x-1.5 px-2 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#ff7a00] to-[#ff9500] hover:from-[#e66e00] hover:to-[#e68600] text-white text-xs font-black shadow-sm transition-all hover:scale-105 orange-pulse"
             title="Open JARVIS AI Assistant"
           >
             <Zap className="w-3.5 h-3.5 text-white fill-white" />
-            <span className="tracking-wide">Ask JARVIS</span>
+            <span className="tracking-wide hidden sm:inline">Ask JARVIS</span>
           </button>
 
           {/* Favorite Button */}
