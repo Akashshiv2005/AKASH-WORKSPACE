@@ -128,7 +128,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           {activePage && (
             <button
               onClick={() => toggleFavorite(activePage.id)}
-              className={`p-1.5 rounded-lg hover:bg-[#f2ebe1] transition-colors ${
+              className={`hidden sm:flex p-1.5 rounded-lg hover:bg-[#f2ebe1] transition-colors ${
                 activePage.is_favorite ? 'text-[#ff7a00]' : 'text-[#a8a29e]'
               }`}
               title={activePage.is_favorite ? 'Remove from Favorites' : 'Add to Favorites'}
@@ -140,7 +140,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           {/* Theme Toggle */}
           <button
             onClick={() => setDarkMode(!darkMode)}
-            className="p-1.5 rounded-lg hover:bg-[#f2ebe1] text-[#78716c] transition-colors"
+            className="hidden sm:flex p-1.5 rounded-lg hover:bg-[#f2ebe1] text-[#78716c] transition-colors"
             title="Toggle Theme"
           >
             {darkMode ? <Sun className="w-4 h-4 text-[#ff7a00]" /> : <Moon className="w-4 h-4 text-[#78716c]" />}
@@ -161,7 +161,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
 
           {/* Notifications Icon */}
           <button
-            className="p-1.5 rounded-lg hover:bg-[#f2ebe1] text-[#78716c] transition-colors"
+            className="hidden sm:flex p-1.5 rounded-lg hover:bg-[#f2ebe1] text-[#78716c] transition-colors"
             title="Notifications"
           >
             <Bell className="w-4 h-4" />
@@ -170,7 +170,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           {/* Share Button */}
           <button
             onClick={handleShare}
-            className="flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs hover:bg-[#f2ebe1] text-[#44403c] transition-colors"
+            className="hidden sm:flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs hover:bg-[#f2ebe1] text-[#44403c] transition-colors"
             title="Share link"
           >
             {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Share2 className="w-3.5 h-3.5 text-[#78716c]" />}
@@ -179,7 +179,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
 
           {/* Page Options Menu */}
           {activePage && (
-            <div className="relative">
+            <div className="relative hidden sm:block">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="p-1.5 rounded-lg hover:bg-[#f2ebe1] text-[#78716c] transition-colors"

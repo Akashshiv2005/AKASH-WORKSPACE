@@ -48,7 +48,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
   };
 
   return (
-    <div className="relative group select-none max-w-4xl mx-auto pt-6 px-12 sm:px-16">
+    <div className="relative group select-none max-w-4xl mx-auto pt-6 px-4 sm:px-16 overflow-hidden">
       {/* Right-to-Left Floating Ticker Bar in Title Area */}
       <div className="w-full overflow-hidden whitespace-nowrap py-1.5 px-3 rounded-xl bg-[#fff3e5] border border-[#ffe0c2] text-[#ff7a00] text-xs font-bold mb-4 shadow-xs">
         <div className="animate-flow-rtl">
@@ -58,7 +58,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
 
       {/* Optional Page Cover Image */}
       {page.cover_image && (
-        <div className="relative w-full h-40 rounded-2xl overflow-hidden mb-6 group/cover shadow-md">
+        <div className="relative w-full h-32 sm:h-40 rounded-2xl overflow-hidden mb-6 group/cover shadow-md">
           <div
             className="w-full h-full"
             style={{ background: page.cover_image }}
@@ -70,7 +70,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
             >
               Change cover
             </button>
-            <span>•</span>
+            <span className="hidden sm:inline">•</span>
             <button
               onClick={handleRemoveCover}
               className="hover:text-red-400 font-semibold"
@@ -104,7 +104,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
       )}
 
       {/* Hover Action Bar to Add Icon / Cover if missing */}
-      <div className="flex items-center space-x-2 text-xs font-semibold text-[#a8a29e] opacity-0 group-hover:opacity-100 transition-opacity mb-2 h-6">
+      <div className="flex items-center space-x-2 text-xs font-semibold text-[#a8a29e] opacity-100 sm:opacity-0 group-hover:opacity-100 transition-opacity mb-2 h-6">
         {!page.icon && (
           <button
             onClick={() => setShowIconPicker(true)}
@@ -130,7 +130,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
         <div className="relative inline-block mb-3">
           <button
             onClick={() => setShowIconPicker(!showIconPicker)}
-            className="text-5xl hover:scale-110 transition-transform p-1.5 rounded-2xl hover:bg-[#fff3e5]"
+            className="text-4xl sm:text-5xl hover:scale-110 transition-transform p-1.5 rounded-2xl hover:bg-[#fff3e5]"
           >
             {page.icon}
           </button>
@@ -171,7 +171,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
         value={page.title || ''}
         onChange={handleTitleChange}
         placeholder="Untitled"
-        className="w-full text-4xl sm:text-5xl font-extrabold bg-transparent outline-none text-[#1c1917] placeholder-[#a8a29e] tracking-tight font-['Sora']"
+        className="w-full text-3xl sm:text-5xl font-extrabold bg-transparent outline-none text-[#1c1917] placeholder-[#a8a29e] tracking-tight font-['Sora'] break-words"
       />
     </div>
   );

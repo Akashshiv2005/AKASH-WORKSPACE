@@ -105,19 +105,18 @@ export const GeminiMotivationBanner: React.FC = () => {
           </div>
         </div>
 
-        {/* Daily Intention Lock-In Field */}
-        <div className="pt-2 border-t border-[#f0e8dc] flex items-center space-x-2">
+        <div className="pt-2 border-t border-[#f0e8dc] flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
           <input
             type="text"
             placeholder="Akash, lock in your primary target for today..."
             value={dailyFocus}
             onChange={(e) => setDailyFocus(e.target.value)}
             disabled={focusLocked}
-            className="flex-1 px-4 py-2.5 bg-white border border-[#f2e8da] rounded-xl text-xs outline-none focus:border-[#ff7a00] transition-colors font-medium text-[#1c1917] shadow-xs"
+            className="flex-1 px-4 py-2.5 bg-white border border-[#f2e8da] rounded-xl text-xs outline-none focus:border-[#ff7a00] transition-colors font-medium text-[#1c1917] shadow-xs w-full"
           />
           <button
             onClick={() => dailyFocus.trim() && setFocusLocked(!focusLocked)}
-            className={`px-4 py-2.5 rounded-xl text-xs font-bold flex items-center space-x-1.5 transition-all shadow-sm ${
+            className={`px-4 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 transition-all shadow-sm ${
               focusLocked
                 ? 'bg-emerald-600 text-white'
                 : 'bg-gradient-to-r from-[#ff7a00] to-[#ff9500] hover:from-[#e66e00] hover:to-[#e68600] text-white hover:scale-105'
