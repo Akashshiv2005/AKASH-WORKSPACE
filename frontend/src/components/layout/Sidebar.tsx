@@ -92,7 +92,18 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     if (activeWorkspace) {
       createPage(activeWorkspace.id, parentId, 'Untitled');
       setExpandedPages((prev) => ({ ...prev, [parentId]: true }));
+      if (window.innerWidth <= 768) toggleSidebar();
     }
+  };
+
+  const handlePageSelect = (pageId: string) => {
+    setActivePageId(pageId);
+    if (window.innerWidth <= 768) toggleSidebar();
+  };
+
+  const wrapCreate = (createFn: () => void) => {
+    createFn();
+    if (window.innerWidth <= 768) toggleSidebar();
   };
 
   const handleCreateWsSubmit = (e: React.FormEvent) => {
@@ -118,7 +129,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     return (
       <div key={page.id} className="select-none">
         <div
-          onClick={() => setActivePageId(page.id)}
+          onClick={() => handlePageSelect(page.id)}
           style={{ paddingLeft: `${Math.max(12, level * 16 + 12)}px` }}
           className={`group flex items-center justify-between py-1.5 pr-2 rounded-lg cursor-pointer text-xs transition-all ${
             isActive
@@ -328,7 +339,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
 
         {/* Habit Tracker Template Pill */}
         <button
-          onClick={handleCreateHabitTracker}
+          onClick={() => wrapCreate(handleCreateHabitTracker)}
           className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#44403c] font-medium transition-all hover:scale-[1.01]"
         >
           <Flame className="w-3.5 h-3.5 text-[#ff7a00]" />
@@ -337,7 +348,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
 
         {/* To-Do Planner Template Pill */}
         <button
-          onClick={handleCreateTodoPlanner}
+          onClick={() => wrapCreate(handleCreateTodoPlanner)}
           className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#44403c] font-medium transition-all hover:scale-[1.01]"
         >
           <CheckSquare className="w-3.5 h-3.5 text-[#ff7a00]" />
@@ -346,7 +357,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
 
         {/* Pomodoro Focus Timer Pill */}
         <button
-          onClick={handleCreatePomodoro}
+          onClick={() => wrapCreate(handleCreatePomodoro)}
           className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#44403c] font-medium transition-all hover:scale-[1.01]"
         >
           <Zap className="w-3.5 h-3.5 text-[#ff7a00]" />
@@ -355,7 +366,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
 
         {/* Daily Journal Pill */}
         <button
-          onClick={handleCreateJournal}
+          onClick={() => wrapCreate(handleCreateJournal)}
           className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#44403c] font-medium transition-all hover:scale-[1.01]"
         >
           <BookOpen className="w-3.5 h-3.5 text-[#ff7a00]" />
@@ -374,7 +385,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             {favoritePages.map((page) => (
               <div
                 key={page.id}
-                onClick={() => setActivePageId(page.id)}
+                onClick={() => handlePageSelect(page.id)}
                 className={`flex items-center space-x-2 px-2.5 py-1.5 rounded-lg cursor-pointer text-xs transition-all ${
                   activePageId === page.id
                     ? 'active-page-pill text-[#ff7a00] font-bold'
@@ -396,7 +407,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             PRIVATE PAGES
           </span>
           <button
-            onClick={handleCreateRootPage}
+            onClick={() => wrapCreate(handleCreateRootPage)}
             className="p-1 rounded hover:bg-[#e7dfd4] text-[#78716c]"
             title="Create root page"
           >
