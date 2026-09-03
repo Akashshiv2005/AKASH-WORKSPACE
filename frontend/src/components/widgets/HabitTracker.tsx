@@ -91,13 +91,13 @@ export const HabitTracker: React.FC = () => {
       {/* Main Habit Table Container */}
       <div className="rounded-2xl border border-[#f2e8da] bg-white shadow-xs overflow-hidden stark-hud-card">
         {/* Table Controls */}
-        <div className="p-4 border-b border-[#f2e8da] flex items-center justify-between">
+        <div className="p-4 border-b border-[#f2e8da] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center space-x-2">
             <Calendar className="w-4 h-4 text-[#ff7a00]" />
             <h3 className="text-sm font-black text-[#1c1917] tracking-wide">Weekly Tracker Grid</h3>
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <button
               onClick={resetWeek}
               className="flex items-center space-x-1 px-3 py-1.5 rounded-xl border border-[#f0e8dc] hover:bg-[#faf7f2] text-xs font-semibold text-[#78716c] transition-all"
@@ -127,37 +127,44 @@ export const HabitTracker: React.FC = () => {
 
         {/* Add Habit Inline Form */}
         {isAddingHabit && (
-          <form onSubmit={handleAddHabit} className="p-4 bg-[#faf7f2] border-b border-[#f0e8dc] flex items-center space-x-3 animate-fade-in-up">
-            <input
-              type="text"
-              placeholder="Icon (🏋️)..."
-              value={newHabitIcon}
-              onChange={(e) => setNewHabitIcon(e.target.value)}
-              className="w-16 px-2 py-1.5 bg-white border border-[#f0e8dc] rounded-xl text-center text-sm outline-none text-[#ff7a00] font-bold"
-            />
-            <input
-              type="text"
-              placeholder="Habit title (e.g., Read 30 mins)..."
-              value={newHabitName}
-              onChange={(e) => setNewHabitName(e.target.value)}
-              className="flex-1 px-3 py-1.5 bg-white border border-[#f0e8dc] rounded-xl text-xs outline-none focus:border-[#ff7a00] text-[#1c1917] font-medium"
-              autoFocus
-            />
-            <button
-              type="submit"
-              className="px-3.5 py-1.5 bg-[#ff7a00] text-white text-xs font-black rounded-xl"
-            >
-              Save Habit
-            </button>
-            <button
-              type="button"
-              onClick={() => setIsAddingHabit(false)}
-              className="px-2.5 py-1.5 text-xs text-[#78716c]"
-            >
-              Cancel
-            </button>
+          <form onSubmit={handleAddHabit} className="p-4 bg-[#faf7f2] border-b border-[#f0e8dc] flex flex-col sm:flex-row items-stretch sm:items-center gap-3 animate-fade-in-up">
+            <div className="flex items-center space-x-2">
+              <input
+                type="text"
+                placeholder="Icon (🏋️)..."
+                value={newHabitIcon}
+                onChange={(e) => setNewHabitIcon(e.target.value)}
+                className="w-16 px-2 py-1.5 bg-white border border-[#f0e8dc] rounded-xl text-center text-sm outline-none text-[#ff7a00] font-bold"
+              />
+              <input
+                type="text"
+                placeholder="Habit title (e.g., Read 30 mins)..."
+                value={newHabitName}
+                onChange={(e) => setNewHabitName(e.target.value)}
+                className="flex-1 min-w-0 px-3 py-1.5 bg-white border border-[#f0e8dc] rounded-xl text-xs outline-none focus:border-[#ff7a00] text-[#1c1917] font-medium"
+                autoFocus
+              />
+            </div>
+            <div className="flex items-center space-x-2">
+              <button
+                type="submit"
+                className="px-3.5 py-1.5 bg-[#ff7a00] text-white text-xs font-black rounded-xl whitespace-nowrap"
+              >
+                Save Habit
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsAddingHabit(false)}
+                className="px-2.5 py-1.5 text-xs text-[#78716c]"
+              >
+                Cancel
+              </button>
+            </div>
           </form>
         )}
+
+        <div className="overflow-x-auto">
+          <div className="min-w-[600px]">
 
         {/* Days Header */}
         <div className="grid grid-cols-12 gap-2 p-3 bg-[#faf7f2] text-xs font-black text-[#ff7a00] border-b border-[#f0e8dc]">
@@ -232,6 +239,8 @@ export const HabitTracker: React.FC = () => {
               </div>
             );
           })}
+        </div>
+          </div>
         </div>
       </div>
     </div>
