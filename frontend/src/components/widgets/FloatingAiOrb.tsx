@@ -4,7 +4,11 @@ import { GeminiAssistantModal } from '../ai/GeminiAssistantModal';
 
 export const FloatingAiOrb: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(window.innerWidth > 768);
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  React.useEffect(() => {
+    setShowTooltip(window.innerWidth > 768);
+  }, []);
 
   return (
     <>

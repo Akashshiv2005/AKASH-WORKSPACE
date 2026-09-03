@@ -12,8 +12,13 @@ import { useWorkspaceStore } from './store/useWorkspaceStore';
 import { useAuthStore } from './store/useAuthStore';
 
 export const App: React.FC = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 768);
-  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(window.innerWidth > 768);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    setIsSidebarOpen(window.innerWidth > 768);
+    setIsRightSidebarOpen(window.innerWidth > 768);
+  }, []);
   const [darkMode, setDarkMode] = useState(false);
 
   const { fetchCurrentUser } = useAuthStore();
