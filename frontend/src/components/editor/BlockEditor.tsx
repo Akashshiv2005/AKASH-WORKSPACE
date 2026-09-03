@@ -92,7 +92,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = ({ page }) => {
   };
 
   return (
-    <div className="relative max-w-4xl mx-auto px-16 pb-24 text-[#37352f] dark:text-[#e6e6e6]">
+    <div className="relative max-w-4xl mx-auto px-4 sm:px-16 pb-24 text-[#37352f] dark:text-[#e6e6e6]">
       {/* Gemini AI Daily Motivation Banner */}
       <GeminiMotivationBanner />
 
