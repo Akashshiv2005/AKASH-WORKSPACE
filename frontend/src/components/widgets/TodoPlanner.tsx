@@ -12,10 +12,21 @@ import {
 import { useTaskStore } from '../../store/useTaskStore';
 
 export const TodoPlanner: React.FC = () => {
-  const { tasks, addTask, updateStatus, deleteTask, resetBoard, clearAllTasks } = useTaskStore();
+  const { 
+    tasks, 
+    archivedTasks,
+    addTask, 
+    updateStatus, 
+    deleteTask, 
+    restoreTask,
+    permanentlyDeleteTask,
+    resetBoard, 
+    clearAllTasks 
+  } = useTaskStore();
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [newTaskPriority, setNewTaskPriority] = useState<'High' | 'Medium' | 'Low'>('Medium');
   const [isAdding, setIsAdding] = useState(false);
+  const [isTrashOpen, setIsTrashOpen] = useState(false);
 
   const handleAddTask = (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,7 +70,7 @@ export const TodoPlanner: React.FC = () => {
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={resetBoard}
             className="flex items-center space-x-1 px-3 py-1.5 rounded-xl border border-[#f0e8dc] hover:bg-[#faf7f2] text-xs font-semibold text-[#78716c] transition-all"
@@ -79,7 +90,24 @@ export const TodoPlanner: React.FC = () => {
           </button>
 
           <button
-            onClick={() => setIsAdding(true)}
+            onClick={() => {
+              setIsTrashOpen(!isTrashOpen);
+              setIsAdding(false);
+            }}
+            className={`flex items-center space-x-1 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all ${
+              isTrashOpen ? 'bg-[#ff7a00] text-white border-[#ff7a00]' : 'border-[#f0e8dc] hover:bg-[#faf7f2] text-[#78716c]'
+            }`}
+            title="View deleted tasks"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            <span>Trash ({archivedTasks.length})</span>
+          </button>
+
+          <button
+            onClick={() => {
+              setIsAdding(true);
+              setIsTrashOpen(false);
+            }}
             className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#ff7a00] to-[#ff9500] hover:from-[#e66e00] hover:to-[#e68600] text-white text-xs font-black shadow-xs transition-all hover:scale-105 orange-pulse"
           >
             <Plus className="w-4 h-4 text-white" />
@@ -87,6 +115,35 @@ export const TodoPlanner: React.FC = () => {
           </button>
         </div>
       </div>
+
+      {/* Recycle Bin Inline View */}
+      {isTrashOpen && (
+        <div className="p-4 bg-[#faf7f2] border border-[#f0e8dc] rounded-2xl animate-fade-in-up">
+          <h4 className="text-xs font-bold text-[#1c1917] mb-3">Recycle Bin</h4>
+          {archivedTasks.length === 0 ? (
+            <p className="text-xs text-[#a8a29e]">No deleted tasks.</p>
+          ) : (
+            <div className="space-y-2">
+              {archivedTasks.map((t) => (
+                <div key={t.id} className="flex items-center justify-between p-2 bg-white rounded-lg border border-[#f0e8dc] shadow-sm">
+                  <div className="flex items-center space-x-3">
+                    <span className="text-xs font-semibold text-[#44403c]">{t.title}</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <button onClick={() => restoreTask(t.id)} className="flex items-center space-x-1 px-2 py-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 rounded hover:bg-emerald-100 transition-colors">
+                      <RotateCcw className="w-3 h-3" />
+                      <span>Restore</span>
+                    </button>
+                    <button onClick={() => permanentlyDeleteTask(t.id)} className="p-1 text-red-500 bg-red-50 rounded hover:bg-red-100 transition-colors" title="Delete permanently">
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Add Task Inline Form */}
       {isAdding && (

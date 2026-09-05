@@ -87,6 +87,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     }
   };
 
+  const handleCreateExpenseTracker = () => {
+    if (activeWorkspace) {
+      createPage(activeWorkspace.id, null, "💰 Expense Tracker", 'expense_tracker');
+    }
+  };
+
   const handleCreateChildPage = (parentId: string, e: React.MouseEvent) => {
     e.stopPropagation();
     if (activeWorkspace) {
@@ -371,6 +377,15 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         >
           <BookOpen className="w-3.5 h-3.5 text-[#ff7a00]" />
           <span>Daily Journal</span>
+        </button>
+
+        {/* Expense Tracker Pill */}
+        <button
+          onClick={() => wrapCreate(handleCreateExpenseTracker)}
+          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#44403c] font-medium transition-all hover:scale-[1.01]"
+        >
+          <span className="text-sm">💰</span>
+          <span>Expense Tracker</span>
         </button>
       </div>
 

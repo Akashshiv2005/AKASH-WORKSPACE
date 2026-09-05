@@ -20,6 +20,11 @@ interface HabitState {
   clearAllHabits: () => void;
   resetDefaultHabits: () => void;
 
+  // Archive
+  archivedHabits: Habit[];
+  restoreHabit: (habitId: string) => void;
+  permanentlyDeleteHabit: (habitId: string) => void;
+
   // Dynamic Getters
   getTotalCheckmarks: () => number;
   getMaxPossibleCheckmarks: () => number;
@@ -79,6 +84,7 @@ export const useHabitStore = create<HabitState>()(
   persist(
     (set, get) => ({
       habits: DEFAULT_HABITS,
+      archivedHabits: [],
 
       toggleDay: (habitId, dayIndex) => {
         set((state) => ({
@@ -112,7 +118,31 @@ export const useHabitStore = create<HabitState>()(
       },
 
       deleteHabit: (habitId) => {
-        set((state) => ({ habits: state.habits.filter((h) => h.id !== habitId) }));
+        set((state) => {
+          const habitToArchive = state.habits.find(h => h.id === habitId);
+          if (!habitToArchive) return state;
+          return {
+            habits: state.habits.filter((h) => h.id !== habitId),
+            archivedHabits: [...state.archivedHabits, habitToArchive]
+          };
+        });
+      },
+
+      restoreHabit: (habitId) => {
+        set((state) => {
+          const habitToRestore = state.archivedHabits.find(h => h.id === habitId);
+          if (!habitToRestore) return state;
+          return {
+            archivedHabits: state.archivedHabits.filter((h) => h.id !== habitId),
+            habits: [...state.habits, habitToRestore]
+          };
+        });
+      },
+
+      permanentlyDeleteHabit: (habitId) => {
+        set((state) => ({
+          archivedHabits: state.archivedHabits.filter((h) => h.id !== habitId)
+        }));
       },
 
       resetWeek: () => {

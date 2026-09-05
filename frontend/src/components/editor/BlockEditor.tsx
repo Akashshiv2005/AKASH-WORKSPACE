@@ -11,6 +11,7 @@ import { HabitTracker } from '../widgets/HabitTracker';
 import { TodoPlanner } from '../widgets/TodoPlanner';
 import { PomodoroTimer } from '../widgets/PomodoroTimer';
 import { DailyJournal } from '../widgets/DailyJournal';
+import { ExpenseTracker } from '../widgets/ExpenseTracker';
 import { GeminiMotivationBanner } from '../widgets/GeminiMotivationBanner';
 import {
   Heading1,
@@ -107,6 +108,9 @@ export const BlockEditor: React.FC<BlockEditorProps> = ({ page }) => {
 
       {/* Widget Render: Daily Journal & Reflection */}
       {page.widget_type === 'journal' && <DailyJournal />}
+
+      {/* Widget Render: Expense Tracker */}
+      {page.widget_type === 'expense_tracker' && <ExpenseTracker />}
 
       {/* Floating Toolbar when selecting text */}
       {editor.state.selection && !editor.state.selection.empty && (

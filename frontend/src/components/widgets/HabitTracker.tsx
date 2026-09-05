@@ -16,9 +16,12 @@ const DAYS_OF_WEEK = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 export const HabitTracker: React.FC = () => {
   const {
     habits,
+    archivedHabits,
     toggleDay,
     addHabit,
     deleteHabit,
+    restoreHabit,
+    permanentlyDeleteHabit,
     resetWeek,
     clearAllHabits,
     getTotalCheckmarks,
@@ -30,6 +33,7 @@ export const HabitTracker: React.FC = () => {
   const [isAddingHabit, setIsAddingHabit] = useState(false);
   const [newHabitName, setNewHabitName] = useState('');
   const [newHabitIcon, setNewHabitIcon] = useState('🎯');
+  const [isTrashOpen, setIsTrashOpen] = useState(false);
 
   const handleAddHabit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -114,9 +118,26 @@ export const HabitTracker: React.FC = () => {
             >
               <span>Clear All</span>
             </button>
+            
+            <button
+              onClick={() => {
+                setIsTrashOpen(!isTrashOpen);
+                setIsAddingHabit(false);
+              }}
+              className={`flex items-center space-x-1 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all ${
+                isTrashOpen ? 'bg-[#ff7a00] text-white border-[#ff7a00]' : 'border-[#f0e8dc] hover:bg-[#faf7f2] text-[#78716c]'
+              }`}
+              title="View deleted habits"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span>Trash ({archivedHabits.length})</span>
+            </button>
 
             <button
-              onClick={() => setIsAddingHabit(true)}
+              onClick={() => {
+                setIsAddingHabit(true);
+                setIsTrashOpen(false);
+              }}
               className="flex items-center space-x-1 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#ff7a00] to-[#ff9500] hover:from-[#e66e00] hover:to-[#e68600] text-white text-xs font-black shadow-xs transition-all hover:scale-105"
             >
               <Plus className="w-3.5 h-3.5" />
@@ -124,6 +145,36 @@ export const HabitTracker: React.FC = () => {
             </button>
           </div>
         </div>
+
+        {/* Recycle Bin Inline View */}
+        {isTrashOpen && (
+          <div className="p-4 bg-[#faf7f2] border-b border-[#f0e8dc] animate-fade-in-up">
+            <h4 className="text-xs font-bold text-[#1c1917] mb-3">Recycle Bin</h4>
+            {archivedHabits.length === 0 ? (
+              <p className="text-xs text-[#a8a29e]">No deleted habits.</p>
+            ) : (
+              <div className="space-y-2">
+                {archivedHabits.map((h) => (
+                  <div key={h.id} className="flex items-center justify-between p-2 bg-white rounded-lg border border-[#f0e8dc] shadow-sm">
+                    <div className="flex items-center space-x-3">
+                      <span className="text-lg">{h.icon}</span>
+                      <span className="text-xs font-semibold text-[#44403c]">{h.name}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <button onClick={() => restoreHabit(h.id)} className="flex items-center space-x-1 px-2 py-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 rounded hover:bg-emerald-100 transition-colors">
+                        <RotateCcw className="w-3 h-3" />
+                        <span>Restore</span>
+                      </button>
+                      <button onClick={() => permanentlyDeleteHabit(h.id)} className="p-1 text-red-500 bg-red-50 rounded hover:bg-red-100 transition-colors" title="Delete permanently">
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Add Habit Inline Form */}
         {isAddingHabit && (
@@ -148,14 +199,14 @@ export const HabitTracker: React.FC = () => {
             <div className="flex items-center space-x-2">
               <button
                 type="submit"
-                className="px-3.5 py-1.5 bg-[#ff7a00] text-white text-xs font-black rounded-xl whitespace-nowrap"
+                className="px-3.5 py-1.5 bg-[#ff7a00] text-white text-xs font-black rounded-xl whitespace-nowrap hover:bg-[#e66e00] transition-colors"
               >
                 Save Habit
               </button>
               <button
                 type="button"
                 onClick={() => setIsAddingHabit(false)}
-                className="px-2.5 py-1.5 text-xs text-[#78716c]"
+                className="px-2.5 py-1.5 text-xs text-[#78716c] hover:text-[#1c1917] transition-colors"
               >
                 Cancel
               </button>

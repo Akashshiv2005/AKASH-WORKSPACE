@@ -17,6 +17,11 @@ interface TaskState {
   deleteTask: (taskId: string) => void;
   resetBoard: () => void;
   clearAllTasks: () => void;
+
+  // Archive
+  archivedTasks: TaskItem[];
+  restoreTask: (taskId: string) => void;
+  permanentlyDeleteTask: (taskId: string) => void;
 }
 
 const DEFAULT_TASKS: TaskItem[] = [
@@ -66,6 +71,7 @@ export const useTaskStore = create<TaskState>()(
   persist(
     (set) => ({
       tasks: DEFAULT_TASKS,
+      archivedTasks: [],
 
       addTask: (title, priority) => {
         const newTask: TaskItem = {
@@ -86,7 +92,31 @@ export const useTaskStore = create<TaskState>()(
       },
 
       deleteTask: (taskId) => {
-        set((state) => ({ tasks: state.tasks.filter((t) => t.id !== taskId) }));
+        set((state) => {
+          const taskToArchive = state.tasks.find(t => t.id === taskId);
+          if (!taskToArchive) return state;
+          return {
+            tasks: state.tasks.filter((t) => t.id !== taskId),
+            archivedTasks: [...state.archivedTasks, taskToArchive]
+          };
+        });
+      },
+
+      restoreTask: (taskId) => {
+        set((state) => {
+          const taskToRestore = state.archivedTasks.find(t => t.id === taskId);
+          if (!taskToRestore) return state;
+          return {
+            archivedTasks: state.archivedTasks.filter((t) => t.id !== taskId),
+            tasks: [...state.tasks, taskToRestore]
+          };
+        });
+      },
+
+      permanentlyDeleteTask: (taskId) => {
+        set((state) => ({
+          archivedTasks: state.archivedTasks.filter((t) => t.id !== taskId)
+        }));
       },
 
       resetBoard: () => {
