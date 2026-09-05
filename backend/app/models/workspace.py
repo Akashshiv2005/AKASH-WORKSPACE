@@ -41,6 +41,9 @@ class Workspace(Base, TimestampMixin):
         nullable=False,
         index=True,
     )
+    savings_goal: Mapped[float] = mapped_column(
+        default=5000.0,
+    )
 
     # Relationships
     owner: Mapped["User"] = relationship(

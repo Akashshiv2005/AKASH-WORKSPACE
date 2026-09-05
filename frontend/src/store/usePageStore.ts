@@ -8,7 +8,7 @@ export interface Page {
   icon?: string;
   cover_image?: string;
   content?: string | any;
-  widget_type?: 'habit_tracker' | 'todo_planner' | 'pomodoro' | 'journal' | null;
+  widget_type?: 'habit_tracker' | 'todo_planner' | 'pomodoro' | 'journal' | 'expense_tracker' | null;
   workspace_id: string;
   parent_id?: string | null;
   is_favorite: boolean;
@@ -32,7 +32,7 @@ interface PageState {
   setSearchQuery: (query: string) => void;
   setSearching: (open: boolean) => void;
 
-  createPage: (workspaceId: string, parentId?: string | null, title?: string, widgetType?: 'habit_tracker' | 'todo_planner' | 'pomodoro' | 'journal' | null) => Promise<Page>;
+  createPage: (workspaceId: string, parentId?: string | null, title?: string, widgetType?: 'habit_tracker' | 'todo_planner' | 'pomodoro' | 'journal' | 'expense_tracker' | null) => Promise<Page>;
   updatePage: (pageId: string, updates: Partial<Page>) => Promise<void>;
   toggleFavorite: (pageId: string) => Promise<void>;
   archivePage: (pageId: string) => Promise<void>;

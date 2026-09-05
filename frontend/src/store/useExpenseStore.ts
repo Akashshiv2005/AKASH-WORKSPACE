@@ -12,12 +12,15 @@ export interface ExpenseItem {
 
 interface ExpenseState {
   expenses: ExpenseItem[];
+  savingsGoal: number;
   addExpense: (amount: number, description: string, category: string, paymentMethod: 'Cash' | 'GPay') => void;
   deleteExpense: (id: string) => void;
   clearAllExpenses: () => void;
+  setSavingsGoal: (goal: number) => void;
 
   getTotalExpenses: () => number;
   getExpensesByMethod: (method: 'Cash' | 'GPay') => number;
+  getExpensesByCategory: () => { name: string; value: number }[];
 }
 
 const DEFAULT_EXPENSES: ExpenseItem[] = [];
@@ -26,6 +29,7 @@ export const useExpenseStore = create<ExpenseState>()(
   persist(
     (set, get) => ({
       expenses: DEFAULT_EXPENSES,
+      savingsGoal: 5000, // Default goal
 
       addExpense: (amount, description, category, paymentMethod) => {
         const newExpense: ExpenseItem = {
@@ -49,6 +53,10 @@ export const useExpenseStore = create<ExpenseState>()(
         set({ expenses: [] });
       },
 
+      setSavingsGoal: (goal: number) => {
+        set({ savingsGoal: goal });
+      },
+
       getTotalExpenses: () => {
         return get().expenses.reduce((total, exp) => total + exp.amount, 0);
       },
@@ -57,6 +65,17 @@ export const useExpenseStore = create<ExpenseState>()(
         return get().expenses
           .filter(exp => exp.paymentMethod === method)
           .reduce((total, exp) => total + exp.amount, 0);
+      },
+
+      getExpensesByCategory: () => {
+        const grouped = get().expenses.reduce((acc, exp) => {
+          acc[exp.category] = (acc[exp.category] || 0) + exp.amount;
+          return acc;
+        }, {} as Record<string, number>);
+
+        return Object.entries(grouped)
+          .map(([name, value]) => ({ name, value }))
+          .sort((a, b) => b.value - a.value);
       },
     }),
     {

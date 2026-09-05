@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
-import { Plus, Trash2, Wallet, Banknote, Landmark, PieChart } from 'lucide-react';
+import { Plus, Trash2, Wallet, Banknote, Landmark, PieChart, Target, Edit2 } from 'lucide-react';
 import { useExpenseStore } from '../../store/useExpenseStore';
+import { PieChart as RechartsPie, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
+
+const COLORS = ['#ff7a00', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'];
 
 export const ExpenseTracker: React.FC = () => {
   const {
     expenses,
+    savingsGoal,
     addExpense,
     deleteExpense,
     getTotalExpenses,
     getExpensesByMethod,
+    getExpensesByCategory,
+    setSavingsGoal
   } = useExpenseStore();
 
   const [isAdding, setIsAdding] = useState(false);
@@ -16,6 +22,9 @@ export const ExpenseTracker: React.FC = () => {
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('Food & Dining');
   const [method, setMethod] = useState<'Cash' | 'GPay'>('GPay');
+
+  const [isEditingGoal, setIsEditingGoal] = useState(false);
+  const [newGoal, setNewGoal] = useState(savingsGoal.toString());
 
   const handleAddExpense = (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,9 +37,20 @@ export const ExpenseTracker: React.FC = () => {
     setIsAdding(false);
   };
 
+  const handleSaveGoal = (e: React.FormEvent) => {
+    e.preventDefault();
+    const parsed = parseFloat(newGoal);
+    if (!isNaN(parsed) && parsed > 0) {
+      setSavingsGoal(parsed);
+    }
+    setIsEditingGoal(false);
+  };
+
   const total = getTotalExpenses();
   const cashTotal = getExpensesByMethod('Cash');
   const gpayTotal = getExpensesByMethod('GPay');
+  const categoryData = getExpensesByCategory();
+  const goalProgress = savingsGoal > 0 ? Math.min((total / savingsGoal) * 100, 100) : 0;
 
   const formatCurrency = (val: number) => {
     return new Intl.NumberFormat('en-IN', {
@@ -84,13 +104,105 @@ export const ExpenseTracker: React.FC = () => {
         </div>
       </div>
 
+      {/* Analysis & Savings Goal Section */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Savings Goal Tracker */}
+        <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] shadow-xs stark-hud-card">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center space-x-2">
+              <Target className="w-4 h-4 text-[#ff7a00]" />
+              <h3 className="text-sm font-black text-[#1c1917]">Savings Goal</h3>
+            </div>
+            {!isEditingGoal && (
+              <button onClick={() => setIsEditingGoal(true)} className="p-1 text-[#a8a29e] hover:text-[#ff7a00] transition-colors">
+                <Edit2 className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+
+          {isEditingGoal ? (
+            <form onSubmit={handleSaveGoal} className="flex items-center space-x-2 animate-fade-in-up">
+              <input
+                type="number"
+                value={newGoal}
+                onChange={(e) => setNewGoal(e.target.value)}
+                className="w-full px-3 py-1.5 bg-[#faf7f2] border border-[#f0e8dc] rounded-xl text-sm font-bold outline-none focus:border-[#ff7a00]"
+                autoFocus
+              />
+              <button type="submit" className="px-3 py-1.5 bg-[#ff7a00] text-white text-xs font-black rounded-xl">Save</button>
+            </form>
+          ) : (
+            <div className="space-y-2">
+              <div className="flex justify-between items-end">
+                <div className="text-2xl font-black text-[#1c1917]">{formatCurrency(total)} <span className="text-sm text-[#a8a29e] font-semibold">/ {formatCurrency(savingsGoal)}</span></div>
+                <div className="text-xs font-bold text-[#ff7a00]">{goalProgress.toFixed(1)}%</div>
+              </div>
+              <div className="w-full bg-[#f0e8dc] h-3 rounded-full overflow-hidden shadow-inner">
+                <div
+                  className={`h-full transition-all duration-1000 ${goalProgress > 100 ? 'bg-red-500' : 'bg-gradient-to-r from-[#ff7a00] to-[#ff9500]'}`}
+                  style={{ width: `${Math.min(goalProgress, 100)}%` }}
+                />
+              </div>
+              {goalProgress > 100 && (
+                <p className="text-[10px] font-bold text-red-500 mt-1">Warning: You have exceeded your expense goal!</p>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Category Breakdown Chart */}
+        <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] shadow-xs stark-hud-card h-48 flex items-center">
+          <div className="flex-1 h-full">
+            {categoryData.length > 0 ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <RechartsPie>
+                  <Pie
+                    data={categoryData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={40}
+                    outerRadius={60}
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {categoryData.map((_, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                    formatter={(value: any) => formatCurrency(value)}
+                    contentStyle={{ borderRadius: '12px', border: '1px solid #f0e8dc', fontSize: '12px', fontWeight: 'bold' }}
+                  />
+                </RechartsPie>
+              </ResponsiveContainer>
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-xs text-[#a8a29e] font-medium">
+                No data to analyze
+              </div>
+            )}
+          </div>
+          <div className="w-1/2 max-h-full overflow-y-auto pl-4 space-y-2">
+            <h3 className="text-[10px] uppercase font-black text-[#a8a29e] tracking-wider mb-2">Category Breakdown</h3>
+            {categoryData.map((entry, index) => (
+              <div key={entry.name} className="flex items-center justify-between text-xs">
+                <div className="flex items-center space-x-1.5">
+                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
+                  <span className="font-semibold text-[#44403c] truncate max-w-[80px]">{entry.name}</span>
+                </div>
+                <span className="font-black text-[#1c1917]">{formatCurrency(entry.value)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Main Tracker Container */}
       <div className="rounded-2xl border border-[#f2e8da] bg-white shadow-xs overflow-hidden stark-hud-card">
         {/* Header Controls */}
         <div className="p-4 border-b border-[#f2e8da] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center space-x-2">
             <PieChart className="w-4 h-4 text-[#ff7a00]" />
-            <h3 className="text-sm font-black text-[#1c1917] tracking-wide">Expense Tracker</h3>
+            <h3 className="text-sm font-black text-[#1c1917] tracking-wide">Expense History</h3>
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
