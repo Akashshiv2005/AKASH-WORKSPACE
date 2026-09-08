@@ -44,7 +44,7 @@ interface PageState {
 const DEMO_PAGES: Page[] = [
   {
     id: 'page-habit-tracker',
-    title: '✨ Daily Habit Tracker & Streaks',
+    title: 'Daily Habit Tracker & Streaks',
     icon: '🔥',
     cover_image: '',
     content: JSON.stringify({
@@ -66,7 +66,7 @@ const DEMO_PAGES: Page[] = [
   },
   {
     id: 'page-todo-planner',
-    title: '🎯 Task Planner & Kanban Goals',
+    title: 'Task Planner & Kanban Goals',
     icon: '📋',
     cover_image: '',
     content: JSON.stringify({
@@ -88,7 +88,7 @@ const DEMO_PAGES: Page[] = [
   },
   {
     id: 'page-pomodoro',
-    title: '⏱️ Arc Pomodoro Focus Station',
+    title: 'Arc Pomodoro Focus Station',
     icon: '⚡',
     cover_image: '',
     content: JSON.stringify({
@@ -110,7 +110,7 @@ const DEMO_PAGES: Page[] = [
   },
   {
     id: 'page-journal',
-    title: "📖 Akash Shiv's Daily Journal & Gratitude",
+    title: "Akash Shiv's Daily Journal & Gratitude",
     icon: '🧘',
     cover_image: '',
     content: JSON.stringify({

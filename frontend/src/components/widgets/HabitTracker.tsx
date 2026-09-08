@@ -24,6 +24,7 @@ export const HabitTracker: React.FC = () => {
     permanentlyDeleteHabit,
     resetWeek,
     clearAllHabits,
+    resetDefaultHabits,
     getTotalCheckmarks,
     getMaxPossibleCheckmarks,
     getOverallPercentage,
@@ -112,7 +113,11 @@ export const HabitTracker: React.FC = () => {
             </button>
 
             <button
-              onClick={clearAllHabits}
+              onClick={() => {
+                if (window.confirm("Are you sure you want to clear all habits? This action cannot be undone.")) {
+                  clearAllHabits();
+                }
+              }}
               className="flex items-center space-x-1 px-3 py-1.5 rounded-xl border border-red-200 hover:bg-red-50 text-xs font-semibold text-red-600 transition-all"
               title="Clear all habits for a blank slate"
             >
@@ -227,6 +232,20 @@ export const HabitTracker: React.FC = () => {
 
         {/* Habit Rows */}
         <div className="divide-y divide-[#f2e8da]">
+          {habits.length === 0 && !isAddingHabit && (
+            <div className="p-8 text-center animate-fade-in-up">
+              <div className="text-4xl mb-3">📭</div>
+              <h3 className="text-sm font-black text-[#1c1917] mb-1">No Habits Found</h3>
+              <p className="text-xs text-[#a8a29e] mb-4">You have cleared all your habits. Add a new one to get started!</p>
+              <button
+                onClick={resetDefaultHabits}
+                className="px-4 py-2 bg-[#fff3e5] text-[#ff7a00] font-bold text-xs rounded-xl hover:bg-[#ffe0c2] transition-colors inline-flex items-center space-x-2"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Restore Demo Habits</span>
+              </button>
+            </div>
+          )}
           {habits.map((habit) => {
             const completedCount = habit.completedDays.filter(Boolean).length;
             const progressPct = Math.round((completedCount / 7) * 100);

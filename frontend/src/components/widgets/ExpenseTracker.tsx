@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { Plus, Trash2, Wallet, Banknote, Landmark, PieChart, Target, Edit2 } from 'lucide-react';
 import { useExpenseStore } from '../../store/useExpenseStore';
+import { useWorkspaceStore } from '../../store/useWorkspaceStore';
 import { PieChart as RechartsPie, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
+import { useEffect } from 'react';
 
 const COLORS = ['#ff7a00', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'];
 
 export const ExpenseTracker: React.FC = () => {
+  const { activeWorkspace } = useWorkspaceStore();
   const {
     expenses,
     savingsGoal,
+    fetchExpenses,
     addExpense,
     deleteExpense,
     getTotalExpenses,
@@ -23,15 +27,23 @@ export const ExpenseTracker: React.FC = () => {
   const [category, setCategory] = useState('Food & Dining');
   const [method, setMethod] = useState<'Cash' | 'GPay'>('GPay');
 
+  useEffect(() => {
+    if (activeWorkspace) {
+      fetchExpenses(activeWorkspace.id);
+    }
+  }, [activeWorkspace, fetchExpenses]);
+
   const [isEditingGoal, setIsEditingGoal] = useState(false);
   const [newGoal, setNewGoal] = useState(savingsGoal.toString());
+  const [timeFilter, setTimeFilter] = useState<'All' | 'Month' | 'Week' | 'Day'>('Month');
 
-  const handleAddExpense = (e: React.FormEvent) => {
+  const handleAddExpense = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!activeWorkspace) return;
     const numAmount = parseFloat(amount);
     if (!description.trim() || isNaN(numAmount) || numAmount <= 0) return;
     
-    addExpense(numAmount, description, category, method);
+    await addExpense(activeWorkspace.id, numAmount, description, category, method);
     setAmount('');
     setDescription('');
     setIsAdding(false);
@@ -46,10 +58,39 @@ export const ExpenseTracker: React.FC = () => {
     setIsEditingGoal(false);
   };
 
-  const total = getTotalExpenses();
-  const cashTotal = getExpensesByMethod('Cash');
-  const gpayTotal = getExpensesByMethod('GPay');
-  const categoryData = getExpensesByCategory();
+  const filteredExpenses = expenses.filter((exp) => {
+    if (timeFilter === 'All') return true;
+    const expDate = new Date(exp.date);
+    const now = new Date();
+    
+    if (timeFilter === 'Day') {
+      return expDate.toDateString() === now.toDateString();
+    }
+    
+    if (timeFilter === 'Week') {
+      const weekAgo = new Date();
+      weekAgo.setDate(now.getDate() - 7);
+      return expDate >= weekAgo;
+    }
+    
+    if (timeFilter === 'Month') {
+      return expDate.getMonth() === now.getMonth() && expDate.getFullYear() === now.getFullYear();
+    }
+    
+    return true;
+  });
+
+  const total = filteredExpenses.reduce((acc, exp) => acc + exp.amount, 0);
+  const cashTotal = filteredExpenses.filter(e => e.payment_method === 'Cash').reduce((acc, exp) => acc + exp.amount, 0);
+  const gpayTotal = filteredExpenses.filter(e => e.payment_method === 'GPay').reduce((acc, exp) => acc + exp.amount, 0);
+
+  const categoryData = Object.entries(
+    filteredExpenses.reduce((acc, exp) => {
+      acc[exp.category] = (acc[exp.category] || 0) + exp.amount;
+      return acc;
+    }, {} as Record<string, number>)
+  ).map(([name, value]) => ({ name, value })).sort((a, b) => b.value - a.value);
+
   const goalProgress = savingsGoal > 0 ? Math.min((total / savingsGoal) * 100, 100) : 0;
 
   const formatCurrency = (val: number) => {
@@ -62,6 +103,20 @@ export const ExpenseTracker: React.FC = () => {
 
   return (
     <div className="my-6 space-y-6 select-none animate-fade-in-up font-['Sora']">
+      
+      {/* Time Filter Tabs */}
+      <div className="flex bg-[#f2e8da] p-1 rounded-xl w-fit font-bold text-xs mx-auto sm:mx-0">
+        {['Day', 'Week', 'Month', 'All'].map((filter) => (
+          <button
+            key={filter}
+            onClick={() => setTimeFilter(filter as any)}
+            className={`px-4 py-1.5 rounded-lg transition-all ${timeFilter === filter ? 'bg-white shadow-sm text-[#1c1917]' : 'text-[#78716c] hover:text-[#1c1917]'}`}
+          >
+            {filter === 'All' ? 'All Time' : `This ${filter}`}
+          </button>
+        ))}
+      </div>
+
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* Total Expenses */}
@@ -274,19 +329,19 @@ export const ExpenseTracker: React.FC = () => {
 
         {/* Expense List */}
         <div className="divide-y divide-[#f2e8da]">
-          {expenses.length === 0 ? (
+          {filteredExpenses.length === 0 ? (
             <div className="p-8 text-center text-sm text-[#a8a29e]">
               No expenses recorded yet.
             </div>
           ) : (
-            expenses.map((expense) => (
+            filteredExpenses.map((expense) => (
               <div
                 key={expense.id}
                 className="flex items-center justify-between p-4 hover:bg-[#faf7f2] transition-colors group"
               >
                 <div className="flex items-center space-x-4">
-                  <div className={`p-2 rounded-xl border ${expense.paymentMethod === 'Cash' ? 'bg-emerald-50 border-emerald-100 text-emerald-600' : 'bg-blue-50 border-blue-100 text-blue-600'}`}>
-                    {expense.paymentMethod === 'Cash' ? <Banknote className="w-4 h-4" /> : <Landmark className="w-4 h-4" />}
+                  <div className={`p-2 rounded-xl border ${expense.payment_method === 'Cash' ? 'bg-emerald-50 border-emerald-100 text-emerald-600' : 'bg-blue-50 border-blue-100 text-blue-600'}`}>
+                    {expense.payment_method === 'Cash' ? <Banknote className="w-4 h-4" /> : <Landmark className="w-4 h-4" />}
                   </div>
                   <div>
                     <div className="text-sm font-bold text-[#1c1917]">{expense.description}</div>
@@ -302,7 +357,7 @@ export const ExpenseTracker: React.FC = () => {
                     {formatCurrency(expense.amount)}
                   </div>
                   <button
-                    onClick={() => deleteExpense(expense.id)}
+                    onClick={() => activeWorkspace && deleteExpense(activeWorkspace.id, expense.id)}
                     className="p-1 opacity-0 group-hover:opacity-100 text-[#a8a29e] hover:text-red-500 transition-opacity"
                     title="Delete expense"
                   >

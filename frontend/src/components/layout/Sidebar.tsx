@@ -65,31 +65,31 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
 
   const handleCreateHabitTracker = () => {
     if (activeWorkspace) {
-      createPage(activeWorkspace.id, null, '✨ Daily Habit Tracker & Streaks', 'habit_tracker');
+      createPage(activeWorkspace.id, null, 'Daily Habit Tracker & Streaks', 'habit_tracker');
     }
   };
 
   const handleCreateTodoPlanner = () => {
     if (activeWorkspace) {
-      createPage(activeWorkspace.id, null, '🎯 Task Planner & Kanban', 'todo_planner');
+      createPage(activeWorkspace.id, null, 'Task Planner & Kanban', 'todo_planner');
     }
   };
 
   const handleCreatePomodoro = () => {
     if (activeWorkspace) {
-      createPage(activeWorkspace.id, null, '⚡ Arc Pomodoro Focus Station', 'pomodoro');
+      createPage(activeWorkspace.id, null, 'Arc Pomodoro Focus Station', 'pomodoro');
     }
   };
 
   const handleCreateJournal = () => {
     if (activeWorkspace) {
-      createPage(activeWorkspace.id, null, "📖 Daily Journal", 'journal');
+      createPage(activeWorkspace.id, null, "Daily Journal", 'journal');
     }
   };
 
   const handleCreateExpenseTracker = () => {
     if (activeWorkspace) {
-      createPage(activeWorkspace.id, null, "💰 Expense Tracker", 'expense_tracker');
+      createPage(activeWorkspace.id, null, "Expense Tracker", 'expense_tracker');
     }
   };
 

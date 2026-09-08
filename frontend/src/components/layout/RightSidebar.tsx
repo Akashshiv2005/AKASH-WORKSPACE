@@ -364,13 +364,13 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
                 <span className="uppercase tracking-wider font-black">JARVIS Tools</span>
               </div>
               <button
-                onClick={() => createPage('workspace-akash-shiv', null, '✨ Daily Habit Tracker', 'habit_tracker')}
+                onClick={() => createPage('workspace-akash-shiv', null, 'Daily Habit Tracker', 'habit_tracker')}
                 className="w-full text-left p-2 rounded-xl bg-[#f9f6f0] hover:bg-[#fff3e5] border border-[#f0e8dc] text-[#44403c] font-semibold text-[11px]"
               >
                 🔥 Habit Tracker
               </button>
               <button
-                onClick={() => createPage('workspace-akash-shiv', null, '⚡ Arc Focus Station', 'pomodoro')}
+                onClick={() => createPage('workspace-akash-shiv', null, 'Arc Focus Station', 'pomodoro')}
                 className="w-full text-left p-2 rounded-xl bg-[#f9f6f0] hover:bg-[#fff3e5] border border-[#f0e8dc] text-[#44403c] font-semibold text-[11px]"
               >
                 ⚡ Arc Focus Timer

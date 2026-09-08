@@ -1,20 +1,26 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import { apiClient } from '../api/client';
+import { useWorkspaceStore } from './useWorkspaceStore';
 
 export interface ExpenseItem {
   id: string;
   amount: number;
   description: string;
   category: string;
-  paymentMethod: 'Cash' | 'GPay';
+  payment_method: 'Cash' | 'GPay';
   date: string;
 }
 
 interface ExpenseState {
   expenses: ExpenseItem[];
   savingsGoal: number;
-  addExpense: (amount: number, description: string, category: string, paymentMethod: 'Cash' | 'GPay') => void;
-  deleteExpense: (id: string) => void;
+  isLoading: boolean;
+  
+  fetchExpenses: (workspaceId: string) => Promise<void>;
+  addExpense: (workspaceId: string, amount: number, description: string, category: string, payment_method: 'Cash' | 'GPay') => Promise<void>;
+  deleteExpense: (workspaceId: string, id: string) => Promise<void>;
+  
   clearAllExpenses: () => void;
   setSavingsGoal: (goal: number) => void;
 
@@ -30,23 +36,66 @@ export const useExpenseStore = create<ExpenseState>()(
     (set, get) => ({
       expenses: DEFAULT_EXPENSES,
       savingsGoal: 5000, // Default goal
+      isLoading: false,
 
-      addExpense: (amount, description, category, paymentMethod) => {
-        const newExpense: ExpenseItem = {
-          id: `exp-${Date.now()}`,
-          amount,
-          description: description.trim(),
-          category,
-          paymentMethod,
-          date: new Date().toISOString(),
-        };
-        set((state) => ({ expenses: [newExpense, ...state.expenses] }));
+      fetchExpenses: async (workspaceId) => {
+        const token = localStorage.getItem('access_token');
+        if (!token) return;
+        set({ isLoading: true });
+        try {
+          const res = await apiClient.get<ExpenseItem[]>(`/workspaces/${workspaceId}/expenses`);
+          set({ expenses: res.data });
+        } catch (err) {
+          console.error("Failed to fetch expenses", err);
+        } finally {
+          set({ isLoading: false });
+        }
       },
 
-      deleteExpense: (id) => {
-        set((state) => ({
-          expenses: state.expenses.filter((e) => e.id !== id),
-        }));
+      addExpense: async (workspaceId, amount, description, category, payment_method) => {
+        const token = localStorage.getItem('access_token');
+        if (token) {
+          try {
+            const res = await apiClient.post<ExpenseItem>(`/workspaces/${workspaceId}/expenses`, {
+              amount,
+              description: description.trim(),
+              category,
+              payment_method
+            });
+            set((state) => ({ expenses: [res.data, ...state.expenses] }));
+          } catch (err) {
+             console.error("Failed to add expense", err);
+          }
+        } else {
+          // Fallback for offline/local
+          const newExpense: ExpenseItem = {
+            id: `exp-${Date.now()}`,
+            amount,
+            description: description.trim(),
+            category,
+            payment_method,
+            date: new Date().toISOString(),
+          };
+          set((state) => ({ expenses: [newExpense, ...state.expenses] }));
+        }
+      },
+
+      deleteExpense: async (workspaceId, id) => {
+        const token = localStorage.getItem('access_token');
+        if (token && !id.startsWith('exp-')) {
+          try {
+            await apiClient.delete(`/workspaces/${workspaceId}/expenses/${id}`);
+            set((state) => ({
+              expenses: state.expenses.filter((e) => e.id !== id),
+            }));
+          } catch (err) {
+            console.error("Failed to delete expense", err);
+          }
+        } else {
+          set((state) => ({
+            expenses: state.expenses.filter((e) => e.id !== id),
+          }));
+        }
       },
 
       clearAllExpenses: () => {
@@ -63,7 +112,7 @@ export const useExpenseStore = create<ExpenseState>()(
 
       getExpensesByMethod: (method) => {
         return get().expenses
-          .filter(exp => exp.paymentMethod === method)
+          .filter(exp => exp.payment_method === method)
           .reduce((total, exp) => total + exp.amount, 0);
       },
 
@@ -81,6 +130,7 @@ export const useExpenseStore = create<ExpenseState>()(
     {
       name: 'akash-expenses-storage',
       storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ savingsGoal: state.savingsGoal }), // Only persist savings goal
     }
   )
 );

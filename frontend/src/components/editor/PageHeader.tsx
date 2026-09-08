@@ -125,54 +125,57 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
         )}
       </div>
 
-      {/* Icon Display */}
-      {page.icon && (
-        <div className="relative inline-block mb-3">
-          <button
-            onClick={() => setShowIconPicker(!showIconPicker)}
-            className="text-4xl sm:text-5xl hover:scale-110 transition-transform p-1.5 rounded-2xl hover:bg-[#fff3e5]"
-          >
-            {page.icon}
-          </button>
+      {/* Title & Icon Container */}
+      <div className="flex flex-wrap items-center gap-3">
+        {/* Icon Display */}
+        {page.icon && (
+          <div className="relative inline-block shrink-0">
+            <button
+              onClick={() => setShowIconPicker(!showIconPicker)}
+              className="text-4xl sm:text-5xl hover:scale-110 transition-transform p-1.5 rounded-2xl hover:bg-[#fff3e5]"
+            >
+              {page.icon}
+            </button>
 
-          {showIconPicker && (
-            <div className="absolute top-14 left-0 bg-white border border-[#f2e8da] rounded-2xl shadow-2xl p-3 z-50 w-64 space-y-2 text-xs animate-fade-in-up">
-              <div className="flex items-center justify-between text-[#ff7a00] font-bold">
-                <span>Select Icon</span>
-                <button onClick={() => setShowIconPicker(false)}>
-                  <X className="w-4 h-4 text-gray-400 hover:text-black" />
+            {showIconPicker && (
+              <div className="absolute top-14 left-0 bg-white border border-[#f2e8da] rounded-2xl shadow-2xl p-3 z-50 w-64 space-y-2 text-xs animate-fade-in-up">
+                <div className="flex items-center justify-between text-[#ff7a00] font-bold">
+                  <span>Select Icon</span>
+                  <button onClick={() => setShowIconPicker(false)}>
+                    <X className="w-4 h-4 text-gray-400 hover:text-black" />
+                  </button>
+                </div>
+                <div className="grid grid-cols-6 gap-2">
+                  {COMMON_EMOJIS.map((emoji) => (
+                    <button
+                      key={emoji}
+                      onClick={() => handleSelectIcon(emoji)}
+                      className="text-xl hover:scale-125 transition-transform p-1"
+                    >
+                      {emoji}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  onClick={handleRemoveIcon}
+                  className="w-full text-center py-1 text-red-500 hover:underline text-[11px] font-semibold"
+                >
+                  Remove icon
                 </button>
               </div>
-              <div className="grid grid-cols-6 gap-2">
-                {COMMON_EMOJIS.map((emoji) => (
-                  <button
-                    key={emoji}
-                    onClick={() => handleSelectIcon(emoji)}
-                    className="text-xl hover:scale-125 transition-transform p-1"
-                  >
-                    {emoji}
-                  </button>
-                ))}
-              </div>
-              <button
-                onClick={handleRemoveIcon}
-                className="w-full text-center py-1 text-red-500 hover:underline text-[11px] font-semibold"
-              >
-                Remove icon
-              </button>
-            </div>
-          )}
-        </div>
-      )}
+            )}
+          </div>
+        )}
 
-      {/* Page Title Input (Enlarged Outfit Font) */}
-      <input
-        type="text"
-        value={page.title || ''}
-        onChange={handleTitleChange}
-        placeholder="Untitled"
-        className="w-full text-3xl sm:text-5xl font-extrabold bg-transparent outline-none text-[#1c1917] placeholder-[#a8a29e] tracking-tight font-['Sora'] break-words"
-      />
+        {/* Page Title Input (Enlarged Outfit Font) */}
+        <input
+          type="text"
+          value={page.title || ''}
+          onChange={handleTitleChange}
+          placeholder="Untitled"
+          className="flex-1 min-w-[200px] text-3xl sm:text-5xl font-extrabold bg-transparent outline-none text-[#1c1917] placeholder-[#a8a29e] tracking-tight font-['Sora'] break-words"
+        />
+      </div>
     </div>
   );
 };

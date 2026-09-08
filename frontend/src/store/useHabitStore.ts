@@ -156,7 +156,10 @@ export const useHabitStore = create<HabitState>()(
       },
 
       clearAllHabits: () => {
-        set({ habits: [] });
+        set((state) => ({ 
+          archivedHabits: [...state.archivedHabits, ...state.habits],
+          habits: [] 
+        }));
       },
 
       resetDefaultHabits: () => {
