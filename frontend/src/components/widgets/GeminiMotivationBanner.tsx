@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { apiClient } from '../../api/client';
-import { RefreshCw, Quote, Compass, Target, CheckCircle2, Shield, Lock } from 'lucide-react';
+import { RefreshCw, Quote, Shield } from 'lucide-react';
 
 interface MotivationData {
   quote: string;
@@ -19,8 +19,6 @@ const FALLBACK_MOTIVATION: MotivationData = {
 export const GeminiMotivationBanner: React.FC = () => {
   const [motivation, setMotivation] = useState<MotivationData>(FALLBACK_MOTIVATION);
   const [loading, setLoading] = useState(false);
-  const [dailyFocus, setDailyFocus] = useState('');
-  const [focusLocked, setFocusLocked] = useState(false);
 
   const fetchMotivation = async () => {
     setLoading(true);
@@ -80,52 +78,7 @@ export const GeminiMotivationBanner: React.FC = () => {
           </div>
         </div>
 
-        {/* Mindset Tip & Focus Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-          {/* Mindset Tip */}
-          <div className="p-4 rounded-xl bg-white border border-[#f2e8da] flex items-start space-x-3 shadow-xs">
-            <div className="w-6 h-6 rounded-full bg-[#fff3e5] flex items-center justify-center shrink-0 mt-0.5">
-              <Compass className="w-3.5 h-3.5 text-[#ff7a00]" />
-            </div>
-            <div>
-              <span className="font-bold text-[#ff7a00]">JARVIS Mindset Protocol</span>
-              <p className="text-[#57534e] mt-0.5 font-medium leading-relaxed">{motivation.mindset_tip}</p>
-            </div>
-          </div>
 
-          {/* Daily Reflection Question */}
-          <div className="p-4 rounded-xl bg-white border border-[#f2e8da] flex items-start space-x-3 shadow-xs">
-            <div className="w-6 h-6 rounded-full bg-[#fff3e5] flex items-center justify-center shrink-0 mt-0.5">
-              <Target className="w-3.5 h-3.5 text-[#ff7a00]" />
-            </div>
-            <div>
-              <span className="font-bold text-[#ff7a00]">Daily Priority Target</span>
-              <p className="text-[#57534e] mt-0.5 font-medium leading-relaxed">{motivation.focus_question}</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="pt-2 border-t border-[#f0e8dc] flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-          <input
-            type="text"
-            placeholder="Akash, lock in your primary target for today..."
-            value={dailyFocus}
-            onChange={(e) => setDailyFocus(e.target.value)}
-            disabled={focusLocked}
-            className="flex-1 px-4 py-2.5 bg-white border border-[#f2e8da] rounded-xl text-xs outline-none focus:border-[#ff7a00] transition-colors font-medium text-[#1c1917] shadow-xs w-full"
-          />
-          <button
-            onClick={() => dailyFocus.trim() && setFocusLocked(!focusLocked)}
-            className={`px-4 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 transition-all shadow-sm ${
-              focusLocked
-                ? 'bg-emerald-600 text-white'
-                : 'bg-gradient-to-r from-[#ff7a00] to-[#ff9500] hover:from-[#e66e00] hover:to-[#e68600] text-white hover:scale-105'
-            }`}
-          >
-            {focusLocked ? <CheckCircle2 className="w-4 h-4" /> : <Lock className="w-4 h-4" />}
-            <span>{focusLocked ? 'Target Locked ✓' : 'Lock Target'}</span>
-          </button>
-        </div>
       </div>
     </div>
   );
