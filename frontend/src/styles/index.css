@@ -284,6 +284,7 @@
   background-size: 200% auto;
   color: transparent;
   -webkit-background-clip: text;
+  background-clip: text;
   animation: text-shimmer 4s linear infinite;
 }
 
@@ -291,6 +292,7 @@
   background: linear-gradient(135deg, #ff7a00, #ff9500, #ea580c, #f59e0b, #ff7a00);
   background-size: 300% 300%;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: text-gradient-flow 5s ease infinite;
 }
@@ -299,6 +301,7 @@
   background: linear-gradient(135deg, #1c1917 0%, #44403c 50%, #ff7a00 100%);
   background-size: 200% 200%;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: text-gradient-flow 7s ease infinite;
 }
@@ -342,6 +345,7 @@
   background: linear-gradient(90deg, #ff7a00, #ff9500, #ff7a00);
   background-size: 200% auto;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: text-shimmer 2s linear infinite;
 }
@@ -350,6 +354,7 @@
   background: linear-gradient(90deg, #1c1917 0%, #292524 70%, #ff7a00 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   transition: background-position 0.4s ease;
 }
