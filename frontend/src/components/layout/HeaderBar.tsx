@@ -4,7 +4,6 @@ import { useWorkspaceStore } from '../../store/useWorkspaceStore';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useNotificationStore } from '../../store/useNotificationStore';
 import { GeminiAssistantModal } from '../ai/GeminiAssistantModal';
-import { EmailNotificationModal } from '../notifications/EmailNotificationModal';
 import {
   PanelLeft,
   PanelRight,
@@ -165,7 +164,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           {/* Notifications Icon */}
           <button
             onClick={() => setNotificationModalOpen(true)}
-            className="group relative hidden sm:flex p-1.5 rounded-lg hover:bg-[#f2ebe1] text-[#78716c] hover:text-[#ff7a00] hover:scale-110 active:scale-90 transition-all duration-200"
+            className="group relative flex p-1.5 rounded-lg hover:bg-[#f2ebe1] text-[#78716c] hover:text-[#ff7a00] hover:scale-110 active:scale-90 transition-all duration-200"
             title="Gmail Daily Digest & Task Reminders"
           >
             <Bell className="w-4 h-4 group-hover:rotate-12 transition-transform" />
@@ -268,9 +267,6 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         isOpen={isAiModalOpen}
         onClose={() => setIsAiModalOpen(false)}
       />
-
-      {/* Gmail Email Notification Modal */}
-      <EmailNotificationModal />
     </>
   );
 };

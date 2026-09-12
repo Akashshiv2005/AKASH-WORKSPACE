@@ -4,6 +4,7 @@ import { RightSidebar } from './components/layout/RightSidebar';
 import { HeaderBar } from './components/layout/HeaderBar';
 import { SearchModal } from './components/layout/SearchModal';
 import { AuthModal } from './components/auth/AuthModal';
+import { EmailNotificationModal } from './components/notifications/EmailNotificationModal';
 import { PageHeader } from './components/editor/PageHeader';
 import { BlockEditor } from './components/editor/BlockEditor';
 import { FloatingAiOrb } from './components/widgets/FloatingAiOrb';
@@ -113,6 +114,7 @@ export const App: React.FC = () => {
       {/* Global Modals */}
       <SearchModal />
       <AuthModal />
+      <EmailNotificationModal />
     </div>
   );
 };

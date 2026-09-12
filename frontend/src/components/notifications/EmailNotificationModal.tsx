@@ -61,14 +61,19 @@ export const EmailNotificationModal: React.FC = () => {
   const [smtpUser, setSmtpUser] = useState('');
   const [smtpPassword, setSmtpPassword] = useState('');
 
-  // Calculate live preview stats
+  // Safe fallback calculations for live preview stats
   const todayIdx = new Date().getDay() === 0 ? 6 : new Date().getDay() - 1; // 0=Mon, 6=Sun
-  const activeTasks = tasks.filter((t) => !t.is_archived);
-  const pendingTasks = activeTasks.filter((t) => t.status.toLowerCase() !== 'done');
-  const activeHabits = habits.filter((h) => !h.is_archived);
+  const safeTasks = Array.isArray(tasks) ? tasks : [];
+  const activeTasks = safeTasks.filter((t) => Boolean(t) && !t.is_archived);
+  const pendingTasks = activeTasks.filter(
+    (t) => t.status && typeof t.status === 'string' && t.status.toLowerCase() !== 'done' && t.status.toLowerCase() !== 'completed'
+  );
+
+  const safeHabits = Array.isArray(habits) ? habits : [];
+  const activeHabits = safeHabits.filter((h) => Boolean(h) && !h.is_archived);
   const habitsDoneToday = activeHabits.filter((h) => {
-    const days = h.completedDays || (h as any).completed_days;
-    return Array.isArray(days) && days[todayIdx];
+    const days = h.completedDays || (h as any)?.completed_days;
+    return Array.isArray(days) && Boolean(days[todayIdx]);
   });
 
   useEffect(() => {
@@ -81,8 +86,8 @@ export const EmailNotificationModal: React.FC = () => {
   useEffect(() => {
     if (settings) {
       setRecipientEmail(settings.recipient_email || '');
-      setIsEnabled(settings.is_enabled);
-      setPendingOnly(settings.notify_if_pending_only);
+      setIsEnabled(settings.is_enabled ?? true);
+      setPendingOnly(settings.notify_if_pending_only ?? false);
     }
   }, [settings]);
 
@@ -106,14 +111,18 @@ export const EmailNotificationModal: React.FC = () => {
     await sendDailyDigest(recipientEmail, smtpUser, smtpPassword);
   };
 
-  const filteredLogs = emailLogs.filter((log) => {
+  const safeLogs = Array.isArray(emailLogs) ? emailLogs : [];
+  const filteredLogs = safeLogs.filter((log) => {
+    if (!log || !log.status) return false;
     if (logFilter === 'all') return true;
     return log.status.toLowerCase() === logFilter;
   });
 
   const formatLogDate = (dateStr: string) => {
+    if (!dateStr) return 'Just now';
     try {
       const date = new Date(dateStr);
+      if (isNaN(date.getTime())) return dateStr;
       return date.toLocaleString(undefined, {
         month: 'short',
         day: 'numeric',
@@ -464,10 +473,10 @@ export const EmailNotificationModal: React.FC = () => {
               ) : (
                 <div className="space-y-2.5 max-h-[380px] overflow-y-auto pr-1">
                   {filteredLogs.map((log) => {
-                    const isSuccess = log.status.toLowerCase() === 'sent';
+                    const isSuccess = log.status ? log.status.toLowerCase() === 'sent' : false;
                     return (
                       <div
-                        key={log.id}
+                        key={log.id || Math.random().toString()}
                         className={`p-3.5 rounded-xl border transition-all ${
                           isSuccess
                             ? 'bg-white dark:bg-[#1f1e1d] border-[#e7dfd5] dark:border-[#33302c] hover:border-emerald-300 dark:hover:border-emerald-700/50'
@@ -490,7 +499,7 @@ export const EmailNotificationModal: React.FC = () => {
                             )}
 
                             <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300">
-                              {log.email_type.replace('_', ' ')}
+                              {log.email_type ? String(log.email_type).replace(/_/g, ' ') : 'EMAIL'}
                             </span>
                           </div>
 
@@ -502,12 +511,12 @@ export const EmailNotificationModal: React.FC = () => {
 
                         {/* Subject */}
                         <div className="font-bold text-xs text-[#1c1917] dark:text-[#f2ebe1] line-clamp-1 mb-1">
-                          {log.subject}
+                          {log.subject || 'No Subject'}
                         </div>
 
                         {/* Recipient & Details */}
                         <div className="flex items-center justify-between text-[11px] text-[#78716c] dark:text-[#a8a29e]">
-                          <span>To: <b className="text-stone-700 dark:text-stone-200">{log.recipient_email}</b></span>
+                          <span>To: <b className="text-stone-700 dark:text-stone-200">{log.recipient_email || 'N/A'}</b></span>
                           {log.details && (
                             <span className="truncate max-w-[200px] text-[10px] opacity-80" title={log.details}>
                               {log.details}
