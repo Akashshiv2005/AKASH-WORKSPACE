@@ -12,7 +12,7 @@ A modern, high-performance executive workspace web application with ChatGPT Warm
 2. Click **New +** ➔ **Web Service**.
 3. Connect your GitHub repository: `https://github.com/Akashshiv2005/AKASH-WORKSPACE`.
 4. Configure service settings:
-   - **Name**: `akash-workspace-backend`
+   - **Name**: `akash-workspace`
    - **Root Directory**: `backend`
    - **Runtime**: `Python 3`
    - **Build Command**: `pip install -r requirements.txt`
@@ -23,7 +23,7 @@ A modern, high-performance executive workspace web application with ChatGPT Warm
    - `GEMINI_API_KEY` = `your_gemini_api_key`
    - `SECRET_KEY` = `your_secure_secret_key`
 6. Click **Create Web Service**.
-7. Copy your deployed Render Backend URL (e.g., `https://akash-workspace-backend.onrender.com`).
+7. Copy your deployed Render Backend URL (`https://akash-workspace.onrender.com`).
 
 ---
 
@@ -37,7 +37,7 @@ A modern, high-performance executive workspace web application with ChatGPT Warm
    - **Build Command**: `npm run build`
    - **Output Directory**: `dist`
 4. Add Environment Variable:
-   - `VITE_API_BASE_URL` = `https://akash-workspace-backend.onrender.com/api`
+   - `VITE_API_BASE_URL` = `https://akash-workspace.onrender.com/api`
 5. Click **Deploy**.
 
 ---

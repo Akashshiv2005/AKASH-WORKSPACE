@@ -21,7 +21,7 @@ async def keep_alive():
     base_url = (
         os.getenv("RENDER_EXTERNAL_URL")
         or os.getenv("BACKEND_URL")
-        or "https://akash-workspace-backend.onrender.com"
+        or "https://akash-workspace.onrender.com"
     ).rstrip("/")
     ping_url = f"{base_url}/api/health"
 
