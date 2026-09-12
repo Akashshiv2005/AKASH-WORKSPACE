@@ -48,10 +48,10 @@ export const GeminiMotivationBanner: React.FC = () => {
               <Shield className="w-5 h-5 text-white" />
             </div>
             <div>
-              <span className="text-xs font-black uppercase tracking-wider text-[#ff7a00]">
+              <span className="text-xs font-black uppercase tracking-wider text-gradient-flow text-glow inline-block">
                 JARVIS AI BOOST
               </span>
-              <p className="text-xs text-[#78716c]">
+              <p className="text-xs text-[#78716c] animate-text-reveal">
                 Personalized executive mindset for Akash Shiv
               </p>
             </div>
@@ -63,17 +63,17 @@ export const GeminiMotivationBanner: React.FC = () => {
             className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-white hover:bg-[#fff7ed] border border-[#ffd8b3] text-xs font-bold text-[#ff7a00] transition-all hover:scale-105 shadow-xs"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
-            <span>{loading ? 'Generating...' : 'Refresh JARVIS Quote'}</span>
+            <span className="hover-text-shimmer">{loading ? 'Generating...' : 'Refresh JARVIS Quote'}</span>
           </button>
         </div>
 
         {/* Quote Block (Exact ChatGPT Quote Styling) */}
         <div className="p-5 rounded-2xl bg-[#fffcf7] border border-[#f5ede2] space-y-3 relative shadow-xs">
           <Quote className="w-10 h-10 text-[#ff7a00]/10 absolute right-4 top-3 pointer-events-none" />
-          <p className="text-sm font-semibold italic text-[#1c1917] leading-relaxed">
+          <p className="text-sm font-semibold italic text-[#1c1917] leading-relaxed animate-text-reveal hover:text-[#ff7a00] transition-colors duration-300">
             "{motivation.quote}"
           </p>
-          <div className="text-xs font-bold text-[#ff7a00]">
+          <div className="text-xs font-bold text-[#ff7a00] shimmer-text-orange inline-block">
             — {motivation.author}
           </div>
         </div>

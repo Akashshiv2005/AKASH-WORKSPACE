@@ -230,10 +230,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
               <Shield className="w-4.5 h-4.5 text-white" />
             </div>
             <div className="min-w-0 flex-1">
-              <div className="text-[9px] font-black uppercase tracking-wider text-[#a8a29e] truncate leading-tight">
+              <div className="text-[9px] font-black uppercase tracking-wider text-[#a8a29e] truncate leading-tight animate-text-reveal">
                 AKASH WORKSPACE
               </div>
-              <div className="text-xs font-extrabold text-[#1c1917] truncate leading-tight mt-0.5">
+              <div className="text-xs font-extrabold truncate leading-tight mt-0.5 text-gradient-dark hover-text-shimmer">
                 {activeWorkspace?.name || "Akash Shiv's Workspace"}
               </div>
             </div>
@@ -339,7 +339,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           <span>Settings & Auth</span>
         </button>
 
-        <div className="pt-2 px-2.5 pb-1 text-[10px] font-black uppercase text-[#a8a29e] tracking-wider">
+        <div className="pt-2 px-2.5 pb-1 text-[10px] font-black uppercase text-[#a8a29e] hover:text-[#ff7a00] tracking-wider transition-colors duration-300">
           HABIT & PRODUCTIVITY
         </div>
 
@@ -418,7 +418,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       {/* Private Pages List */}
       <div className="flex-1 overflow-y-auto mt-3 px-2">
         <div className="flex items-center justify-between px-2 py-1">
-          <span className="text-[10px] font-black uppercase text-[#a8a29e] tracking-wider">
+          <span className="text-[10px] font-black uppercase text-[#a8a29e] hover:text-[#ff7a00] tracking-wider transition-colors duration-300">
             PRIVATE PAGES
           </span>
           <button

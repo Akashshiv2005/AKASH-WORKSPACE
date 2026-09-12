@@ -137,12 +137,12 @@ export const EmailNotificationModal: React.FC = () => {
             </div>
             <div>
               <h2 className="text-base font-bold text-[#1c1917] dark:text-[#f2ebe1] flex items-center space-x-1.5">
-                <span>Gmail Task & Habit Reminders</span>
-                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[#ff7a00]/10 text-[#ff7a00]">
+                <span className="text-gradient-flow font-black">Gmail Task & Habit Reminders</span>
+                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[#ff7a00]/15 text-[#ff7a00] animate-count-pulse">
                   Live
                 </span>
               </h2>
-              <p className="text-xs text-[#78716c] dark:text-[#a8a29e]">
+              <p className="text-xs text-[#78716c] dark:text-[#a8a29e] animate-text-reveal">
                 Never forget a task. Receive daily summaries directly to your inbox.
               </p>
             </div>
@@ -166,7 +166,7 @@ export const EmailNotificationModal: React.FC = () => {
             }`}
           >
             <Sliders className="w-3.5 h-3.5" />
-            <span>Preferences & Status</span>
+            <span className="hover-text-shimmer">Preferences & Status</span>
           </button>
 
           <button
@@ -181,8 +181,8 @@ export const EmailNotificationModal: React.FC = () => {
             }`}
           >
             <History className="w-3.5 h-3.5" />
-            <span>Email Logs</span>
-            <span className="ml-1 text-[10px] px-1.5 py-0.5 rounded-full bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-bold">
+            <span className="hover-text-shimmer">Email Logs</span>
+            <span className="ml-1 text-[10px] px-1.5 py-0.5 rounded-full bg-stone-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-bold animate-count-pulse">
               {emailLogs.length}
             </span>
           </button>
@@ -232,7 +232,7 @@ export const EmailNotificationModal: React.FC = () => {
                       <span>Pending Tasks</span>
                     </div>
                     <div className="text-lg font-black text-[#1c1917] dark:text-[#f2ebe1] mt-0.5 flex items-center space-x-1.5">
-                      <span className={pendingTasks.length > 0 ? 'text-[#ff7a00]' : 'text-emerald-600'}>
+                      <span className={`${pendingTasks.length > 0 ? 'text-[#ff7a00] shimmer-text-orange' : 'text-emerald-600'} animate-count-pulse inline-block`}>
                         {pendingTasks.length}
                       </span>
                       <span className="text-xs font-normal text-[#78716c]">of {activeTasks.length} total</span>
@@ -245,7 +245,7 @@ export const EmailNotificationModal: React.FC = () => {
                       <span>Habits Done Today</span>
                     </div>
                     <div className="text-lg font-black text-emerald-600 mt-0.5 flex items-center space-x-1.5">
-                      <span>{habitsDoneToday.length}</span>
+                      <span className="animate-count-pulse inline-block">{habitsDoneToday.length}</span>
                       <span className="text-xs font-normal text-[#78716c]">of {activeHabits.length} habits</span>
                     </div>
                   </div>

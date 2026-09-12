@@ -76,11 +76,11 @@ export const TodoPlanner: React.FC = () => {
             <Layout className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h3 className="text-base font-black text-[#1c1917] tracking-wide">
+            <h3 className="text-base font-black text-[#1c1917] tracking-wide heading-animated cursor-default">
               Kanban Task Board
             </h3>
-            <p className="text-xs text-[#78716c]">
-              {completedTasks.length} of {tasks.length} tasks completed
+            <p className="text-xs text-[#78716c] animate-text-reveal">
+              <span className="font-bold text-[#ff7a00]">{completedTasks.length}</span> of {tasks.length} tasks completed
             </p>
           </div>
         </div>
@@ -280,7 +280,7 @@ export const TodoPlanner: React.FC = () => {
             <div className="flex items-center space-x-2">
               <span className="w-3 h-3 rounded-full bg-red-500 shadow-xs" />
               <span className="text-xs font-black text-[#1c1917]">To Do</span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-red-50 text-red-600 font-bold border border-red-200">
+              <span className="text-xs px-2 py-0.5 rounded-full bg-red-50 text-red-600 font-bold border border-red-200 animate-count-pulse">
                 {todoTasks.length}
               </span>
             </div>
@@ -288,7 +288,7 @@ export const TodoPlanner: React.FC = () => {
 
           <div className="space-y-2.5">
             {todoTasks.length === 0 ? (
-              <div className="p-4 text-center text-xs text-[#a8a29e] border border-dashed border-[#f0e8dc] rounded-xl">
+              <div className="p-4 text-center text-xs text-[#a8a29e] border border-dashed border-[#f0e8dc] rounded-xl animate-text-reveal">
                 No tasks to do
               </div>
             ) : (
@@ -305,7 +305,7 @@ export const TodoPlanner: React.FC = () => {
                       >
                         <Circle className="w-4 h-4" />
                       </button>
-                      <span className="text-xs font-semibold text-[#1c1917] leading-snug">
+                      <span className="text-xs font-semibold text-[#1c1917] leading-snug group-hover:text-[#ff7a00] transition-colors">
                         {task.title}
                       </span>
                     </div>
@@ -324,7 +324,7 @@ export const TodoPlanner: React.FC = () => {
                     </span>
                     <button
                       onClick={() => updateStatus(workspaceId, task.id, 'in_progress')}
-                      className="text-[#ff7a00] hover:underline font-bold"
+                      className="text-[#ff7a00] hover-text-shimmer font-bold"
                     >
                       Start →
                     </button>
@@ -341,7 +341,7 @@ export const TodoPlanner: React.FC = () => {
             <div className="flex items-center space-x-2">
               <span className="w-3 h-3 rounded-full bg-amber-500 shadow-xs" />
               <span className="text-xs font-black text-[#1c1917]">In Progress</span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-bold border border-amber-200">
+              <span className="text-xs px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-bold border border-amber-200 animate-count-pulse">
                 {inProgressTasks.length}
               </span>
             </div>
@@ -349,7 +349,7 @@ export const TodoPlanner: React.FC = () => {
 
           <div className="space-y-2.5">
             {inProgressTasks.length === 0 ? (
-              <div className="p-4 text-center text-xs text-[#a8a29e] border border-dashed border-[#f0e8dc] rounded-xl">
+              <div className="p-4 text-center text-xs text-[#a8a29e] border border-dashed border-[#f0e8dc] rounded-xl animate-text-reveal">
                 No active tasks
               </div>
             ) : (
@@ -366,7 +366,7 @@ export const TodoPlanner: React.FC = () => {
                       >
                         <Clock className="w-4 h-4 animate-spin-slow" />
                       </button>
-                      <span className="text-xs font-semibold text-[#1c1917] leading-snug">
+                      <span className="text-xs font-semibold text-[#1c1917] leading-snug group-hover:text-[#ff7a00] transition-colors">
                         {task.title}
                       </span>
                     </div>
@@ -385,7 +385,7 @@ export const TodoPlanner: React.FC = () => {
                     </span>
                     <button
                       onClick={() => updateStatus(workspaceId, task.id, 'completed')}
-                      className="text-emerald-600 hover:underline font-bold"
+                      className="text-emerald-600 hover-text-shimmer font-bold"
                     >
                       Complete ✓
                     </button>
@@ -402,7 +402,7 @@ export const TodoPlanner: React.FC = () => {
             <div className="flex items-center space-x-2">
               <span className="w-3 h-3 rounded-full bg-emerald-500 shadow-xs" />
               <span className="text-xs font-black text-emerald-700">Completed</span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold border border-emerald-200">
+              <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-bold border border-emerald-200 animate-count-pulse">
                 {completedTasks.length}
               </span>
             </div>

@@ -79,10 +79,10 @@ export const PomodoroTimer: React.FC = () => {
         {/* Timer Countdown Display (Arc Reactor Ring) */}
         <div className="relative inline-flex items-center justify-center">
           <div className="w-60 h-60 rounded-full border-8 border-[#00f0ff]/30 flex flex-col items-center justify-center relative shadow-2xl arc-reactor-glow">
-            <div className="text-5xl font-black tracking-tight text-[#00f0ff] font-mono stark-text-cyan">
+            <div className="text-5xl font-black tracking-tight text-[#00f0ff] font-mono stark-text-cyan animate-count-pulse">
               {formattedTime}
             </div>
-            <span className="text-xs font-black uppercase tracking-widest text-amber-400 mt-2 flex items-center space-x-1">
+            <span className="text-xs font-black uppercase tracking-widest text-amber-400 mt-2 flex items-center space-x-1 animate-text-reveal">
               <Shield className="w-3.5 h-3.5 text-cyan-400 inline" />
               <span>{mode === 'focus' ? '🎯 Arc Focus Online' : '☕ Recharge Mode'}</span>
             </span>

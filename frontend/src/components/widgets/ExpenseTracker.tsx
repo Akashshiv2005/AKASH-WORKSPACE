@@ -122,10 +122,10 @@ export const ExpenseTracker: React.FC = () => {
             <Wallet className="w-5 h-5 text-[#ff7a00]" />
           </div>
           <div>
-            <div className="text-2xl font-black text-[#ff7a00] shimmer-text-orange">
+            <div className="text-2xl font-black text-gradient-flow text-glow animate-count-pulse">
               {formatCurrency(total)}
             </div>
-            <div className="text-xs font-bold text-[#78716c]">Total Expenses</div>
+            <div className="text-xs font-bold text-[#78716c] animate-text-reveal">Total Expenses</div>
           </div>
         </div>
 
@@ -135,10 +135,10 @@ export const ExpenseTracker: React.FC = () => {
             <Landmark className="w-5 h-5 text-blue-600" />
           </div>
           <div>
-            <div className="text-2xl font-black text-blue-600">
+            <div className="text-2xl font-black text-blue-600 animate-count-pulse">
               {formatCurrency(gpayTotal)}
             </div>
-            <div className="text-xs font-bold text-[#78716c]">GPay Spent</div>
+            <div className="text-xs font-bold text-[#78716c] animate-text-reveal">GPay Spent</div>
           </div>
         </div>
 
@@ -148,10 +148,10 @@ export const ExpenseTracker: React.FC = () => {
             <Banknote className="w-5 h-5 text-emerald-600" />
           </div>
           <div>
-            <div className="text-2xl font-black text-emerald-600">
+            <div className="text-2xl font-black text-emerald-600 animate-count-pulse">
               {formatCurrency(cashTotal)}
             </div>
-            <div className="text-xs font-bold text-[#78716c]">Cash Spent</div>
+            <div className="text-xs font-bold text-[#78716c] animate-text-reveal">Cash Spent</div>
           </div>
         </div>
       </div>

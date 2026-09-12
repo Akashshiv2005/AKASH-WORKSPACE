@@ -96,7 +96,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
             <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[#ff7a00] to-[#ff9500] text-white flex items-center justify-center shadow-xs">
               <Shield className="w-3.5 h-3.5 text-white" />
             </div>
-            <span className="text-xs font-bold text-[#1c1917] truncate max-w-[120px] md:max-w-none">
+            <span className="text-xs font-bold text-gradient-dark hover-text-shimmer truncate max-w-[120px] md:max-w-none">
               {activeWorkspace?.name || "Akash Shiv's Workspace"}
             </span>
           </div>
@@ -106,8 +106,8 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
             <React.Fragment key={page.id}>
               <ChevronRight className="w-3.5 h-3.5 text-[#a8a29e] shrink-0" />
               <div className="flex items-center space-x-1 min-w-0">
-                {page.icon && <span className="text-xs shrink-0">{page.icon}</span>}
-                <span className={`text-xs truncate ${index === breadcrumbs.length - 1 ? 'font-bold text-[#1c1917]' : 'text-[#78716c]'}`}>
+                {page.icon && <span className="text-xs shrink-0 animate-text-pop">{page.icon}</span>}
+                <span className={`text-xs truncate transition-all duration-300 ${index === breadcrumbs.length - 1 ? 'font-bold text-[#1c1917] hover:text-[#ff7a00] animate-text-reveal' : 'text-[#78716c] hover:text-[#1c1917]'}`}>
                   {page.title || 'Untitled'}
                 </span>
               </div>
@@ -124,7 +124,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
             title="Open JARVIS AI Assistant"
           >
             <Zap className="w-3.5 h-3.5 text-white fill-white" />
-            <span className="tracking-wide hidden sm:inline">Ask JARVIS</span>
+            <span className="tracking-wide hidden sm:inline shimmer-text-orange !text-white hover-lift">Ask JARVIS</span>
           </button>
 
           {/* Favorite Button */}

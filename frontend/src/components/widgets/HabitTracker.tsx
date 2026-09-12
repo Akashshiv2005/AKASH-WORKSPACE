@@ -75,10 +75,10 @@ export const HabitTracker: React.FC = () => {
             <TrendingUp className="w-5 h-5 text-[#ff7a00]" />
           </div>
           <div>
-            <div className="text-2xl font-black text-[#ff7a00] shimmer-text-orange">
+            <div className="text-2xl font-black text-gradient-flow text-glow animate-count-pulse">
               {overallPercentage}%
             </div>
-            <div className="text-xs font-bold text-[#78716c]">Weekly Progress</div>
+            <div className="text-xs font-bold text-[#78716c] animate-text-reveal">Weekly Progress</div>
           </div>
         </div>
 
@@ -88,10 +88,10 @@ export const HabitTracker: React.FC = () => {
             <Flame className="w-5 h-5 fill-[#ff7a00] text-[#ff7a00] animate-bounce-subtle" />
           </div>
           <div>
-            <div className="text-2xl font-black text-[#ff7a00] shimmer-text-orange">
+            <div className="text-2xl font-black text-gradient-flow text-glow animate-count-pulse">
               {bestStreak} Days
             </div>
-            <div className="text-xs font-bold text-[#78716c]">Active Streak</div>
+            <div className="text-xs font-bold text-[#78716c] animate-text-reveal">Active Streak</div>
           </div>
         </div>
 
@@ -101,10 +101,10 @@ export const HabitTracker: React.FC = () => {
             <Trophy className="w-5 h-5 text-[#ff7a00]" />
           </div>
           <div>
-            <div className="text-2xl font-black text-[#ff7a00]">
+            <div className="text-2xl font-black text-[#ff7a00] shimmer-text-orange animate-count-pulse">
               {totalCheckmarks} / {maxPossible}
             </div>
-            <div className="text-xs font-bold text-[#78716c]">Habits Checked</div>
+            <div className="text-xs font-bold text-[#78716c] animate-text-reveal">Habits Checked</div>
           </div>
         </div>
       </div>
@@ -115,7 +115,7 @@ export const HabitTracker: React.FC = () => {
         <div className="p-4 border-b border-[#f2e8da] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center space-x-2">
             <Calendar className="w-4 h-4 text-[#ff7a00]" />
-            <h3 className="text-sm font-black text-[#1c1917] tracking-wide">Weekly Tracker Grid</h3>
+            <h3 className="text-sm font-black text-[#1c1917] tracking-wide heading-animated cursor-default">Weekly Tracker Grid</h3>
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
@@ -313,22 +313,24 @@ export const HabitTracker: React.FC = () => {
 
         {/* Table Header Row */}
         <div className="hidden sm:grid sm:grid-cols-12 gap-2 p-3 bg-[#fbf8f3] border-b border-[#f2e8da] text-xs font-black text-[#ff7a00] uppercase tracking-wider">
-          <div className="col-span-4 pl-2">Habit Target</div>
+          <div className="col-span-4 pl-2 shimmer-text-orange">Habit Target</div>
           <div className="col-span-7 grid grid-cols-7 text-center">
             {DAYS_OF_WEEK.map((d) => (
-              <span key={d}>{d}</span>
+              <span key={d} className="hover:scale-110 hover:text-[#ea580c] transition-transform inline-block cursor-default select-none">
+                {d}
+              </span>
             ))}
           </div>
-          <div className="col-span-1 text-center">Streak</div>
+          <div className="col-span-1 text-center shimmer-text-orange">Streak</div>
         </div>
 
         {/* Habit Rows */}
         <div className="divide-y divide-[#f2e8da]">
           {habits.length === 0 && !isAddingHabit && (
             <div className="p-8 text-center animate-fade-in-up">
-              <div className="text-4xl mb-3">📭</div>
-              <h3 className="text-sm font-black text-[#1c1917] mb-1">No Habits Found</h3>
-              <p className="text-xs text-[#a8a29e] mb-4">
+              <div className="text-4xl mb-3 animate-bounce-subtle">📭</div>
+              <h3 className="text-sm font-black text-[#1c1917] mb-1 heading-animated">No Habits Found</h3>
+              <p className="text-xs text-[#a8a29e] mb-4 animate-text-reveal">
                 You have cleared all your habits to the Trash Bin. Add a new one or restore habits anytime!
               </p>
               <button
@@ -336,7 +338,7 @@ export const HabitTracker: React.FC = () => {
                 className="px-4 py-2 bg-[#fff3e5] text-[#ff7a00] font-bold text-xs rounded-xl hover:bg-[#ffe0c2] transition-colors inline-flex items-center space-x-2"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                <span>Restore Demo Habits</span>
+                <span className="hover-text-shimmer">Restore Demo Habits</span>
               </button>
             </div>
           )}
@@ -355,13 +357,13 @@ export const HabitTracker: React.FC = () => {
                   <div className="flex items-center space-x-3 min-w-0 flex-1">
                     <span className="text-xl shrink-0 hover:scale-125 transition-transform">{habit.icon}</span>
                     <div className="min-w-0 flex-1">
-                      <div className="text-xs font-bold text-[#1c1917] truncate">
+                      <div className="text-xs font-bold text-[#1c1917] truncate hover:text-[#ff7a00] transition-colors duration-200">
                         {habit.name}
                       </div>
                       <div className="w-full bg-[#f0e8dc] h-2 rounded-full mt-1 overflow-hidden">
                         <div
                           style={{ width: `${progressPct}%` }}
-                          className="h-full bg-gradient-to-r from-[#ff7a00] to-[#ffaa00] transition-all duration-500 shadow-xs"
+                          className="h-full bg-gradient-to-r from-[#ff7a00] to-[#ffaa00] transition-all duration-500 shadow-xs progress-shimmer"
                         />
                       </div>
                     </div>
