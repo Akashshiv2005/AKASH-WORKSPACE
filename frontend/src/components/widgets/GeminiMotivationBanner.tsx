@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { apiClient } from '../../api/client';
-import { RefreshCw, Quote, Shield } from 'lucide-react';
+import { RefreshCw, Quote, Shield, Sparkles } from 'lucide-react';
+import { TypewriterText } from '../common/TypewriterText';
 
 interface MotivationData {
   quote: string;
@@ -78,7 +79,26 @@ export const GeminiMotivationBanner: React.FC = () => {
           </div>
         </div>
 
-
+        {/* Live Typewriter Mindset Ticker (Letter-by-Letter typing & Backspacing) */}
+        <div className="flex items-center space-x-2 text-xs text-[#78716c] pt-2 border-t border-[#ffe9d1]/70 overflow-hidden">
+          <div className="flex items-center space-x-1 font-bold text-[#ff7a00] uppercase tracking-wider text-[10px] shrink-0">
+            <Sparkles className="w-3 h-3 text-[#ff7a00]" />
+            <span>EXECUTIVE TIP:</span>
+          </div>
+          <TypewriterText
+            phrases={[
+              motivation.mindset_tip || "Focus on taking one tiny action right now. Momentum follows action.",
+              motivation.focus_question || "What is the single most important task you will complete today?",
+              "Consistency beats intensity every single time, Akash.",
+              "Small daily incremental habits compound into massive success."
+            ]}
+            typingSpeed={45}
+            deletingSpeed={22}
+            pauseDuration={2800}
+            className="text-xs font-semibold text-[#1c1917] truncate"
+            cursorClassName="text-[#ff7a00]"
+          />
+        </div>
       </div>
     </div>
   );

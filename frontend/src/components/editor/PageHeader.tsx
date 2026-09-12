@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Page, usePageStore } from '../../store/usePageStore';
+import { TypewriterText } from '../common/TypewriterText';
 import {
   Smile,
   Image as ImageIcon,
@@ -48,11 +49,26 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
   };
 
   return (
-    <div className="relative group select-none max-w-4xl mx-auto pt-6 px-4 sm:px-16 overflow-hidden">
-      {/* Right-to-Left Floating Ticker Bar in Title Area */}
-      <div className="w-full overflow-hidden whitespace-nowrap py-1.5 px-3 rounded-xl bg-[#fff3e5] border border-[#ffe0c2] text-[#ff7a00] text-xs font-bold mb-4 shadow-xs">
-        <div className="animate-flow-rtl">
-          ✨ {page.title || 'Akash Workspace'} • Live Activity & Task Execution • Build Consistency • Akash Shiv's Connected Workspace ✨
+    <div className="relative group max-w-4xl mx-auto pt-6 px-4 sm:px-16">
+      {/* Letter-by-Letter Flow & Backspace Removal Typewriter Banner */}
+      <div className="w-full overflow-hidden py-2 px-3.5 rounded-xl bg-[#fffaf3] border border-[#ffe9d1] text-[#ff7a00] text-xs font-bold mb-4 shadow-xs flex items-center justify-between">
+        <div className="flex items-center space-x-2.5 min-w-0 flex-1">
+          <span className="px-2 py-0.5 rounded-md bg-[#ff7a00] text-white text-[10px] font-black uppercase tracking-wider shrink-0 shadow-xs">
+            LIVE FOCUS
+          </span>
+          <TypewriterText
+            phrases={[
+              `${page.title || 'Akash Workspace'} • Live Activity & Task Execution`,
+              "Build unbreakable consistency • Small daily habits create massive success",
+              "Never break the streak • Track every task and habit effortlessly",
+              "Execute high-priority items • Akash Shiv's Connected Workspace"
+            ]}
+            typingSpeed={50}
+            deletingSpeed={25}
+            pauseDuration={2400}
+            className="truncate font-semibold text-[#1c1917]"
+            cursorClassName="text-[#ff7a00]"
+          />
         </div>
       </div>
 
@@ -167,14 +183,25 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
           </div>
         )}
 
-        {/* Page Title Input (Enlarged Outfit Font) */}
-        <input
-          type="text"
-          value={page.title || ''}
-          onChange={handleTitleChange}
-          placeholder="Untitled"
-          className="flex-1 min-w-[200px] text-3xl sm:text-5xl font-extrabold bg-transparent outline-none text-[#1c1917] placeholder-[#a8a29e] tracking-tight font-['Sora'] break-words"
-        />
+        {/* Page Title Input with easy Backspace & Quick-Clear */}
+        <div className="flex-1 relative flex items-center min-w-[240px] group/title">
+          <input
+            type="text"
+            value={page.title || ''}
+            onChange={handleTitleChange}
+            placeholder="Untitled..."
+            className="w-full text-3xl sm:text-4xl lg:text-5xl font-extrabold bg-transparent outline-none text-[#1c1917] placeholder-[#a8a29e] tracking-tight font-['Sora'] select-text cursor-text pr-8 hover:bg-[#faf7f2]/50 rounded-xl transition-all"
+          />
+          {page.title && (
+            <button
+              onClick={() => updatePage(page.id, { title: '' })}
+              className="p-1.5 rounded-lg text-[#a8a29e] hover:text-red-500 hover:bg-[#fff3e5] transition-all opacity-0 group-hover/title:opacity-100 absolute right-1"
+              title="Clear title (or remove via Backspace)"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
