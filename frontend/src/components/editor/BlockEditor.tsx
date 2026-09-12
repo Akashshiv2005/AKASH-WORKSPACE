@@ -112,67 +112,69 @@ export const BlockEditor: React.FC<BlockEditorProps> = ({ page }) => {
       {/* Widget Render: Expense Tracker */}
       {page.widget_type === 'expense_tracker' && <ExpenseTracker />}
 
-      {/* Standard Document Editor (Only for non-widget pages) */}
-      {!page.widget_type && (
-        <>
-          {/* Floating Toolbar when selecting text */}
-          {editor.state.selection && !editor.state.selection.empty && (
-            <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-black dark:bg-[#2c2c2c] text-white px-3 py-1.5 rounded-xl shadow-2xl flex items-center space-x-1 z-40 text-xs">
-              <button
-                onClick={() => editor.chain().focus().toggleBold().run()}
-                className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('bold') ? 'text-blue-400' : ''}`}
-                title="Bold"
-              >
-                <Bold className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().toggleItalic().run()}
-                className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('italic') ? 'text-blue-400' : ''}`}
-                title="Italic"
-              >
-                <Italic className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => editor.chain().focus().toggleUnderline().run()}
-                className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('underline') ? 'text-blue-400' : ''}`}
-                title="Underline"
-              >
-                <UnderlineIcon className="w-4 h-4" />
-              </button>
+      {/* Floating Toolbar when selecting text */}
+      {editor.state.selection && !editor.state.selection.empty && (
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-black dark:bg-[#2c2c2c] text-white px-3 py-1.5 rounded-xl shadow-2xl flex items-center space-x-1 z-40 text-xs">
+          <button
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('bold') ? 'text-blue-400' : ''}`}
+            title="Bold"
+          >
+            <Bold className="w-4 h-4" />
+          </button>
+          <button
+            onClick={() => editor.chain().focus().toggleItalic().run()}
+            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('italic') ? 'text-blue-400' : ''}`}
+            title="Italic"
+          >
+            <Italic className="w-4 h-4" />
+          </button>
+          <button
+            onClick={() => editor.chain().focus().toggleUnderline().run()}
+            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('underline') ? 'text-blue-400' : ''}`}
+            title="Underline"
+          >
+            <UnderlineIcon className="w-4 h-4" />
+          </button>
 
-              <button
-                onClick={() => editor.chain().focus().toggleStrike().run()}
-                className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('strike') ? 'text-blue-400' : ''}`}
-                title="Strikethrough"
-              >
-                <Strikethrough className="w-4 h-4" />
-              </button>
+          <button
+            onClick={() => editor.chain().focus().toggleStrike().run()}
+            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('strike') ? 'text-blue-400' : ''}`}
+            title="Strikethrough"
+          >
+            <Strikethrough className="w-4 h-4" />
+          </button>
 
-              <button
-                onClick={() => editor.chain().focus().toggleHighlight().run()}
-                className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('highlight') ? 'text-yellow-400' : ''}`}
-                title="Highlight"
-              >
-                <Highlighter className="w-4 h-4" />
-              </button>
+          <button
+            onClick={() => editor.chain().focus().toggleHighlight().run()}
+            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('highlight') ? 'text-yellow-400' : ''}`}
+            title="Highlight"
+          >
+            <Highlighter className="w-4 h-4" />
+          </button>
 
-              <button
-                onClick={() => editor.chain().focus().toggleCode().run()}
-                className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('code') ? 'text-blue-400' : ''}`}
-                title="Code"
-              >
-                <Code className="w-4 h-4" />
-              </button>
-            </div>
-          )}
-
-          {/* Tiptap Editor Content Component */}
-          <EditorContent
-            editor={editor}
-            className="prose dark:prose-invert max-w-none focus:outline-none min-h-[250px] font-sans pt-2"
-          />
-        </>
+          <button
+            onClick={() => editor.chain().focus().toggleCode().run()}
+            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('code') ? 'text-blue-400' : ''}`}
+            title="Code"
+          >
+            <Code className="w-4 h-4" />
+          </button>
+        </div>
       )}
+
+      {/* Page Notes & Document Text Area (Always editable) */}
+      <div className="mt-8 pt-6 border-t border-[#f2e8da] dark:border-[#2f2f2f]">
+        {page.widget_type && (
+          <div className="text-xs font-bold text-[#ff7a00] uppercase tracking-wider mb-2 flex items-center space-x-1.5">
+            <span>📝 Page Notes & Scratchpad</span>
+          </div>
+        )}
+        <EditorContent
+          editor={editor}
+          className="prose dark:prose-invert max-w-none focus:outline-none min-h-[200px] font-sans pt-1"
+        />
+      </div>
 
       {/* Slash Commands Floating Popup (Only for non-widget pages) */}
       {!page.widget_type && showSlashMenu && (
