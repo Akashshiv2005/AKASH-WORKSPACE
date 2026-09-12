@@ -163,18 +163,13 @@ export const BlockEditor: React.FC<BlockEditorProps> = ({ page }) => {
         </div>
       )}
 
-      {/* Page Notes & Document Text Area (Always editable) */}
-      <div className="mt-8 pt-6 border-t border-[#f2e8da] dark:border-[#2f2f2f]">
-        {page.widget_type && (
-          <div className="text-xs font-bold text-[#ff7a00] uppercase tracking-wider mb-2 flex items-center space-x-1.5">
-            <span>📝 Page Notes & Scratchpad</span>
-          </div>
-        )}
+      {/* Standard Document Editor (Only for non-widget pages) */}
+      {!page.widget_type && (
         <EditorContent
           editor={editor}
-          className="prose dark:prose-invert max-w-none focus:outline-none min-h-[200px] font-sans pt-1"
+          className="prose dark:prose-invert max-w-none focus:outline-none min-h-[250px] font-sans pt-2"
         />
-      </div>
+      )}
 
       {/* Slash Commands Floating Popup (Only for non-widget pages) */}
       {!page.widget_type && showSlashMenu && (
