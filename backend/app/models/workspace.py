@@ -8,6 +8,8 @@ from app.db.base import Base, TimestampMixin
 if TYPE_CHECKING:
     from app.models.user import User
     from app.models.page import Page
+    from app.models.habit import Habit
+    from app.models.expense import Expense
 
 
 class WorkspaceRole(str, enum.Enum):
@@ -57,6 +59,16 @@ class Workspace(Base, TimestampMixin):
     )
     pages: Mapped[List["Page"]] = relationship(
         "Page",
+        back_populates="workspace",
+        cascade="all, delete-orphan",
+    )
+    habits: Mapped[List["Habit"]] = relationship(
+        "Habit",
+        back_populates="workspace",
+        cascade="all, delete-orphan",
+    )
+    expenses: Mapped[List["Expense"]] = relationship(
+        "Expense",
         back_populates="workspace",
         cascade="all, delete-orphan",
     )

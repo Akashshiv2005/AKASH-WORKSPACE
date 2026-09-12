@@ -7,7 +7,8 @@ class HabitBase(BaseModel):
     icon: Optional[str] = "🎯"
 
 class HabitCreate(HabitBase):
-    pass
+    streak: Optional[int] = 0
+    completed_days: Optional[List[bool]] = None
 
 class HabitUpdate(BaseModel):
     name: Optional[str] = None

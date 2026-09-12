@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Check,
   Plus,
@@ -7,16 +7,22 @@ import {
   Calendar,
   Trash2,
   TrendingUp,
-  RotateCcw
+  RotateCcw,
+  Sparkles
 } from 'lucide-react';
 import { useHabitStore } from '../../store/useHabitStore';
+import { useWorkspaceStore } from '../../store/useWorkspaceStore';
 
 const DAYS_OF_WEEK = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 export const HabitTracker: React.FC = () => {
+  const { activeWorkspace } = useWorkspaceStore();
+  const workspaceId = activeWorkspace?.id || 'workspace-akash-shiv';
+
   const {
     habits,
     archivedHabits,
+    fetchHabits,
     toggleDay,
     addHabit,
     deleteHabit,
@@ -36,10 +42,16 @@ export const HabitTracker: React.FC = () => {
   const [newHabitIcon, setNewHabitIcon] = useState('🎯');
   const [isTrashOpen, setIsTrashOpen] = useState(false);
 
+  useEffect(() => {
+    if (workspaceId) {
+      fetchHabits(workspaceId);
+    }
+  }, [workspaceId]);
+
   const handleAddHabit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newHabitName.trim()) return;
-    addHabit(newHabitName, newHabitIcon);
+    addHabit(workspaceId, newHabitName, newHabitIcon);
     setNewHabitName('');
     setIsAddingHabit(false);
   };
@@ -95,7 +107,7 @@ export const HabitTracker: React.FC = () => {
 
       {/* Main Habit Table Container */}
       <div className="rounded-2xl border border-[#f2e8da] bg-white shadow-xs overflow-hidden stark-hud-card">
-        {/* Table Controls */}
+        {/* Table Controls Header */}
         <div className="p-4 border-b border-[#f2e8da] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center space-x-2">
             <Calendar className="w-4 h-4 text-[#ff7a00]" />
@@ -104,7 +116,7 @@ export const HabitTracker: React.FC = () => {
 
           <div className="flex items-center gap-2 flex-wrap">
             <button
-              onClick={resetWeek}
+              onClick={() => resetWeek(workspaceId)}
               className="flex items-center space-x-1 px-3 py-1.5 rounded-xl border border-[#f0e8dc] hover:bg-[#faf7f2] text-xs font-semibold text-[#78716c] transition-all"
               title="Reset checkmarks for this week"
             >
@@ -113,7 +125,7 @@ export const HabitTracker: React.FC = () => {
             </button>
 
             <button
-              onClick={resetDefaultHabits}
+              onClick={() => resetDefaultHabits(workspaceId)}
               className="flex items-center space-x-1 px-3 py-1.5 rounded-xl border border-[#ffe0c2] bg-[#fffaf3] hover:bg-[#fff3e5] text-xs font-bold text-[#ff7a00] transition-all"
               title="Restore full demo habits list"
             >
@@ -123,25 +135,13 @@ export const HabitTracker: React.FC = () => {
 
             <button
               onClick={() => {
-                if (window.confirm("Are you sure you want to clear all habits? This action cannot be undone.")) {
-                  clearAllHabits();
-                }
-              }}
-              className="flex items-center space-x-1 px-3 py-1.5 rounded-xl border border-red-200 hover:bg-red-50 text-xs font-semibold text-red-600 transition-all"
-              title="Clear all habits for a blank slate"
-            >
-              <span>Clear All</span>
-            </button>
-            
-            <button
-              onClick={() => {
                 setIsTrashOpen(!isTrashOpen);
                 setIsAddingHabit(false);
               }}
               className={`flex items-center space-x-1 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all ${
                 isTrashOpen ? 'bg-[#ff7a00] text-white border-[#ff7a00]' : 'border-[#f0e8dc] hover:bg-[#faf7f2] text-[#78716c]'
               }`}
-              title="View deleted habits"
+              title="View deleted habits stored in trash"
             >
               <Trash2 className="w-3.5 h-3.5" />
               <span>Trash ({archivedHabits.length})</span>
@@ -163,24 +163,32 @@ export const HabitTracker: React.FC = () => {
         {/* Recycle Bin Inline View */}
         {isTrashOpen && (
           <div className="p-4 bg-[#faf7f2] border-b border-[#f0e8dc] animate-fade-in-up">
-            <h4 className="text-xs font-bold text-[#1c1917] mb-3">Recycle Bin</h4>
+            <h4 className="text-xs font-bold text-[#1c1917] mb-3">Recycle Bin (Habits Saved in Trash)</h4>
             {archivedHabits.length === 0 ? (
-              <p className="text-xs text-[#a8a29e]">No deleted habits.</p>
+              <p className="text-xs text-[#a8a29e]">Trash Bin is empty. No archived habits.</p>
             ) : (
               <div className="space-y-2">
-                {archivedHabits.map((h) => (
-                  <div key={h.id} className="flex items-center justify-between p-2 bg-white rounded-lg border border-[#f0e8dc] shadow-sm">
-                    <div className="flex items-center space-x-3">
-                      <span className="text-lg">{h.icon}</span>
-                      <span className="text-xs font-semibold text-[#44403c]">{h.name}</span>
+                {archivedHabits.map((habit) => (
+                  <div
+                    key={habit.id}
+                    className="flex items-center justify-between p-2 rounded-xl bg-white border border-[#f0e8dc] text-xs"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <span>{habit.icon}</span>
+                      <span className="font-semibold text-[#1c1917]">{habit.name}</span>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <button onClick={() => restoreHabit(h.id)} className="flex items-center space-x-1 px-2 py-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 rounded hover:bg-emerald-100 transition-colors">
-                        <RotateCcw className="w-3 h-3" />
-                        <span>Restore</span>
+                      <button
+                        onClick={() => restoreHabit(workspaceId, habit.id)}
+                        className="px-2.5 py-1 text-[11px] font-bold text-[#ff7a00] hover:bg-[#fff3e5] rounded-lg transition-colors"
+                      >
+                        Restore
                       </button>
-                      <button onClick={() => permanentlyDeleteHabit(h.id)} className="p-1 text-red-500 bg-red-50 rounded hover:bg-red-100 transition-colors" title="Delete permanently">
-                        <Trash2 className="w-3.5 h-3.5" />
+                      <button
+                        onClick={() => permanentlyDeleteHabit(workspaceId, habit.id)}
+                        className="px-2.5 py-1 text-[11px] font-bold text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                      >
+                        Delete Permanently
                       </button>
                     </div>
                   </div>
@@ -190,53 +198,57 @@ export const HabitTracker: React.FC = () => {
           </div>
         )}
 
-        {/* Add Habit Inline Form */}
+        {/* Add Habit Form */}
         {isAddingHabit && (
-          <form onSubmit={handleAddHabit} className="p-4 bg-[#faf7f2] border-b border-[#f0e8dc] flex flex-col sm:flex-row items-stretch sm:items-center gap-3 animate-fade-in-up">
-            <div className="flex items-center space-x-2">
+          <form
+            onSubmit={handleAddHabit}
+            className="p-4 bg-[#fffaf3] border-b border-[#ffe9d1] flex flex-col sm:flex-row items-stretch sm:items-center gap-3 animate-fade-in-up"
+          >
+            <div className="flex items-center space-x-2 flex-1">
               <input
                 type="text"
-                placeholder="Icon (🏋️)..."
                 value={newHabitIcon}
                 onChange={(e) => setNewHabitIcon(e.target.value)}
-                className="w-16 px-2 py-1.5 bg-white border border-[#f0e8dc] rounded-xl text-center text-sm outline-none text-[#ff7a00] font-bold"
+                className="w-10 text-center text-lg p-1.5 rounded-xl border border-[#ffd8b3] bg-white outline-none"
+                placeholder="🎯"
+                maxLength={2}
               />
               <input
                 type="text"
-                placeholder="Habit title (e.g., Read 30 mins)..."
+                placeholder="New habit name (e.g., Read 20 Pages, Drink Water)..."
                 value={newHabitName}
                 onChange={(e) => setNewHabitName(e.target.value)}
-                className="flex-1 min-w-0 px-3 py-1.5 bg-white border border-[#f0e8dc] rounded-xl text-xs outline-none focus:border-[#ff7a00] text-[#1c1917] font-medium"
+                className="flex-1 px-3 py-2 rounded-xl border border-[#ffd8b3] bg-white text-xs outline-none focus:border-[#ff7a00] transition-colors"
                 autoFocus
               />
             </div>
-            <div className="flex items-center space-x-2">
-              <button
-                type="submit"
-                className="px-3.5 py-1.5 bg-[#ff7a00] text-white text-xs font-black rounded-xl whitespace-nowrap hover:bg-[#e66e00] transition-colors"
-              >
-                Save Habit
-              </button>
+            <div className="flex items-center space-x-2 justify-end">
               <button
                 type="button"
                 onClick={() => setIsAddingHabit(false)}
-                className="px-2.5 py-1.5 text-xs text-[#78716c] hover:text-[#1c1917] transition-colors"
+                className="px-3 py-2 text-xs font-semibold text-[#78716c] hover:bg-white rounded-xl transition-colors"
               >
                 Cancel
+              </button>
+              <button
+                type="submit"
+                className="px-4 py-2 bg-gradient-to-r from-[#ff7a00] to-[#ff9500] text-white text-xs font-bold rounded-xl shadow-xs hover:scale-105 transition-all"
+              >
+                Save Habit
               </button>
             </div>
           </form>
         )}
 
-        {/* Days Header (Desktop Only) */}
-        <div className="hidden sm:grid grid-cols-12 gap-2 p-3 bg-[#faf7f2] text-xs font-black text-[#ff7a00] border-b border-[#f0e8dc]">
-          <div className="col-span-4 pl-2 text-[#ff7a00]">Habit Target</div>
-          <div className="col-span-7 grid grid-cols-7 text-center text-[#78716c]">
-            {DAYS_OF_WEEK.map((day) => (
-              <span key={day}>{day}</span>
+        {/* Table Header Row */}
+        <div className="hidden sm:grid sm:grid-cols-12 gap-2 p-3 bg-[#fbf8f3] border-b border-[#f2e8da] text-xs font-black text-[#ff7a00] uppercase tracking-wider">
+          <div className="col-span-4 pl-2">Habit Target</div>
+          <div className="col-span-7 grid grid-cols-7 text-center">
+            {DAYS_OF_WEEK.map((d) => (
+              <span key={d}>{d}</span>
             ))}
           </div>
-          <div className="col-span-1 text-center text-[#78716c]">Streak</div>
+          <div className="col-span-1 text-center">Streak</div>
         </div>
 
         {/* Habit Rows */}
@@ -245,9 +257,11 @@ export const HabitTracker: React.FC = () => {
             <div className="p-8 text-center animate-fade-in-up">
               <div className="text-4xl mb-3">📭</div>
               <h3 className="text-sm font-black text-[#1c1917] mb-1">No Habits Found</h3>
-              <p className="text-xs text-[#a8a29e] mb-4">You have cleared all your habits. Add a new one to get started!</p>
+              <p className="text-xs text-[#a8a29e] mb-4">
+                You have cleared all your habits to the Trash Bin. Add a new one or restore habits anytime!
+              </p>
               <button
-                onClick={resetDefaultHabits}
+                onClick={() => resetDefaultHabits(workspaceId)}
                 className="px-4 py-2 bg-[#fff3e5] text-[#ff7a00] font-bold text-xs rounded-xl hover:bg-[#ffe0c2] transition-colors inline-flex items-center space-x-2"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
@@ -256,7 +270,8 @@ export const HabitTracker: React.FC = () => {
             </div>
           )}
           {habits.map((habit) => {
-            const completedCount = habit.completedDays.filter(Boolean).length;
+            const completedDaysList = habit.completedDays || [false, false, false, false, false, false, false];
+            const completedCount = completedDaysList.filter(Boolean).length;
             const progressPct = Math.round((completedCount / 7) * 100);
 
             return (
@@ -288,9 +303,9 @@ export const HabitTracker: React.FC = () => {
                       <span>{habit.streak}</span>
                     </span>
                     <button
-                      onClick={() => deleteHabit(habit.id)}
+                      onClick={() => deleteHabit(workspaceId, habit.id)}
                       className="p-1 text-[#a8a29e] hover:text-red-500 transition-opacity"
-                      title="Delete habit"
+                      title="Move to trash"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -299,13 +314,13 @@ export const HabitTracker: React.FC = () => {
 
                 {/* Days Checkboxes */}
                 <div className="w-full sm:col-span-7 grid grid-cols-7 text-center items-center mt-2 sm:mt-0">
-                  {habit.completedDays.map((isDone, idx) => (
+                  {completedDaysList.map((isDone, idx) => (
                     <div key={idx} className="flex flex-col items-center justify-center space-y-1.5">
                       <span className="sm:hidden text-[10px] font-bold text-[#a8a29e] uppercase">
                         {DAYS_OF_WEEK[idx].charAt(0)}
                       </span>
                       <button
-                        onClick={() => toggleDay(habit.id, idx)}
+                        onClick={() => toggleDay(workspaceId, habit.id, idx)}
                         className={`w-9 h-9 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all duration-200 ${
                           isDone
                             ? `bg-gradient-to-br from-[#ff7a00] to-[#ff9500] text-white shadow-sm scale-105 orange-pulse`
@@ -325,9 +340,9 @@ export const HabitTracker: React.FC = () => {
                     <span>{habit.streak}</span>
                   </span>
                   <button
-                    onClick={() => deleteHabit(habit.id)}
+                    onClick={() => deleteHabit(workspaceId, habit.id)}
                     className="p-1 opacity-0 group-hover:opacity-100 text-[#a8a29e] hover:text-red-500 transition-opacity"
-                    title="Delete habit"
+                    title="Move to trash"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
@@ -335,6 +350,33 @@ export const HabitTracker: React.FC = () => {
               </div>
             );
           })}
+        </div>
+
+        {/* Table Footer with Corner Clear All Action */}
+        <div className="p-3 bg-[#faf7f2] border-t border-[#f2e8da] flex items-center justify-between">
+          <div className="text-[11px] text-[#a8a29e] font-medium hidden sm:flex items-center space-x-1.5">
+            <Sparkles className="w-3.5 h-3.5 text-[#ff7a00]" />
+            <span>Habits and checkmarks automatically sync to the database.</span>
+          </div>
+
+          <button
+            onClick={() => {
+              if (habits.length === 0) return;
+              if (window.confirm("Move all habits to the Trash Bin? You can restore them anytime.")) {
+                clearAllHabits(workspaceId);
+              }
+            }}
+            disabled={habits.length === 0}
+            className={`ml-auto flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all ${
+              habits.length === 0
+                ? 'opacity-40 cursor-not-allowed border-gray-200 text-gray-400'
+                : 'border-red-200 hover:bg-red-50 text-red-600 hover:scale-105 shadow-2xs'
+            }`}
+            title="Move all active habits to Trash Bin (saved in DB)"
+          >
+            <Trash2 className="w-3.5 h-3.5 text-red-500" />
+            <span>Clear All to Trash</span>
+          </button>
         </div>
       </div>
     </div>

@@ -4,6 +4,9 @@ from app.models.workspace import Workspace, WorkspaceMember, WorkspaceRole
 from app.models.page import Page
 from app.models.block import PageBlock, BlockType
 from app.models.database import Database, DatabaseProperty, DatabaseRow, DatabaseCell, PropertyType
+from app.models.habit import Habit
+from app.models.expense import Expense
+from app.models.task import Task
 
 __all__ = [
     "Base",
@@ -19,4 +22,7 @@ __all__ = [
     "DatabaseRow",
     "DatabaseCell",
     "PropertyType",
+    "Habit",
+    "Expense",
+    "Task",
 ]

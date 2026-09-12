@@ -8,8 +8,10 @@ from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.core.config import settings
-from app.routers import health, auth, workspace, page, ai, expense
-
+from app.routers import health, auth, workspace, page, ai, expense, habit
+from app.db.base import Base
+from app.db.session import engine
+import app.models  # Ensure all models are registered with Base
 
 import os
 
@@ -38,6 +40,11 @@ async def keep_alive():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Ensure all tables (including habits, expenses) exist in database
+    try:
+        Base.metadata.create_all(bind=engine)
+    except Exception as e:
+        print(f"Error initializing DB tables: {e}")
     # Run the keep_alive task in the background when the app starts
     task = asyncio.create_task(keep_alive())
     yield
@@ -100,6 +107,7 @@ app.include_router(workspace.router, prefix=settings.API_V1_STR)
 app.include_router(page.router, prefix=settings.API_V1_STR)
 app.include_router(ai.router, prefix=settings.API_V1_STR)
 app.include_router(expense.router, prefix=settings.API_V1_STR)
+app.include_router(habit.router, prefix=settings.API_V1_STR)
 
 
 @app.get("/")
