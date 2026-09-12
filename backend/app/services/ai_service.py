@@ -1,13 +1,24 @@
 import os
-import google.generativeai as genai
+
+try:
+    import google.generativeai as genai
+    HAS_GENAI = True
+except ImportError:
+    genai = None
+    HAS_GENAI = False
+
 from app.core.config import settings
 
 class AIService:
     def __init__(self):
         api_key = os.getenv("GEMINI_API_KEY") or getattr(settings, "GEMINI_API_KEY", "")
-        if api_key:
-            genai.configure(api_key=api_key)
-            self.model = genai.GenerativeModel("gemini-1.5-flash")
+        if api_key and HAS_GENAI and genai:
+            try:
+                genai.configure(api_key=api_key)
+                self.model = genai.GenerativeModel("gemini-1.5-flash")
+            except Exception as e:
+                print(f"Failed to initialize Gemini AI: {e}")
+                self.model = None
         else:
             self.model = None
 
