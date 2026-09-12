@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Page, usePageStore } from '../../store/usePageStore';
 import { TypewriterText } from '../common/TypewriterText';
 import {
@@ -22,11 +22,35 @@ const COVER_GRADIENTS = [
 
 export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
   const { updatePage } = usePageStore();
+  const [localTitle, setLocalTitle] = useState(page.title || '');
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [showIconPicker, setShowIconPicker] = useState(false);
   const [showCoverPicker, setShowCoverPicker] = useState(false);
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updatePage(page.id, { title: e.target.value });
+  // Synchronize local title when page changes
+  useEffect(() => {
+    setLocalTitle(page.title || '');
+  }, [page.id, page.title]);
+
+  // Dynamically auto-resize textarea height to fit content without clipping
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${Math.max(48, textareaRef.current.scrollHeight)}px`;
+    }
+  }, [localTitle]);
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const val = e.target.value;
+    setLocalTitle(val);
+    updatePage(page.id, { title: val });
+  };
+
+  const handleClearTitle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLocalTitle('');
+    updatePage(page.id, { title: '' });
+    textareaRef.current?.focus();
   };
 
   const handleSelectIcon = (emoji: string) => {
@@ -58,7 +82,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
           </span>
           <TypewriterText
             phrases={[
-              `${page.title || 'Akash Workspace'} • Live Activity & Task Execution`,
+              "Daily Habit Tracker & Streaks • Live Activity & Task Execution",
               "Build unbreakable consistency • Small daily habits create massive success",
               "Never break the streak • Track every task and habit effortlessly",
               "Execute high-priority items • Akash Shiv's Connected Workspace"
@@ -183,19 +207,28 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
           </div>
         )}
 
-        {/* Page Title Input with easy Backspace & Quick-Clear */}
-        <div className="flex-1 relative flex items-center min-w-[240px] group/title">
-          <input
-            type="text"
-            value={page.title || ''}
+        {/* Page Title Auto-Resizing Textarea with effortless Backspace & Quick-Clear */}
+        <div
+          onClick={() => textareaRef.current?.focus()}
+          className="flex-1 relative flex items-start min-w-[240px] group/title cursor-text"
+        >
+          <textarea
+            ref={textareaRef}
+            rows={1}
+            value={localTitle}
             onChange={handleTitleChange}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+              }
+            }}
             placeholder="Untitled..."
-            className="w-full text-3xl sm:text-4xl lg:text-5xl font-extrabold bg-transparent outline-none text-[#1c1917] placeholder-[#a8a29e] tracking-tight font-['Sora'] select-text cursor-text pr-8 hover:bg-[#faf7f2]/50 rounded-xl transition-all"
+            className="w-full text-3xl sm:text-4xl lg:text-5xl font-extrabold bg-transparent outline-none text-[#1c1917] placeholder-[#a8a29e] tracking-tight font-['Sora'] select-text cursor-text pr-10 resize-none overflow-hidden hover:bg-[#faf7f2]/50 rounded-xl transition-all leading-tight py-1"
           />
-          {page.title && (
+          {localTitle && (
             <button
-              onClick={() => updatePage(page.id, { title: '' })}
-              className="p-1.5 rounded-lg text-[#a8a29e] hover:text-red-500 hover:bg-[#fff3e5] transition-all opacity-0 group-hover/title:opacity-100 absolute right-1"
+              onClick={handleClearTitle}
+              className="p-1.5 rounded-lg text-[#a8a29e] hover:text-red-500 hover:bg-[#fff3e5] transition-all opacity-0 group-hover/title:opacity-100 absolute right-1 top-2"
               title="Clear title (or remove via Backspace)"
             >
               <X className="w-4 h-4" />
