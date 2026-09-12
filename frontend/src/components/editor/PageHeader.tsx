@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { Page, usePageStore } from '../../store/usePageStore';
 import { TypewriterText } from '../common/TypewriterText';
 import {
@@ -22,36 +22,8 @@ const COVER_GRADIENTS = [
 
 export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
   const { updatePage } = usePageStore();
-  const [localTitle, setLocalTitle] = useState(page.title || '');
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [showIconPicker, setShowIconPicker] = useState(false);
   const [showCoverPicker, setShowCoverPicker] = useState(false);
-
-  // Synchronize local title when page changes
-  useEffect(() => {
-    setLocalTitle(page.title || '');
-  }, [page.id, page.title]);
-
-  // Dynamically auto-resize textarea height to fit content without clipping
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = `${Math.max(48, textareaRef.current.scrollHeight)}px`;
-    }
-  }, [localTitle]);
-
-  const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const val = e.target.value;
-    setLocalTitle(val);
-    updatePage(page.id, { title: val });
-  };
-
-  const handleClearTitle = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setLocalTitle('');
-    updatePage(page.id, { title: '' });
-    textareaRef.current?.focus();
-  };
 
   const handleSelectIcon = (emoji: string) => {
     updatePage(page.id, { icon: emoji });
@@ -207,33 +179,11 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
           </div>
         )}
 
-        {/* Page Title Auto-Resizing Textarea with effortless Backspace & Quick-Clear */}
-        <div
-          onClick={() => textareaRef.current?.focus()}
-          className="flex-1 relative flex items-start min-w-[240px] group/title cursor-text"
-        >
-          <textarea
-            ref={textareaRef}
-            rows={1}
-            value={localTitle}
-            onChange={handleTitleChange}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-              }
-            }}
-            placeholder="Untitled..."
-            className="w-full text-3xl sm:text-4xl lg:text-5xl font-extrabold bg-transparent outline-none text-[#1c1917] placeholder-[#a8a29e] tracking-tight font-['Sora'] select-text cursor-text pr-10 resize-none overflow-hidden hover:bg-[#faf7f2]/50 rounded-xl transition-all leading-tight py-1"
-          />
-          {localTitle && (
-            <button
-              onClick={handleClearTitle}
-              className="p-1.5 rounded-lg text-[#a8a29e] hover:text-red-500 hover:bg-[#fff3e5] transition-all opacity-0 group-hover/title:opacity-100 absolute right-1 top-2"
-              title="Clear title (or remove via Backspace)"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          )}
+        {/* Static Page Title Heading */}
+        <div className="flex-1 relative flex items-start min-w-[240px]">
+          <h1 className="w-full text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#1c1917] tracking-tight font-['Sora'] leading-tight py-1 select-text">
+            {page.title || 'Untitled'}
+          </h1>
         </div>
       </div>
     </div>
