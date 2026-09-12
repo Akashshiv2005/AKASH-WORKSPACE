@@ -34,6 +34,13 @@ class Settings(BaseSettings):
         "http://127.0.0.1:5173",
     ]
 
+    # SMTP / Gmail Notification Settings
+    SMTP_HOST: str = "smtp.gmail.com"
+    SMTP_PORT: int = 587
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: str = ""
+    NOTIFICATION_EMAIL: str = "akashshiv2005@gmail.com"
+
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod
     def assemble_cors_origins(cls, v: Union[str, List[str]]) -> List[str]:

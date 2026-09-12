@@ -8,10 +8,12 @@ import {
   Layout,
   RotateCcw,
   Sparkles,
-  MoreHorizontal
+  MoreHorizontal,
+  Mail
 } from 'lucide-react';
 import { useTaskStore } from '../../store/useTaskStore';
 import { useWorkspaceStore } from '../../store/useWorkspaceStore';
+import { useNotificationStore } from '../../store/useNotificationStore';
 
 export const TodoPlanner: React.FC = () => {
   const { activeWorkspace } = useWorkspaceStore();
@@ -142,6 +144,17 @@ export const TodoPlanner: React.FC = () => {
                   >
                     <RotateCcw className="w-3.5 h-3.5 text-[#ff7a00]" />
                     <span>Reset to Default Tasks</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      useNotificationStore.getState().setModalOpen(true);
+                    }}
+                    className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold text-[#1c1917] hover:bg-[#fffaf3] hover:text-[#ff7a00] transition-colors text-left"
+                  >
+                    <Mail className="w-3.5 h-3.5 text-[#ff7a00]" />
+                    <span>Email Daily Reminders</span>
                   </button>
 
                   <div className="h-[1px] bg-[#f2e8da] my-1" />

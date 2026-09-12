@@ -1,0 +1,24 @@
+name: Daily Task & Habit Email Digest
+on:
+  schedule:
+    # Run daily at 14:30 UTC (8:00 PM IST)
+    - cron: '30 14 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions
+
+jobs:
+  send-digest:
+    name: Dispatch Daily Email Digest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Daily Digest API Call
+        run: |
+          URL="${{ secrets.RENDER_BACKEND_URL }}"
+          if [ -z "$URL" ]; then
+            URL="https://akash-workspace.onrender.com"
+          fi
+          echo "Dispatching daily email digest via ${URL}/api/notifications/send-digest ..."
+          RESPONSE=$(curl -s -X POST "${URL}/api/notifications/send-digest" \
+            -H "Content-Type: application/json" \
+            -d '{"force": false}' \
+            --max-time 60 || echo '{"success":false,"message":"Timeout or network error"}')
+          echo "Response: $RESPONSE"

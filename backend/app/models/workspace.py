@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     from app.models.habit import Habit
     from app.models.expense import Expense
     from app.models.task import Task
+    from app.models.notification_setting import NotificationSetting
 
 
 class WorkspaceRole(str, enum.Enum):
@@ -76,6 +77,12 @@ class Workspace(Base, TimestampMixin):
     tasks: Mapped[List["Task"]] = relationship(
         "Task",
         back_populates="workspace",
+        cascade="all, delete-orphan",
+    )
+    notification_settings: Mapped["NotificationSetting"] = relationship(
+        "NotificationSetting",
+        back_populates="workspace",
+        uselist=False,
         cascade="all, delete-orphan",
     )
 

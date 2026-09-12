@@ -7,6 +7,7 @@ from app.models.database import Database, DatabaseProperty, DatabaseRow, Databas
 from app.models.habit import Habit
 from app.models.expense import Expense
 from app.models.task import Task
+from app.models.notification_setting import NotificationSetting
 
 __all__ = [
     "Base",
@@ -25,4 +26,5 @@ __all__ = [
     "Habit",
     "Expense",
     "Task",
+    "NotificationSetting",
 ]

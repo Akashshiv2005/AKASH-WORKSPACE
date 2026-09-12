@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { usePageStore } from '../../store/usePageStore';
 import { useWorkspaceStore } from '../../store/useWorkspaceStore';
 import { useAuthStore } from '../../store/useAuthStore';
+import { useNotificationStore } from '../../store/useNotificationStore';
 import { GeminiAssistantModal } from '../ai/GeminiAssistantModal';
+import { EmailNotificationModal } from '../notifications/EmailNotificationModal';
 import {
   PanelLeft,
   PanelRight,
@@ -41,6 +43,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
   const { pages, activePageId, toggleFavorite, archivePage, duplicatePage } = usePageStore();
   const { activeWorkspace } = useWorkspaceStore();
   const { user, isAuthenticated, setAuthModalOpen } = useAuthStore();
+  const { setModalOpen: setNotificationModalOpen, settings: notificationSettings } = useNotificationStore();
   
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -161,10 +164,14 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
 
           {/* Notifications Icon */}
           <button
-            className="hidden sm:flex p-1.5 rounded-lg hover:bg-[#f2ebe1] text-[#78716c] transition-colors"
-            title="Notifications"
+            onClick={() => setNotificationModalOpen(true)}
+            className="relative hidden sm:flex p-1.5 rounded-lg hover:bg-[#f2ebe1] text-[#78716c] hover:text-[#ff7a00] transition-colors"
+            title="Gmail Daily Digest & Task Reminders"
           >
             <Bell className="w-4 h-4" />
+            {notificationSettings?.is_enabled && (
+              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#ff7a00] ring-2 ring-white animate-pulse" />
+            )}
           </button>
 
           {/* Share Button */}
@@ -244,6 +251,9 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         isOpen={isAiModalOpen}
         onClose={() => setIsAiModalOpen(false)}
       />
+
+      {/* Gmail Email Notification Modal */}
+      <EmailNotificationModal />
     </>
   );
 };
