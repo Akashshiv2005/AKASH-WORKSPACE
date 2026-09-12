@@ -165,10 +165,10 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           {/* Notifications Icon */}
           <button
             onClick={() => setNotificationModalOpen(true)}
-            className="relative hidden sm:flex p-1.5 rounded-lg hover:bg-[#f2ebe1] text-[#78716c] hover:text-[#ff7a00] transition-colors"
+            className="group relative hidden sm:flex p-1.5 rounded-lg hover:bg-[#f2ebe1] text-[#78716c] hover:text-[#ff7a00] hover:scale-110 active:scale-90 transition-all duration-200"
             title="Gmail Daily Digest & Task Reminders"
           >
-            <Bell className="w-4 h-4" />
+            <Bell className="w-4 h-4 group-hover:rotate-12 transition-transform" />
             {notificationSettings?.is_enabled && (
               <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#ff7a00] ring-2 ring-white animate-pulse" />
             )}

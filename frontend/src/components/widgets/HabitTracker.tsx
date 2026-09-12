@@ -70,8 +70,8 @@ export const HabitTracker: React.FC = () => {
       {/* Header Summary Cards (Fully Dynamic) */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* Weekly Completion Rate */}
-        <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] flex items-center space-x-4 shadow-xs hover:scale-[1.02] transition-all stark-hud-card">
-          <div className="p-3 rounded-xl bg-[#fff3e5] text-[#ff7a00] shadow-xs">
+        <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] flex items-center space-x-4 shadow-xs hover-lift transition-all stark-hud-card">
+          <div className="p-3 rounded-xl bg-[#fff3e5] text-[#ff7a00] shadow-xs hover:scale-110 transition-transform">
             <TrendingUp className="w-5 h-5 text-[#ff7a00]" />
           </div>
           <div>
@@ -83,9 +83,9 @@ export const HabitTracker: React.FC = () => {
         </div>
 
         {/* Current Best Streak */}
-        <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] flex items-center space-x-4 shadow-xs hover:scale-[1.02] transition-all stark-hud-card">
-          <div className="p-3 rounded-xl bg-[#fff3e5] text-[#ff7a00] shadow-xs">
-            <Flame className="w-5 h-5 fill-[#ff7a00] text-[#ff7a00]" />
+        <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] flex items-center space-x-4 shadow-xs hover-lift transition-all stark-hud-card">
+          <div className="p-3 rounded-xl bg-[#fff3e5] text-[#ff7a00] shadow-xs hover:scale-110 transition-transform">
+            <Flame className="w-5 h-5 fill-[#ff7a00] text-[#ff7a00] animate-bounce-subtle" />
           </div>
           <div>
             <div className="text-2xl font-black text-[#ff7a00] shimmer-text-orange">
@@ -96,8 +96,8 @@ export const HabitTracker: React.FC = () => {
         </div>
 
         {/* Total Completed */}
-        <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] flex items-center space-x-4 shadow-xs hover:scale-[1.02] transition-all stark-hud-card">
-          <div className="p-3 rounded-xl bg-[#fff3e5] text-[#ff7a00] shadow-xs">
+        <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] flex items-center space-x-4 shadow-xs hover-lift transition-all stark-hud-card">
+          <div className="p-3 rounded-xl bg-[#fff3e5] text-[#ff7a00] shadow-xs hover:scale-110 transition-transform">
             <Trophy className="w-5 h-5 text-[#ff7a00]" />
           </div>
           <div>
@@ -392,10 +392,10 @@ export const HabitTracker: React.FC = () => {
                       </span>
                       <button
                         onClick={() => toggleDay(workspaceId, habit.id, idx)}
-                        className={`w-9 h-9 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all duration-200 ${
+                        className={`w-9 h-9 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all duration-300 transform active:scale-75 hover:scale-110 active-press ${
                           isDone
-                            ? `bg-gradient-to-br from-[#ff7a00] to-[#ff9500] text-white shadow-sm scale-105 orange-pulse`
-                            : 'bg-white hover:bg-[#faf7f2] text-transparent border-2 border-[#e7dfd4]'
+                            ? `bg-gradient-to-br from-[#ff7a00] to-[#ff9500] text-white shadow-md scale-105 animate-check-pop shadow-orange-500/30`
+                            : 'bg-white hover:bg-[#faf7f2] text-transparent border-2 border-[#e7dfd4] hover:border-[#ffaa55]'
                         }`}
                       >
                         <Check className="w-4 h-4 stroke-[3]" />

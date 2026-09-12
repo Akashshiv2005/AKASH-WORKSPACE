@@ -90,8 +90,8 @@ export const EmailNotificationModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fade-in">
-      <div className="bg-white dark:bg-[#1f1e1d] rounded-2xl shadow-2xl border border-[#e7dfd5] dark:border-[#383531] w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
+      <div className="bg-white dark:bg-[#1f1e1d] rounded-2xl shadow-2xl border border-[#e7dfd5] dark:border-[#383531] w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh] animate-scale-in">
         {/* Modal Header */}
         <div className="p-5 border-b border-[#f0e8dc] dark:border-[#2e2b27] bg-[#fdfaf6] dark:bg-[#262422] flex items-center justify-between">
           <div className="flex items-center space-x-3">

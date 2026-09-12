@@ -137,7 +137,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         <div
           onClick={() => handlePageSelect(page.id)}
           style={{ paddingLeft: `${Math.max(12, level * 16 + 12)}px` }}
-          className={`group flex items-center justify-between py-1.5 pr-2 rounded-lg cursor-pointer text-xs transition-all ${
+          className={`group flex items-center justify-between py-1.5 pr-2 rounded-lg cursor-pointer text-xs transition-all duration-200 hover:translate-x-1 ${
             isActive
               ? 'active-page-pill text-[#ff7a00] font-bold shadow-xs'
               : 'hover:bg-[#f2ebe1] text-[#44403c]'
@@ -218,7 +218,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         className="fixed inset-0 bg-black/20 z-40 md:hidden" 
         onClick={toggleSidebar}
       />
-      <aside className="fixed left-0 md:relative z-50 w-60 h-screen bg-[#faf7f2] border-r border-[#f0e8dc] flex flex-col shrink-0 select-none transition-colors">
+      <aside className="fixed left-0 md:relative z-50 w-60 h-screen bg-[#faf7f2] border-r border-[#f0e8dc] flex flex-col shrink-0 select-none transition-all animate-slide-in-left">
       {/* Workspace Switcher Header (Clean ChatGPT Layout Alignment) */}
       <div className="p-3 border-b border-[#f0e8dc] relative">
         <div

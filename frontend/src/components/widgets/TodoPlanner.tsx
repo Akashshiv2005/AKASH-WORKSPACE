@@ -295,7 +295,7 @@ export const TodoPlanner: React.FC = () => {
               todoTasks.map((task) => (
                 <div
                   key={task.id}
-                  className="p-3.5 rounded-xl bg-[#faf7f2] border border-[#f0e8dc] shadow-xs space-y-2.5 group hover:border-[#ff7a00] transition-colors"
+                  className="p-3.5 rounded-xl bg-[#faf7f2] hover:bg-white border border-[#f0e8dc] hover:border-[#ff7a00] shadow-xs hover-lift transition-all duration-300 space-y-2.5 group"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex items-start space-x-2">
@@ -356,7 +356,7 @@ export const TodoPlanner: React.FC = () => {
               inProgressTasks.map((task) => (
                 <div
                   key={task.id}
-                  className="p-3.5 rounded-xl bg-[#fffaf3] border border-[#ffe0c2] shadow-xs space-y-2.5 group"
+                  className="p-3.5 rounded-xl bg-[#fffaf3] hover:bg-white border border-[#ffe0c2] hover:border-[#ff7a00] shadow-xs hover-lift transition-all duration-300 space-y-2.5 group"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex items-start space-x-2">
@@ -417,7 +417,7 @@ export const TodoPlanner: React.FC = () => {
               completedTasks.map((task) => (
                 <div
                   key={task.id}
-                  className="p-3.5 rounded-xl bg-[#faf7f2] border border-[#f0e8dc] shadow-xs space-y-2.5 opacity-80 group hover:opacity-100 transition-opacity"
+                  className="p-3.5 rounded-xl bg-[#faf7f2] hover:bg-white border border-[#f0e8dc] hover:border-emerald-400 shadow-xs space-y-2.5 opacity-80 group hover:opacity-100 hover-lift transition-all duration-300"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex items-start space-x-2">

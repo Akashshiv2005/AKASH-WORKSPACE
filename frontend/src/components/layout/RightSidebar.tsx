@@ -93,7 +93,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         className="fixed inset-0 bg-black/20 z-40 md:hidden" 
         onClick={toggleRightSidebar}
       />
-      <aside className="fixed right-0 md:relative z-50 w-64 h-screen bg-[#faf7f2] border-l border-[#f0e8dc] flex flex-col shrink-0 select-none transition-all animate-fade-in-up font-['Sora']">
+      <aside className="fixed right-0 md:relative z-50 w-64 h-screen bg-[#faf7f2] border-l border-[#f0e8dc] flex flex-col shrink-0 select-none transition-all animate-slide-in-right font-['Sora']">
       {/* Header Bar */}
       <div className="p-3 border-b border-[#f0e8dc] flex items-center justify-between">
         <div className="flex items-center space-x-2">
