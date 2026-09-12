@@ -50,10 +50,10 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
 
   return (
     <div className="relative group max-w-4xl mx-auto pt-6 px-4 sm:px-16">
-      {/* Letter-by-Letter Flow & Backspace Removal Typewriter Banner */}
-      <div className="w-full overflow-hidden py-2 px-3.5 rounded-xl bg-[#fffaf3] border border-[#ffe9d1] text-[#ff7a00] text-xs font-bold mb-4 shadow-xs flex items-center justify-between">
+      {/* Letter-by-Letter Flow & Glowing Ticker Banner */}
+      <div className="w-full overflow-hidden py-2 px-3.5 rounded-xl bg-gradient-to-r from-[#fffaf3] via-[#fff5ea] to-[#fffaf3] border border-[#ffd8b3] text-[#ff7a00] text-xs font-bold mb-4 shadow-sm hover:shadow-orange-500/20 transition-all duration-300 flex items-center justify-between glow-box-orange">
         <div className="flex items-center space-x-2.5 min-w-0 flex-1">
-          <span className="px-2 py-0.5 rounded-md bg-[#ff7a00] text-white text-[10px] font-black uppercase tracking-wider shrink-0 shadow-xs">
+          <span className="px-2 py-0.5 rounded-md bg-gradient-to-r from-[#ff7a00] to-[#ff9500] text-white text-[10px] font-black uppercase tracking-wider shrink-0 shadow-xs orange-pulse">
             LIVE FOCUS
           </span>
           <TypewriterText
@@ -63,11 +63,11 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
               "Never break the streak • Track every task and habit effortlessly",
               `Execute high-priority items • ${fullName}'s Connected Workspace`
             ]}
-            typingSpeed={50}
-            deletingSpeed={25}
-            pauseDuration={2400}
-            className="truncate font-semibold text-[#1c1917]"
-            cursorClassName="text-[#ff7a00]"
+            typingSpeed={45}
+            deletingSpeed={22}
+            pauseDuration={2600}
+            className="truncate font-bold text-[#1c1917]"
+            cursorClassName="typewriter-glowing-cursor"
           />
         </div>
       </div>

@@ -92,10 +92,10 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
 
           {/* Workspace Shield Logo */}
           <div className="hidden sm:flex items-center space-x-2 shrink-0">
-            <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[#ff7a00] to-[#ff9500] text-white flex items-center justify-center shadow-xs">
+            <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[#ff7a00] to-[#ff9500] text-white flex items-center justify-center shadow-xs orange-pulse">
               <Shield className="w-3.5 h-3.5 text-white" />
             </div>
-            <span className="text-xs font-bold text-gradient-dark hover-text-shimmer truncate max-w-[120px] md:max-w-none">
+            <span className="text-xs font-black text-gradient-flow text-glow hover-text-shimmer truncate max-w-[140px] md:max-w-none">
               {activeWorkspace?.name || "Akash Shiv's Workspace"}
             </span>
           </div>
