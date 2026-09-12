@@ -131,6 +131,22 @@ export const HabitTracker: React.FC = () => {
               <span>Add Habit</span>
             </button>
 
+            <button
+              onClick={() => {
+                const aiHabits = [
+                  { name: 'Cold Shower & Hydration 💦', icon: '💧' },
+                  { name: '15 Mins Executive Planning 🧠', icon: '⚡' },
+                  { name: 'Zero Sugar & Whole Foods 🥗', icon: '🍏' },
+                ];
+                aiHabits.forEach((h) => addHabit(workspaceId, h.name, h.icon));
+              }}
+              className="flex items-center space-x-1 px-3 py-1.5 rounded-xl bg-[#fff3e5] hover:bg-[#ffe9d1] border border-[#ffe0c2] text-[#ff7a00] text-xs font-bold transition-all hover:scale-105 shadow-xs"
+              title="Auto-generate high performance executive habits via JARVIS AI"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-[#ff7a00]" />
+              <span>AI Auto-Generate</span>
+            </button>
+
             {/* Three Dots (...) More Actions Dropdown */}
             <div className="relative">
               <button
