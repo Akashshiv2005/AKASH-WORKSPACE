@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { apiClient } from '../api/client';
-import { useWorkspaceStore } from './useWorkspaceStore';
 
 export interface ExpenseItem {
   id: string;

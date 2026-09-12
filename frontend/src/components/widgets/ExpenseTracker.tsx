@@ -15,9 +15,6 @@ export const ExpenseTracker: React.FC = () => {
     fetchExpenses,
     addExpense,
     deleteExpense,
-    getTotalExpenses,
-    getExpensesByMethod,
-    getExpensesByCategory,
     setSavingsGoal
   } = useExpenseStore();
 

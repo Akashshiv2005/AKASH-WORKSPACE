@@ -164,10 +164,23 @@ export const BlockEditor: React.FC<BlockEditorProps> = ({ page }) => {
       )}
 
       {/* Tiptap Editor Content Component */}
-      <EditorContent
-        editor={editor}
-        className="prose dark:prose-invert max-w-none focus:outline-none min-h-[250px] font-sans pt-2"
-      />
+      {page.widget_type ? (
+        <div className="mt-8 pt-6 border-t border-[#f2e8da] dark:border-[#333333]">
+          <div className="flex items-center space-x-2 text-xs font-bold text-[#a8a29e] mb-3 select-none">
+            <span>📝</span>
+            <span>Page Notes & Scratchpad</span>
+          </div>
+          <EditorContent
+            editor={editor}
+            className="prose dark:prose-invert max-w-none focus:outline-none min-h-[120px] font-sans"
+          />
+        </div>
+      ) : (
+        <EditorContent
+          editor={editor}
+          className="prose dark:prose-invert max-w-none focus:outline-none min-h-[250px] font-sans pt-2"
+        />
+      )}
 
       {/* Slash Commands Floating Popup */}
       {showSlashMenu && (

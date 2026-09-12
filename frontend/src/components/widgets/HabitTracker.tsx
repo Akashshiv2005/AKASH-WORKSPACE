@@ -113,6 +113,15 @@ export const HabitTracker: React.FC = () => {
             </button>
 
             <button
+              onClick={resetDefaultHabits}
+              className="flex items-center space-x-1 px-3 py-1.5 rounded-xl border border-[#ffe0c2] bg-[#fffaf3] hover:bg-[#fff3e5] text-xs font-bold text-[#ff7a00] transition-all"
+              title="Restore full demo habits list"
+            >
+              <RotateCcw className="w-3.5 h-3.5 text-[#ff7a00]" />
+              <span>Restore Habits</span>
+            </button>
+
+            <button
               onClick={() => {
                 if (window.confirm("Are you sure you want to clear all habits? This action cannot be undone.")) {
                   clearAllHabits();
