@@ -1,12 +1,13 @@
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
-from typing import Optional
+from typing import Optional, List
 
 from app.core.config import settings
 from app.db.session import get_db
 from app.models.notification_setting import NotificationSetting
 from app.models.workspace import Workspace
+from app.models.email_log import EmailLog
 from app.schemas.notification import (
     NotificationSettingBase,
     NotificationSettingUpdate,
@@ -14,6 +15,7 @@ from app.schemas.notification import (
     TestEmailRequest,
     SendDigestRequest,
     NotificationResultResponse,
+    EmailLogResponse,
 )
 from app.services.email_service import (
     send_smtp_email,
@@ -125,7 +127,11 @@ def update_notification_settings(
     )
 
 @router.post("/test-email")
-def test_email(payload: TestEmailRequest):
+def test_email(
+    payload: TestEmailRequest,
+    workspace_id: Optional[str] = Query(None),
+    db: Session = Depends(get_db),
+):
     """Test Gmail SMTP connection by sending a verification email."""
     subject = "✨ Akash Workspace - Gmail Integration Test"
     html_body = f"""
@@ -157,11 +163,63 @@ def test_email(payload: TestEmailRequest):
         custom_pass=payload.smtp_password,
     )
 
+    # Persist log entry
+    ws_id = workspace_id
+    if not ws_id:
+        ws = db.query(Workspace).first()
+        ws_id = ws.id if ws else None
+
+    try:
+        log_entry = EmailLog(
+            workspace_id=ws_id,
+            recipient_email=target_email,
+            subject=subject,
+            email_type="test_email",
+            status="sent" if success else "failed",
+            details="Test email connection check",
+            error_message=None if success else message,
+            sent_at=datetime.now().isoformat(),
+        )
+        db.add(log_entry)
+        db.commit()
+    except Exception:
+        db.rollback()
+
     return {
         "success": success,
         "message": message,
         "sent_to": target_email,
         "timestamp": datetime.now().isoformat(),
+    }
+
+@router.get("/logs", response_model=List[EmailLogResponse])
+def get_email_logs(
+    workspace_id: Optional[str] = Query(None),
+    limit: int = Query(50, ge=1, le=200),
+    db: Session = Depends(get_db),
+):
+    """Fetch history of recent emails sent or attempted."""
+    query = db.query(EmailLog)
+    if workspace_id:
+        query = query.filter(EmailLog.workspace_id == workspace_id)
+    logs = query.order_by(EmailLog.sent_at.desc()).limit(limit).all()
+    return logs
+
+@router.delete("/logs")
+def clear_email_logs(
+    workspace_id: Optional[str] = Query(None),
+    db: Session = Depends(get_db),
+):
+    """Clear email logs history."""
+    query = db.query(EmailLog)
+    if workspace_id:
+        query = query.filter(EmailLog.workspace_id == workspace_id)
+    deleted_count = query.delete(synchronize_session=False)
+    db.commit()
+    return {
+        "success": True,
+        "deleted_count": deleted_count,
+        "message": "Email delivery logs cleared successfully.",
     }
 
 @router.post("/send-digest", response_model=NotificationResultResponse)

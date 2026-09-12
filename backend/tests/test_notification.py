@@ -48,3 +48,31 @@ def test_notification_test_email_api(client):
     data = res.json()
     assert "success" in data
     assert "message" in data
+
+def test_notification_logs_api(client):
+    # Send a test email to generate a log entry
+    client.post("/api/notifications/test-email", json={
+        "recipient_email": "test@gmail.com"
+    })
+
+    # Test logs fetch
+    res = client.get("/api/notifications/logs")
+    assert res.status_code == 200
+    logs = res.json()
+    assert isinstance(logs, list)
+    assert len(logs) >= 1
+    first_log = logs[0]
+    assert "recipient_email" in first_log
+    assert "status" in first_log
+    assert "sent_at" in first_log
+
+    # Test logs delete
+    del_res = client.delete("/api/notifications/logs")
+    assert del_res.status_code == 200
+    assert del_res.json()["success"] is True
+
+    # Confirm cleared
+    after_res = client.get("/api/notifications/logs")
+    assert after_res.status_code == 200
+    assert len(after_res.json()) == 0
+

@@ -12,6 +12,7 @@ if TYPE_CHECKING:
     from app.models.expense import Expense
     from app.models.task import Task
     from app.models.notification_setting import NotificationSetting
+    from app.models.email_log import EmailLog
 
 
 class WorkspaceRole(str, enum.Enum):
@@ -84,6 +85,12 @@ class Workspace(Base, TimestampMixin):
         back_populates="workspace",
         uselist=False,
         cascade="all, delete-orphan",
+    )
+    email_logs: Mapped[List["EmailLog"]] = relationship(
+        "EmailLog",
+        back_populates="workspace",
+        cascade="all, delete-orphan",
+        order_by="desc(EmailLog.sent_at)",
     )
 
 

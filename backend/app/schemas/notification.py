@@ -47,3 +47,17 @@ class NotificationResultResponse(BaseModel):
     habits_completed_today: int = 0
     sent_to: Optional[str] = None
     timestamp: str
+
+class EmailLogResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: str
+    workspace_id: Optional[str] = None
+    recipient_email: str
+    subject: str
+    email_type: str
+    status: str
+    details: Optional[str] = None
+    error_message: Optional[str] = None
+    sent_at: str
+

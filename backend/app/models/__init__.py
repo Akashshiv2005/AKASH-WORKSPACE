@@ -8,6 +8,7 @@ from app.models.habit import Habit
 from app.models.expense import Expense
 from app.models.task import Task
 from app.models.notification_setting import NotificationSetting
+from app.models.email_log import EmailLog
 
 __all__ = [
     "Base",
@@ -27,4 +28,5 @@ __all__ = [
     "Expense",
     "Task",
     "NotificationSetting",
+    "EmailLog",
 ]

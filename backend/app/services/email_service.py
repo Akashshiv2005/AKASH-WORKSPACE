@@ -216,6 +216,9 @@ def generate_digest_html(
     </html>
     """
 
+from app.models.email_log import EmailLog
+from app.models.workspace import Workspace
+
 def trigger_daily_digest(
     db: Session,
     workspace_id: Optional[str] = None,
@@ -292,6 +295,28 @@ def trigger_daily_digest(
         setting.last_sent_at = datetime.now().isoformat()
         db.commit()
 
+    # Determine workspace id for log entry
+    ws_id = workspace_id or (setting.workspace_id if setting else None)
+    if not ws_id:
+        first_ws = db.query(Workspace).first()
+        ws_id = first_ws.id if first_ws else None
+
+    try:
+        log_entry = EmailLog(
+            workspace_id=ws_id,
+            recipient_email=target_email,
+            subject=subject,
+            email_type="daily_digest",
+            status="sent" if success else "failed",
+            details=f"Tasks: {len(tasks)} ({len(pending_tasks)} pending) | Habits: {len(habits)} ({len(habits_done_today)} done)",
+            error_message=None if success else message,
+            sent_at=datetime.now().isoformat(),
+        )
+        db.add(log_entry)
+        db.commit()
+    except Exception:
+        db.rollback()
+
     stats = {
         "tasks_count": len(tasks),
         "pending_tasks_count": len(pending_tasks),
@@ -301,3 +326,4 @@ def trigger_daily_digest(
     }
 
     return success, message, stats
+
