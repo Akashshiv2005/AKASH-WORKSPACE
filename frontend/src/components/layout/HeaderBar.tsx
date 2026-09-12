@@ -209,6 +209,23 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
 
                   <button
                     onClick={() => {
+                      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(usePageStore.getState().pages, null, 2));
+                      const downloadAnchor = document.createElement('a');
+                      downloadAnchor.setAttribute("href", dataStr);
+                      downloadAnchor.setAttribute("download", `workspace-backup-${Date.now()}.json`);
+                      document.body.appendChild(downloadAnchor);
+                      downloadAnchor.click();
+                      downloadAnchor.remove();
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full text-left px-3 py-1.5 hover:bg-[#f9f6f0] flex items-center space-x-2 font-medium text-emerald-600"
+                  >
+                    <Share2 className="w-3.5 h-3.5" />
+                    <span>Export Workspace JSON</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
                       archivePage(activePage.id);
                       setIsMenuOpen(false);
                     }}
