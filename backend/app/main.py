@@ -8,7 +8,7 @@ from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.core.config import settings
-from app.routers import health, auth, workspace, page, ai, expense, habit
+from app.routers import health, auth, workspace, page, ai, expense, habit, task
 from app.db.base import Base
 from app.db.session import engine
 import app.models  # Ensure all models are registered with Base
@@ -108,6 +108,7 @@ app.include_router(page.router, prefix=settings.API_V1_STR)
 app.include_router(ai.router, prefix=settings.API_V1_STR)
 app.include_router(expense.router, prefix=settings.API_V1_STR)
 app.include_router(habit.router, prefix=settings.API_V1_STR)
+app.include_router(task.router, prefix=settings.API_V1_STR)
 
 
 @app.get("/")

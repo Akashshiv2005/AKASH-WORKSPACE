@@ -20,7 +20,7 @@ interface HabitState {
   isLoading: boolean;
 
   fetchHabits: (workspaceId: string) => Promise<void>;
-  addHabit: (workspaceId: string, name: string, icon?: string) => Promise<void>;
+  addHabit: (arg1: string, arg2?: string, arg3?: string) => Promise<void>;
   toggleDay: (workspaceId: string, habitId: string, dayIndex: number) => Promise<void>;
   deleteHabit: (workspaceId: string, habitId: string) => Promise<void>;
   restoreHabit: (workspaceId: string, habitId: string) => Promise<void>;
@@ -126,7 +126,27 @@ export const useHabitStore = create<HabitState>()(
         }
       },
 
-      addHabit: async (workspaceId: string, name: string, icon?: string) => {
+      addHabit: async (arg1: string, arg2?: string, arg3?: string) => {
+        let workspaceId = 'workspace-akash-shiv';
+        let name = '';
+        let icon = '🎯';
+
+        if (arg3 !== undefined) {
+          workspaceId = arg1;
+          name = arg2 || '';
+          icon = arg3 || '🎯';
+        } else if (arg2 !== undefined) {
+          if (arg1.startsWith('workspace-') || arg1.length > 20) {
+            workspaceId = arg1;
+            name = arg2;
+          } else {
+            name = arg1;
+            icon = arg2;
+          }
+        } else {
+          name = arg1;
+        }
+
         const token = localStorage.getItem('access_token');
         const habitIcon = icon || '🎯';
         const trimmedName = name.trim();

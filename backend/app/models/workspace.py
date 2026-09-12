@@ -10,6 +10,7 @@ if TYPE_CHECKING:
     from app.models.page import Page
     from app.models.habit import Habit
     from app.models.expense import Expense
+    from app.models.task import Task
 
 
 class WorkspaceRole(str, enum.Enum):
@@ -69,6 +70,11 @@ class Workspace(Base, TimestampMixin):
     )
     expenses: Mapped[List["Expense"]] = relationship(
         "Expense",
+        back_populates="workspace",
+        cascade="all, delete-orphan",
+    )
+    tasks: Mapped[List["Task"]] = relationship(
+        "Task",
         back_populates="workspace",
         cascade="all, delete-orphan",
     )
