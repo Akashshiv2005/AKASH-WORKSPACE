@@ -8,7 +8,8 @@ import {
   Trash2,
   TrendingUp,
   RotateCcw,
-  Sparkles
+  Sparkles,
+  MoreHorizontal
 } from 'lucide-react';
 import { useHabitStore } from '../../store/useHabitStore';
 import { useWorkspaceStore } from '../../store/useWorkspaceStore';
@@ -41,6 +42,7 @@ export const HabitTracker: React.FC = () => {
   const [newHabitName, setNewHabitName] = useState('');
   const [newHabitIcon, setNewHabitIcon] = useState('🎯');
   const [isTrashOpen, setIsTrashOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     if (workspaceId) {
@@ -125,18 +127,10 @@ export const HabitTracker: React.FC = () => {
             </button>
 
             <button
-              onClick={() => resetDefaultHabits(workspaceId)}
-              className="flex items-center space-x-1 px-3 py-1.5 rounded-xl border border-[#ffe0c2] bg-[#fffaf3] hover:bg-[#fff3e5] text-xs font-bold text-[#ff7a00] transition-all"
-              title="Restore full demo habits list"
-            >
-              <RotateCcw className="w-3.5 h-3.5 text-[#ff7a00]" />
-              <span>Restore Habits</span>
-            </button>
-
-            <button
               onClick={() => {
                 setIsTrashOpen(!isTrashOpen);
                 setIsAddingHabit(false);
+                setIsMenuOpen(false);
               }}
               className={`flex items-center space-x-1 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all ${
                 isTrashOpen ? 'bg-[#ff7a00] text-white border-[#ff7a00]' : 'border-[#f0e8dc] hover:bg-[#faf7f2] text-[#78716c]'
@@ -151,12 +145,70 @@ export const HabitTracker: React.FC = () => {
               onClick={() => {
                 setIsAddingHabit(true);
                 setIsTrashOpen(false);
+                setIsMenuOpen(false);
               }}
               className="flex items-center space-x-1 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#ff7a00] to-[#ff9500] hover:from-[#e66e00] hover:to-[#e68600] text-white text-xs font-black shadow-xs transition-all hover:scale-105"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Habit</span>
             </button>
+
+            {/* Three Dots (...) More Actions Dropdown */}
+            <div className="relative">
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className={`p-1.5 px-2.5 rounded-xl border text-xs font-semibold transition-all flex items-center justify-center ${
+                  isMenuOpen
+                    ? 'bg-[#ff7a00] text-white border-[#ff7a00] shadow-xs'
+                    : 'border-[#f0e8dc] hover:bg-[#faf7f2] text-[#78716c]'
+                }`}
+                title="More actions"
+              >
+                <MoreHorizontal className="w-4 h-4" />
+              </button>
+
+              {isMenuOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-20"
+                    onClick={() => setIsMenuOpen(false)}
+                  />
+                  <div className="absolute right-0 top-10 w-52 bg-white border border-[#f0e8dc] rounded-2xl shadow-xl p-1.5 z-30 animate-fade-in-up space-y-1">
+                    <button
+                      onClick={() => {
+                        resetDefaultHabits(workspaceId);
+                        setIsMenuOpen(false);
+                      }}
+                      className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold text-[#1c1917] hover:bg-[#fffaf3] hover:text-[#ff7a00] transition-colors text-left"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5 text-[#ff7a00]" />
+                      <span>Restore Demo Habits</span>
+                    </button>
+
+                    <div className="h-[1px] bg-[#f2e8da] my-1" />
+
+                    <button
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        if (habits.length === 0) return;
+                        if (window.confirm("Move all habits to the Trash Bin? You can restore them anytime.")) {
+                          clearAllHabits(workspaceId);
+                        }
+                      }}
+                      disabled={habits.length === 0}
+                      className={`w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold transition-colors text-left ${
+                        habits.length === 0
+                          ? 'text-gray-300 cursor-not-allowed'
+                          : 'text-red-600 hover:bg-red-50'
+                      }`}
+                    >
+                      <Trash2 className="w-3.5 h-3.5 text-red-500" />
+                      <span>Clear All to Trash</span>
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
 
@@ -352,31 +404,13 @@ export const HabitTracker: React.FC = () => {
           })}
         </div>
 
-        {/* Table Footer with Corner Clear All Action */}
-        <div className="p-3 bg-[#faf7f2] border-t border-[#f2e8da] flex items-center justify-between">
-          <div className="text-[11px] text-[#a8a29e] font-medium hidden sm:flex items-center space-x-1.5">
+        {/* Table Footer */}
+        <div className="p-3 bg-[#faf7f2] border-t border-[#f2e8da] flex items-center justify-between text-[11px] text-[#a8a29e] font-medium">
+          <div className="flex items-center space-x-1.5">
             <Sparkles className="w-3.5 h-3.5 text-[#ff7a00]" />
             <span>Habits and checkmarks automatically sync to the database.</span>
           </div>
-
-          <button
-            onClick={() => {
-              if (habits.length === 0) return;
-              if (window.confirm("Move all habits to the Trash Bin? You can restore them anytime.")) {
-                clearAllHabits(workspaceId);
-              }
-            }}
-            disabled={habits.length === 0}
-            className={`ml-auto flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all ${
-              habits.length === 0
-                ? 'opacity-40 cursor-not-allowed border-gray-200 text-gray-400'
-                : 'border-red-200 hover:bg-red-50 text-red-600 hover:scale-105 shadow-2xs'
-            }`}
-            title="Move all active habits to Trash Bin (saved in DB)"
-          >
-            <Trash2 className="w-3.5 h-3.5 text-red-500" />
-            <span>Clear All to Trash</span>
-          </button>
+          <span className="hidden sm:inline text-[10px] text-[#b0a89d]">More actions in ••• menu</span>
         </div>
       </div>
     </div>

@@ -7,7 +7,8 @@ import {
   Circle,
   Layout,
   RotateCcw,
-  Sparkles
+  Sparkles,
+  MoreHorizontal
 } from 'lucide-react';
 import { useTaskStore } from '../../store/useTaskStore';
 import { useWorkspaceStore } from '../../store/useWorkspaceStore';
@@ -33,6 +34,7 @@ export const TodoPlanner: React.FC = () => {
   const [newTaskPriority, setNewTaskPriority] = useState<'High' | 'Medium' | 'Low'>('Medium');
   const [isAdding, setIsAdding] = useState(false);
   const [isTrashOpen, setIsTrashOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     if (workspaceId) {
@@ -84,18 +86,10 @@ export const TodoPlanner: React.FC = () => {
         {/* Action Controls Header */}
         <div className="flex items-center gap-2 flex-wrap">
           <button
-            onClick={() => resetBoard(workspaceId)}
-            className="flex items-center space-x-1 px-3 py-1.5 rounded-xl border border-[#f0e8dc] hover:bg-[#faf7f2] text-xs font-semibold text-[#78716c] transition-all"
-            title="Reset Board to Default Tasks"
-          >
-            <RotateCcw className="w-3.5 h-3.5" />
-            <span>Reset Board</span>
-          </button>
-
-          <button
             onClick={() => {
               setIsTrashOpen(!isTrashOpen);
               setIsAdding(false);
+              setIsMenuOpen(false);
             }}
             className={`flex items-center space-x-1 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all ${
               isTrashOpen ? 'bg-[#ff7a00] text-white border-[#ff7a00]' : 'border-[#f0e8dc] hover:bg-[#faf7f2] text-[#78716c]'
@@ -110,12 +104,70 @@ export const TodoPlanner: React.FC = () => {
             onClick={() => {
               setIsAdding(true);
               setIsTrashOpen(false);
+              setIsMenuOpen(false);
             }}
             className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#ff7a00] to-[#ff9500] hover:from-[#e66e00] hover:to-[#e68600] text-white text-xs font-black shadow-xs transition-all hover:scale-105 orange-pulse"
           >
             <Plus className="w-4 h-4 text-white" />
             <span>New Task</span>
           </button>
+
+          {/* Three Dots (...) More Actions Dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className={`p-1.5 px-2.5 rounded-xl border text-xs font-semibold transition-all flex items-center justify-center ${
+                isMenuOpen
+                  ? 'bg-[#ff7a00] text-white border-[#ff7a00] shadow-xs'
+                  : 'border-[#f0e8dc] hover:bg-[#faf7f2] text-[#78716c]'
+              }`}
+              title="More actions"
+            >
+              <MoreHorizontal className="w-4 h-4" />
+            </button>
+
+            {isMenuOpen && (
+              <>
+                <div
+                  className="fixed inset-0 z-20"
+                  onClick={() => setIsMenuOpen(false)}
+                />
+                <div className="absolute right-0 top-10 w-52 bg-white border border-[#f0e8dc] rounded-2xl shadow-xl p-1.5 z-30 animate-fade-in-up space-y-1">
+                  <button
+                    onClick={() => {
+                      resetBoard(workspaceId);
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold text-[#1c1917] hover:bg-[#fffaf3] hover:text-[#ff7a00] transition-colors text-left"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5 text-[#ff7a00]" />
+                    <span>Reset to Default Tasks</span>
+                  </button>
+
+                  <div className="h-[1px] bg-[#f2e8da] my-1" />
+
+                  <button
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      if (tasks.length === 0) return;
+                      if (window.confirm("Move all tasks to the Trash Bin? You can restore them anytime.")) {
+                        clearAllTasks(workspaceId);
+                      }
+                    }}
+                    disabled={tasks.length === 0}
+                    className={`w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold transition-colors text-left ${
+                      tasks.length === 0
+                        ? 'text-gray-300 cursor-not-allowed'
+                        : 'text-red-600 hover:bg-red-50'
+                    }`}
+                  >
+                    <Trash2 className="w-3.5 h-3.5 text-red-500" />
+                    <span>Clear All to Trash</span>
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
@@ -390,31 +442,13 @@ export const TodoPlanner: React.FC = () => {
         </div>
       </div>
 
-      {/* Board Corner Footer with Clear All Action */}
-      <div className="p-3.5 bg-[#faf7f2] border border-[#f2e8da] rounded-2xl flex items-center justify-between shadow-xs">
-        <div className="text-[11px] text-[#a8a29e] font-medium hidden sm:flex items-center space-x-1.5">
+      {/* Board Footer */}
+      <div className="p-3.5 bg-[#faf7f2] border border-[#f2e8da] rounded-2xl flex items-center justify-between shadow-xs text-[11px] text-[#a8a29e] font-medium">
+        <div className="flex items-center space-x-1.5">
           <Sparkles className="w-3.5 h-3.5 text-[#ff7a00]" />
           <span>Tasks automatically synchronize with the database.</span>
         </div>
-
-        <button
-          onClick={() => {
-            if (tasks.length === 0) return;
-            if (window.confirm("Move all tasks to the Trash Bin? You can restore them anytime.")) {
-              clearAllTasks(workspaceId);
-            }
-          }}
-          disabled={tasks.length === 0}
-          className={`ml-auto flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all ${
-            tasks.length === 0
-              ? 'opacity-40 cursor-not-allowed border-gray-200 text-gray-400'
-              : 'border-red-200 hover:bg-red-50 text-red-600 hover:scale-105 shadow-2xs'
-          }`}
-          title="Move all active tasks to Trash Bin (saved in DB)"
-        >
-          <Trash2 className="w-3.5 h-3.5 text-red-500" />
-          <span>Clear All to Trash</span>
-        </button>
+        <span className="hidden sm:inline text-[10px] text-[#b0a89d]">More actions in ••• menu</span>
       </div>
     </div>
   );
