@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { BookOpen, Heart, CheckCircle2, Save } from 'lucide-react';
+import { useJournalStore } from '../../store/useJournalStore';
+import { useAuthStore } from '../../store/useAuthStore';
 
 const MOODS = [
   { emoji: '🚀', label: 'Motivated', color: 'bg-purple-500/10 border-purple-500/30 text-purple-600' },
@@ -10,14 +12,28 @@ const MOODS = [
 ];
 
 export const DailyJournal: React.FC = () => {
-  const [selectedMood, setSelectedMood] = useState('🚀');
-  const [gratitude1, setGratitude1] = useState('Grateful for deep work focus and progress today.');
-  const [gratitude2, setGratitude2] = useState('Grateful for supportive environment and team.');
-  const [gratitude3, setGratitude3] = useState('Grateful for consistent habit execution.');
-  const [reflectionText, setReflectionText] = useState('Today I completed the core features and maintained high energy throughout the day!');
+  const { user } = useAuthStore();
+  const {
+    selectedMood,
+    gratitude1,
+    gratitude2,
+    gratitude3,
+    reflectionText,
+    setMood,
+    setGratitude1,
+    setGratitude2,
+    setGratitude3,
+    setReflectionText,
+    saveJournal,
+  } = useJournalStore();
+
   const [saved, setSaved] = useState(false);
 
+  const firstName = user?.full_name?.split(' ')[0] || 'Akash';
+  const fullName = user?.full_name || 'Akash Shiv';
+
   const handleSave = () => {
+    saveJournal();
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
   };
@@ -33,7 +49,7 @@ export const DailyJournal: React.FC = () => {
             </div>
             <div>
               <h3 className="text-base font-extrabold text-[#37352f] dark:text-white">
-                Akash Shiv's Daily Journal & Reflection
+                {fullName}'s Daily Journal & Reflection
               </h3>
               <p className="text-xs text-[#787774] dark:text-[#9b9b9b]">
                 Record daily gratitude, mood, and achievements
@@ -53,13 +69,13 @@ export const DailyJournal: React.FC = () => {
         {/* Mood Selector */}
         <div className="space-y-2">
           <label className="block text-xs font-bold text-[#787774] dark:text-[#9b9b9b]">
-            How are you feeling today, Akash?
+            How are you feeling today, {firstName}?
           </label>
           <div className="grid grid-cols-5 gap-3">
             {MOODS.map((m) => (
               <button
                 key={m.label}
-                onClick={() => setSelectedMood(m.emoji)}
+                onClick={() => setMood(m.emoji)}
                 className={`p-3 rounded-2xl border text-center transition-all flex flex-col items-center space-y-1 ${
                   selectedMood === m.emoji
                     ? `${m.color} border-2 shadow-md scale-105 font-bold`

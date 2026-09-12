@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Page, usePageStore } from '../../store/usePageStore';
+import { useAuthStore } from '../../store/useAuthStore';
 import { TypewriterText } from '../common/TypewriterText';
 import {
   Smile,
@@ -22,6 +23,9 @@ const COVER_GRADIENTS = [
 
 export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
   const { updatePage } = usePageStore();
+  const { user } = useAuthStore();
+  const fullName = user?.full_name || 'Akash Shiv';
+
   const [showIconPicker, setShowIconPicker] = useState(false);
   const [showCoverPicker, setShowCoverPicker] = useState(false);
 
@@ -54,10 +58,10 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
           </span>
           <TypewriterText
             phrases={[
-              "Daily Habit Tracker & Streaks • Live Activity & Task Execution",
+              `${page.title || 'Workspace'} • Live Activity & Task Execution`,
               "Build unbreakable consistency • Small daily habits create massive success",
               "Never break the streak • Track every task and habit effortlessly",
-              "Execute high-priority items • Akash Shiv's Connected Workspace"
+              `Execute high-priority items • ${fullName}'s Connected Workspace`
             ]}
             typingSpeed={50}
             deletingSpeed={25}

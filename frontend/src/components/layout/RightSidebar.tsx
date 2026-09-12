@@ -21,6 +21,8 @@ import {
 import { usePageStore } from '../../store/usePageStore';
 import { useHabitStore } from '../../store/useHabitStore';
 import { useTaskStore } from '../../store/useTaskStore';
+import { useAuthStore } from '../../store/useAuthStore';
+import { useJournalStore } from '../../store/useJournalStore';
 
 interface RightSidebarProps {
   isOpen: boolean;
@@ -33,10 +35,13 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
 }) => {
   const { pages, activePageId, createPage } = usePageStore();
   const activePage = pages.find((p) => p.id === activePageId);
+  const { user } = useAuthStore();
+  const userFirstName = user?.full_name?.split(' ')[0] || 'Akash';
 
   // Dynamic Stores
   const { habits, getBestStreak, getOverallPercentage, getTotalCheckmarks, getMaxPossibleCheckmarks } = useHabitStore();
   const { tasks } = useTaskStore();
+  const { selectedMood, gratitude1, gratitude2, gratitude3 } = useJournalStore();
 
   // Focus Timer State
   const [timeLeft, setTimeLeft] = useState(25 * 60);
@@ -83,7 +88,9 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
 
   // Dynamic Document Metrics
   const pageTitle = activePage?.title || '';
-  const wordCount = pageTitle ? pageTitle.split(/\s+/).filter(Boolean).length + 24 : 0;
+  const contentText = typeof activePage?.content === 'string' ? activePage.content.replace(/<[^>]*>/g, ' ') : '';
+  const rawWords = `${pageTitle} ${contentText}`.trim().split(/\s+/).filter(Boolean);
+  const wordCount = pageTitle ? rawWords.length : 0;
   const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 
   return (
@@ -164,7 +171,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
                 <span className="animate-text-float uppercase text-[10px] tracking-wider font-black">JARVIS HABIT ADVICE</span>
               </div>
               <p className="text-[11px] text-[#44403c] leading-relaxed font-medium">
-                Consistency beats intensity every single time, Akash. Keep your streak alive!
+                Consistency beats intensity every single time, {userFirstName}. Keep your streak alive!
               </p>
             </div>
 
@@ -182,7 +189,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
                   <span className="uppercase text-[10px] tracking-wider font-black">JARVIS ASSISTANT</span>
                 </div>
                 <p className="text-[11px] text-[#57534e]">
-                  Need habit advice or task assistance, Akash?
+                  Need habit advice or task assistance, {userFirstName}?
                 </p>
               </div>
             )}
@@ -299,37 +306,48 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         )}
 
         {/* DYNAMIC OPTION 4: DAILY JOURNAL ACTIVE */}
-        {widgetType === 'journal' && (
-          <div className="space-y-3 animate-fade-in-up">
-            {/* Today's Mood Status */}
-            <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] shadow-xs space-y-2 text-center animate-float">
-              <div className="flex items-center justify-center space-x-1 text-[#ff7a00] font-bold text-[11px]">
-                <Smile className="w-3.5 h-3.5 text-[#ff7a00]" />
-                <span className="uppercase tracking-wider font-black">Logged Mood</span>
+        {widgetType === 'journal' && (() => {
+          const moodLabelMap: Record<string, string> = {
+            '🚀': 'Motivated',
+            '⚡': 'Energetic',
+            '🎯': 'Focused',
+            '🧘': 'Calm',
+            '😊': 'Happy',
+          };
+          const moodName = moodLabelMap[selectedMood] || 'Reflective';
+          const gratitudeItems = [gratitude1, gratitude2, gratitude3].filter((g) => g && g.trim());
+          return (
+            <div className="space-y-3 animate-fade-in-up">
+              {/* Today's Mood Status */}
+              <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] shadow-xs space-y-2 text-center animate-float">
+                <div className="flex items-center justify-center space-x-1 text-[#ff7a00] font-bold text-[11px]">
+                  <Smile className="w-3.5 h-3.5 text-[#ff7a00]" />
+                  <span className="uppercase tracking-wider font-black">Logged Mood</span>
+                </div>
+                <div className="text-3xl font-black text-[#ff7a00]">
+                  {selectedMood || '🚀'} {moodName}
+                </div>
+                <p className="text-[11px] text-[#78716c]">{userFirstName}'s mood logged today</p>
               </div>
-              <div className="text-3xl font-black text-[#ff7a00]">
-                🚀 Motivated
-              </div>
-              <p className="text-[11px] text-[#78716c]">Akash's energy is peak today</p>
-            </div>
 
-            {/* Gratitude Counter */}
-            <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] shadow-xs space-y-2">
-              <div className="flex items-center justify-between text-xs font-bold text-[#1c1917]">
-                <span className="flex items-center space-x-1.5">
-                  <BookOpen className="w-3.5 h-3.5 text-[#ff7a00]" />
-                  <span className="uppercase tracking-wider text-[10px] text-[#a8a29e] font-black">Gratitude Logs</span>
-                </span>
-                <span className="text-[#ff7a00] font-black">3 / 3</span>
-              </div>
-              <div className="space-y-1 text-[11px] text-[#44403c]">
-                <p>✓ 1. Deep work focus progress</p>
-                <p>✓ 2. Supportive environment</p>
-                <p>✓ 3. Consistent habit execution</p>
+              {/* Gratitude Counter */}
+              <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] shadow-xs space-y-2">
+                <div className="flex items-center justify-between text-xs font-bold text-[#1c1917]">
+                  <span className="flex items-center space-x-1.5">
+                    <BookOpen className="w-3.5 h-3.5 text-[#ff7a00]" />
+                    <span className="uppercase tracking-wider text-[10px] text-[#a8a29e] font-black">Gratitude Logs</span>
+                  </span>
+                  <span className="text-[#ff7a00] font-black">{gratitudeItems.length} / 3</span>
+                </div>
+                <div className="space-y-1 text-[11px] text-[#44403c]">
+                  {gratitude1 ? <p className="truncate">✓ 1. {gratitude1}</p> : <p className="text-[#a8a29e] italic">1. Add gratitude in journal</p>}
+                  {gratitude2 ? <p className="truncate">✓ 2. {gratitude2}</p> : <p className="text-[#a8a29e] italic">2. Add gratitude in journal</p>}
+                  {gratitude3 ? <p className="truncate">✓ 3. {gratitude3}</p> : <p className="text-[#a8a29e] italic">3. Add gratitude in journal</p>}
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
 
         {/* DYNAMIC OPTION 5: DEFAULT STANDARD DOCUMENT PAGE */}
         {!widgetType && (
@@ -391,7 +409,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
             </span>
           </div>
           <p className="text-[11px] text-[#57534e] font-medium leading-relaxed">
-            Akash, your daily productivity score is {overallPercentage > 0 ? `${overallPercentage}%` : '100%'}.
+            {userFirstName}, your daily productivity score is {overallPercentage > 0 ? `${overallPercentage}%` : '100%'}.
           </p>
         </div>
       </div>

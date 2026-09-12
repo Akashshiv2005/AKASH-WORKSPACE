@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Play, Pause, RotateCcw, Coffee, Flame, Zap, Award, Shield } from 'lucide-react';
+import { useAuthStore } from '../../store/useAuthStore';
 
 export const PomodoroTimer: React.FC = () => {
+  const { user } = useAuthStore();
+  const firstName = user?.full_name?.split(' ')[0] || 'Akash';
+
   const [mode, setMode] = useState<'focus' | 'break'>('focus');
   const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 mins
   const [isRunning, setIsRunning] = useState(false);
@@ -135,7 +139,7 @@ export const PomodoroTimer: React.FC = () => {
           <span>•</span>
           <span className="flex items-center space-x-1 text-[#00f0ff]">
             <Award className="w-4 h-4" />
-            <span>Akash's Productivity Level: Maximum</span>
+            <span>{firstName}'s Productivity Level: Maximum</span>
           </span>
         </div>
       </div>

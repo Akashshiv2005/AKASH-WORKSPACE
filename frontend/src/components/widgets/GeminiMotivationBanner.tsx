@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { apiClient } from '../../api/client';
 import { RefreshCw, Quote, Shield, Sparkles } from 'lucide-react';
 import { TypewriterText } from '../common/TypewriterText';
+import { useAuthStore } from '../../store/useAuthStore';
 
 interface MotivationData {
   quote: string;
@@ -18,6 +19,10 @@ const FALLBACK_MOTIVATION: MotivationData = {
 };
 
 export const GeminiMotivationBanner: React.FC = () => {
+  const { user } = useAuthStore();
+  const fullName = user?.full_name || 'Akash Shiv';
+  const firstName = user?.full_name?.split(' ')[0] || 'Akash';
+
   const [motivation, setMotivation] = useState<MotivationData>(FALLBACK_MOTIVATION);
   const [loading, setLoading] = useState(false);
 
@@ -53,7 +58,7 @@ export const GeminiMotivationBanner: React.FC = () => {
                 JARVIS AI BOOST
               </span>
               <p className="text-xs text-[#78716c] animate-text-reveal">
-                Personalized executive mindset for Akash Shiv
+                Personalized executive mindset for {fullName}
               </p>
             </div>
           </div>
@@ -89,7 +94,7 @@ export const GeminiMotivationBanner: React.FC = () => {
             phrases={[
               motivation.mindset_tip || "Focus on taking one tiny action right now. Momentum follows action.",
               motivation.focus_question || "What is the single most important task you will complete today?",
-              "Consistency beats intensity every single time, Akash.",
+              `Consistency beats intensity every single time, ${firstName}.`,
               "Small daily incremental habits compound into massive success."
             ]}
             typingSpeed={45}
