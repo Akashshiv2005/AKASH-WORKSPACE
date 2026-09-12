@@ -112,78 +112,70 @@ export const BlockEditor: React.FC<BlockEditorProps> = ({ page }) => {
       {/* Widget Render: Expense Tracker */}
       {page.widget_type === 'expense_tracker' && <ExpenseTracker />}
 
-      {/* Floating Toolbar when selecting text */}
-      {editor.state.selection && !editor.state.selection.empty && (
-        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-black dark:bg-[#2c2c2c] text-white px-3 py-1.5 rounded-xl shadow-2xl flex items-center space-x-1 z-40 text-xs">
-          <button
-            onClick={() => editor.chain().focus().toggleBold().run()}
-            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('bold') ? 'text-blue-400' : ''}`}
-            title="Bold"
-          >
-            <Bold className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('italic') ? 'text-blue-400' : ''}`}
-            title="Italic"
-          >
-            <Italic className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleUnderline().run()}
-            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('underline') ? 'text-blue-400' : ''}`}
-            title="Underline"
-          >
-            <UnderlineIcon className="w-4 h-4" />
-          </button>
+      {/* Standard Document Editor (Only for non-widget pages) */}
+      {!page.widget_type && (
+        <>
+          {/* Floating Toolbar when selecting text */}
+          {editor.state.selection && !editor.state.selection.empty && (
+            <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-black dark:bg-[#2c2c2c] text-white px-3 py-1.5 rounded-xl shadow-2xl flex items-center space-x-1 z-40 text-xs">
+              <button
+                onClick={() => editor.chain().focus().toggleBold().run()}
+                className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('bold') ? 'text-blue-400' : ''}`}
+                title="Bold"
+              >
+                <Bold className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => editor.chain().focus().toggleItalic().run()}
+                className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('italic') ? 'text-blue-400' : ''}`}
+                title="Italic"
+              >
+                <Italic className="w-4 h-4" />
+              </button>
+              <button
+                onClick={() => editor.chain().focus().toggleUnderline().run()}
+                className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('underline') ? 'text-blue-400' : ''}`}
+                title="Underline"
+              >
+                <UnderlineIcon className="w-4 h-4" />
+              </button>
 
-          <button
-            onClick={() => editor.chain().focus().toggleStrike().run()}
-            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('strike') ? 'text-blue-400' : ''}`}
-            title="Strikethrough"
-          >
-            <Strikethrough className="w-4 h-4" />
-          </button>
+              <button
+                onClick={() => editor.chain().focus().toggleStrike().run()}
+                className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('strike') ? 'text-blue-400' : ''}`}
+                title="Strikethrough"
+              >
+                <Strikethrough className="w-4 h-4" />
+              </button>
 
-          <button
-            onClick={() => editor.chain().focus().toggleHighlight().run()}
-            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('highlight') ? 'text-yellow-400' : ''}`}
-            title="Highlight"
-          >
-            <Highlighter className="w-4 h-4" />
-          </button>
+              <button
+                onClick={() => editor.chain().focus().toggleHighlight().run()}
+                className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('highlight') ? 'text-yellow-400' : ''}`}
+                title="Highlight"
+              >
+                <Highlighter className="w-4 h-4" />
+              </button>
 
-          <button
-            onClick={() => editor.chain().focus().toggleCode().run()}
-            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('code') ? 'text-blue-400' : ''}`}
-            title="Code"
-          >
-            <Code className="w-4 h-4" />
-          </button>
-        </div>
-      )}
+              <button
+                onClick={() => editor.chain().focus().toggleCode().run()}
+                className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('code') ? 'text-blue-400' : ''}`}
+                title="Code"
+              >
+                <Code className="w-4 h-4" />
+              </button>
+            </div>
+          )}
 
-      {/* Tiptap Editor Content Component */}
-      {page.widget_type ? (
-        <div className="mt-8 pt-6 border-t border-[#f2e8da] dark:border-[#333333]">
-          <div className="flex items-center space-x-2 text-xs font-bold text-[#a8a29e] mb-3 select-none">
-            <span>📝</span>
-            <span>Page Notes & Scratchpad</span>
-          </div>
+          {/* Tiptap Editor Content Component */}
           <EditorContent
             editor={editor}
-            className="prose dark:prose-invert max-w-none focus:outline-none min-h-[120px] font-sans"
+            className="prose dark:prose-invert max-w-none focus:outline-none min-h-[250px] font-sans pt-2"
           />
-        </div>
-      ) : (
-        <EditorContent
-          editor={editor}
-          className="prose dark:prose-invert max-w-none focus:outline-none min-h-[250px] font-sans pt-2"
-        />
+        </>
       )}
 
-      {/* Slash Commands Floating Popup */}
-      {showSlashMenu && (
+      {/* Slash Commands Floating Popup (Only for non-widget pages) */}
+      {!page.widget_type && showSlashMenu && (
         <div
           style={{ top: `${slashMenuPos.top}px`, left: `${slashMenuPos.left}px` }}
           className="fixed bg-white dark:bg-[#252525] border border-[#e9e9e7] dark:border-[#333333] rounded-xl shadow-2xl p-2 z-50 w-64 space-y-1 text-xs text-[#37352f] dark:text-[#e6e6e6]"
