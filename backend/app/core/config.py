@@ -34,12 +34,12 @@ class Settings(BaseSettings):
         "http://127.0.0.1:5173",
     ]
 
-    # SMTP / Gmail Notification Settings
+    # SMTP / Gmail Notification Settings (Loaded from .env / environment variables)
     SMTP_HOST: str = "smtp.gmail.com"
     SMTP_PORT: int = 587
     SMTP_USER: str = ""
     SMTP_PASSWORD: str = ""
-    NOTIFICATION_EMAIL: str = "akashshiv2005@gmail.com"
+    NOTIFICATION_EMAIL: str = ""
 
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod

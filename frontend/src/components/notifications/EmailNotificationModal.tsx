@@ -38,7 +38,7 @@ export const EmailNotificationModal: React.FC = () => {
   const { habits } = useHabitStore();
 
   // Local Form State
-  const [recipientEmail, setRecipientEmail] = useState('akashshiv2005@gmail.com');
+  const [recipientEmail, setRecipientEmail] = useState('');
   const [isEnabled, setIsEnabled] = useState(true);
   const [pendingOnly, setPendingOnly] = useState(false);
   const [showSmtpConfig, setShowSmtpConfig] = useState(false);
@@ -63,7 +63,7 @@ export const EmailNotificationModal: React.FC = () => {
 
   useEffect(() => {
     if (settings) {
-      setRecipientEmail(settings.recipient_email || 'akashshiv2005@gmail.com');
+      setRecipientEmail(settings.recipient_email || '');
       setIsEnabled(settings.is_enabled);
       setPendingOnly(settings.notify_if_pending_only);
     }

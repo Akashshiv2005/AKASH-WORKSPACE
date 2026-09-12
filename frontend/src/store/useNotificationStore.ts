@@ -35,7 +35,7 @@ interface NotificationState {
 const DEFAULT_SETTINGS: NotificationSettings = {
   id: 'default',
   workspace_id: 'default-workspace',
-  recipient_email: 'akashshiv2005@gmail.com',
+  recipient_email: '',
   is_enabled: true,
   notify_if_pending_only: false,
   has_custom_smtp: false,

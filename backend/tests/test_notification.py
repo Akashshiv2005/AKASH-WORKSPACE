@@ -18,12 +18,14 @@ def test_generate_digest_html():
     assert "Drink 2L Water" in html
     assert "Akash Workspace" in html
 
+from app.core.config import settings
+
 def test_notification_settings_api(client, db_session):
-    # Test GET settings (creates default)
+    # Test GET settings (creates default from settings.NOTIFICATION_EMAIL)
     res = client.get("/api/notifications/settings")
     assert res.status_code == 200
     data = res.json()
-    assert data["recipient_email"] == "akashshiv2005@gmail.com"
+    assert data["recipient_email"] == (settings.NOTIFICATION_EMAIL or "")
     assert data["is_enabled"] is True
 
     # Test POST update settings

@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field, EmailStr, ConfigDict
 from typing import Optional
 
 class NotificationSettingBase(BaseModel):
-    recipient_email: str = Field(default="akashshiv2005@gmail.com")
+    recipient_email: str = Field(default="")
     is_enabled: bool = True
     notify_if_pending_only: bool = False
     custom_smtp_user: Optional[str] = None
@@ -27,7 +27,7 @@ class NotificationSettingResponse(BaseModel):
     last_sent_at: Optional[str] = None
 
 class TestEmailRequest(BaseModel):
-    recipient_email: str = "akashshiv2005@gmail.com"
+    recipient_email: Optional[str] = None
     smtp_user: Optional[str] = None
     smtp_password: Optional[str] = None
 

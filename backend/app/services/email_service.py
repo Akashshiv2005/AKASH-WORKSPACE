@@ -27,7 +27,7 @@ def get_smtp_credentials(custom_user: Optional[str] = None, custom_pass: Optiona
         or os.getenv("GMAIL_APP_PASSWORD")
         or os.getenv("SMTP_PASSWORD")
         or ""
-    ).strip()
+    ).replace(" ", "").strip()
 
     return user, password
 

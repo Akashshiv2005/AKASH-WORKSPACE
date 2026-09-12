@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from typing import Optional
 
+from app.core.config import settings
 from app.db.session import get_db
 from app.models.notification_setting import NotificationSetting
 from app.models.workspace import Workspace
@@ -36,12 +37,13 @@ def get_notification_settings(
 
     ws_id = ws.id if ws else "default-workspace"
 
+    default_email = settings.NOTIFICATION_EMAIL or settings.SMTP_USER or ""
     setting = db.query(NotificationSetting).filter(NotificationSetting.workspace_id == ws_id).first()
     if not setting:
-        # Create default record
+        # Create default record from .env
         setting = NotificationSetting(
             workspace_id=ws_id,
-            recipient_email="akashshiv2005@gmail.com",
+            recipient_email=default_email,
             is_enabled=True,
             notify_if_pending_only=False,
         )
@@ -54,7 +56,7 @@ def get_notification_settings(
             return NotificationSettingResponse(
                 id="default",
                 workspace_id=ws_id,
-                recipient_email="akashshiv2005@gmail.com",
+                recipient_email=default_email,
                 is_enabled=True,
                 notify_if_pending_only=False,
                 has_custom_smtp=False,
@@ -90,7 +92,7 @@ def update_notification_settings(
     if not setting:
         setting = NotificationSetting(
             workspace_id=ws_id,
-            recipient_email=payload.recipient_email or "akashshiv2005@gmail.com",
+            recipient_email=payload.recipient_email or settings.NOTIFICATION_EMAIL or settings.SMTP_USER or "",
             is_enabled=payload.is_enabled if payload.is_enabled is not None else True,
             notify_if_pending_only=payload.notify_if_pending_only if payload.notify_if_pending_only is not None else False,
             custom_smtp_user=payload.custom_smtp_user,
@@ -138,8 +140,17 @@ def test_email(payload: TestEmailRequest):
         <p style="font-size: 12px; color: #78716c;">Sent on: {datetime.now().strftime('%B %d, %Y at %I:%M %p')}</p>
     </div>
     """
+    target_email = payload.recipient_email or settings.NOTIFICATION_EMAIL or settings.SMTP_USER
+    if not target_email:
+        return {
+            "success": False,
+            "message": "Recipient email not provided and NOTIFICATION_EMAIL not set in .env",
+            "sent_to": None,
+            "timestamp": datetime.now().isoformat(),
+        }
+
     success, message = send_smtp_email(
-        to_email=payload.recipient_email,
+        to_email=target_email,
         subject=subject,
         html_content=html_body,
         custom_user=payload.smtp_user,
@@ -149,7 +160,7 @@ def test_email(payload: TestEmailRequest):
     return {
         "success": success,
         "message": message,
-        "sent_to": payload.recipient_email,
+        "sent_to": target_email,
         "timestamp": datetime.now().isoformat(),
     }
 
