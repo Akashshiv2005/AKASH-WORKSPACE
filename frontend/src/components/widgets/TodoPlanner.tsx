@@ -89,21 +89,6 @@ export const TodoPlanner: React.FC = () => {
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={() => {
-              setIsTrashOpen(!isTrashOpen);
-              setIsAdding(false);
-              setIsMenuOpen(false);
-            }}
-            className={`flex items-center space-x-1 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all ${
-              isTrashOpen ? 'bg-[#ff7a00] text-white border-[#ff7a00]' : 'border-[#f0e8dc] hover:bg-[#faf7f2] text-[#78716c]'
-            }`}
-            title="View deleted tasks in trash"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-            <span>Trash ({archivedTasks.length})</span>
-          </button>
-
-          <button
-            onClick={() => {
               setIsAdding(true);
               setIsTrashOpen(false);
               setIsMenuOpen(false);
@@ -134,7 +119,25 @@ export const TodoPlanner: React.FC = () => {
                   className="fixed inset-0 z-20"
                   onClick={() => setIsMenuOpen(false)}
                 />
-                <div className="absolute right-0 top-10 w-52 bg-white border border-[#f0e8dc] rounded-2xl shadow-xl p-1.5 z-30 animate-fade-in-up space-y-1">
+                <div className="absolute right-0 top-10 w-56 bg-white border border-[#f0e8dc] rounded-2xl shadow-xl p-1.5 z-30 animate-fade-in-up space-y-1">
+                  <button
+                    onClick={() => {
+                      setIsTrashOpen(!isTrashOpen);
+                      setIsAdding(false);
+                      setIsMenuOpen(false);
+                    }}
+                    className={`w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold transition-colors text-left ${
+                      isTrashOpen
+                        ? 'bg-[#fff3e5] text-[#ff7a00]'
+                        : 'text-[#1c1917] hover:bg-[#fffaf3] hover:text-[#ff7a00]'
+                    }`}
+                  >
+                    <Trash2 className="w-3.5 h-3.5 text-[#78716c]" />
+                    <span>{isTrashOpen ? 'Hide Trash Bin' : `View Trash Bin (${archivedTasks.length})`}</span>
+                  </button>
+
+                  <div className="h-[1px] bg-[#f2e8da] my-1" />
+
                   <button
                     onClick={() => {
                       resetBoard(workspaceId);
