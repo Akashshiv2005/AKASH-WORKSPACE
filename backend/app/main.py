@@ -11,18 +11,30 @@ from app.core.config import settings
 from app.routers import health, auth, workspace, page, ai, expense
 
 
-# Background task to ping itself every 14 minutes and prevent sleeping
+import os
+
+# Background task to ping itself every 8 minutes and prevent sleeping while alive
 async def keep_alive():
-    # Make sure this matches your exact Render backend URL
-    url = "https://akash-workspace-backend.onrender.com"
+    # Automatically uses Render's built-in RENDER_EXTERNAL_URL or BACKEND_URL
+    base_url = (
+        os.getenv("RENDER_EXTERNAL_URL")
+        or os.getenv("BACKEND_URL")
+        or "https://akash-workspace-backend.onrender.com"
+    ).rstrip("/")
+    ping_url = f"{base_url}/api/health"
+
+    # Wait 30s after startup before first ping
+    await asyncio.sleep(30)
+
     while True:
-        await asyncio.sleep(14 * 60)  # Wait 14 minutes
         try:
-            async with httpx.AsyncClient() as client:
-                await client.get(url)
-                print(f"Keep-alive successful. Pinged: {url}")
+            async with httpx.AsyncClient(timeout=25.0) as client:
+                response = await client.get(ping_url)
+                print(f"[Keep-Alive] Pinged: {ping_url} - Status: {response.status_code}")
         except Exception as e:
-            print(f"Keep-alive failed: {e}")
+            print(f"[Keep-Alive] Ping failed for {ping_url}: {e}")
+        # Wait 8 minutes (Render sleeps after 15 minutes of inactivity)
+        await asyncio.sleep(8 * 60)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

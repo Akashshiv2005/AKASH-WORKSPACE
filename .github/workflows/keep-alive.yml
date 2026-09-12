@@ -1,0 +1,21 @@
+name: Render Keep-Alive Pinger
+on:
+  schedule:
+    # Run every 10 minutes (cron runs in UTC)
+    - cron: '*/10 * * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+
+jobs:
+  ping:
+    name: Ping Render Backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Health Endpoint
+        run: |
+          URL="${{ secrets.RENDER_BACKEND_URL }}"
+          if [ -z "$URL" ]; then
+            URL="https://akash-workspace-backend.onrender.com"
+          fi
+          echo "Pinging ${URL}/api/health ..."
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 60 "${URL}/api/health" || echo "000")
+          echo "Response code: $STATUS"
