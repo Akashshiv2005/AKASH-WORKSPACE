@@ -232,7 +232,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           className="flex items-center justify-between p-2 rounded-xl hover:bg-[#f2ebe1] cursor-pointer transition-all border border-transparent hover:border-[#e7dfd4]"
         >
           <div className="flex items-center space-x-2.5 min-w-0">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#ff7a00] to-[#ff9500] text-white flex items-center justify-center font-black text-xs shrink-0 shadow-sm animate-float orange-pulse">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#dc2626] via-[#f59e0b] to-[#b91c1c] text-white flex items-center justify-center font-black text-xs shrink-0 shadow-sm animate-float gold-red-pulse">
               <Shield className="w-4.5 h-4.5 text-white" />
             </div>
             <div className="min-w-0 flex-1">
@@ -245,7 +245,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             </div>
           </div>
           <div className="flex items-center space-x-1 text-[#a8a29e] shrink-0">
-            <ChevronsUpDown className="w-3.5 h-3.5 text-[#ff7a00]" />
+            <ChevronsUpDown className="w-3.5 h-3.5 text-[#dc2626]" />
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -262,7 +262,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         {/* Workspace Dropdown */}
         {isWorkspaceMenuOpen && (
           <div className="absolute top-16 left-3 right-3 bg-white border border-[#f0e8dc] rounded-xl shadow-xl py-2 z-50 text-xs animate-fade-in-up">
-            <div className="px-3 py-1 text-[10px] uppercase font-bold text-[#ff7a00] tracking-wider">
+            <div className="px-3 py-1 text-[10px] uppercase font-bold text-[#dc2626] tracking-wider">
               Workspaces
             </div>
             {workspaces.map((ws) => (
@@ -273,7 +273,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                   setIsWorkspaceMenuOpen(false);
                 }}
                 className={`w-full text-left px-3 py-2 flex items-center space-x-2 hover:bg-[#f9f6f0] ${
-                  ws.id === activeWorkspace?.id ? 'font-semibold text-[#ff7a00] bg-[#fff3e5]' : 'text-[#44403c]'
+                  ws.id === activeWorkspace?.id ? 'font-semibold text-[#dc2626] bg-[#fff1f2]' : 'text-[#44403c]'
                 }`}
               >
                 <span>{ws.icon || '💼'}</span>
@@ -290,7 +290,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                   placeholder="Workspace name..."
                   value={newWsName}
                   onChange={(e) => setNewWsName(e.target.value)}
-                  className="w-full px-2 py-1 bg-[#faf7f2] border border-[#f0e8dc] rounded text-xs outline-none focus:border-[#ff7a00] text-[#1c1917]"
+                  className="w-full px-2 py-1 bg-[#faf7f2] border border-[#f0e8dc] rounded text-xs outline-none focus:border-[#dc2626] text-[#1c1917]"
                   autoFocus
                 />
                 <div className="flex justify-end space-x-1">
@@ -303,7 +303,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                   </button>
                   <button
                     type="submit"
-                    className="px-2 py-0.5 text-xs bg-[#ff7a00] text-white font-bold rounded"
+                    className="px-2 py-0.5 text-xs bg-[#dc2626] text-white font-bold rounded"
                   >
                     Create
                   </button>
@@ -312,7 +312,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
             ) : (
               <button
                 onClick={() => setIsCreatingWs(true)}
-                className="w-full text-left px-3 py-1.5 flex items-center space-x-2 hover:bg-[#f9f6f0] text-[#ff7a00] font-medium"
+                className="w-full text-left px-3 py-1.5 flex items-center space-x-2 hover:bg-[#f9f6f0] text-[#dc2626] font-medium"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>+ New Workspace</span>
@@ -329,7 +329,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#44403c] transition-all hover:scale-[1.01]"
         >
           <div className="flex items-center space-x-2">
-            <Search className="w-3.5 h-3.5 text-[#ff7a00]" />
+            <Search className="w-3.5 h-3.5 text-[#dc2626]" />
             <span>Search Workspace</span>
           </div>
           <kbd className="px-1.5 py-0.5 bg-[#f0e8dc] text-[10px] font-mono rounded text-[#78716c]">
@@ -341,11 +341,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           onClick={() => setAuthModalOpen(true, 'login')}
           className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#44403c] transition-all hover:scale-[1.01]"
         >
-          <Settings className="w-3.5 h-3.5 text-[#ff7a00]" />
+          <Settings className="w-3.5 h-3.5 text-[#dc2626]" />
           <span>Settings & Auth</span>
         </button>
 
-        <div className="pt-2 px-2.5 pb-1 text-[10px] font-black uppercase text-[#a8a29e] hover:text-[#ff7a00] tracking-wider transition-colors duration-300">
+        <div className="pt-2 px-2.5 pb-1 text-[10px] font-black uppercase text-[#a8a29e] hover:text-[#dc2626] tracking-wider transition-colors duration-300">
           HABIT & PRODUCTIVITY
         </div>
 
@@ -354,7 +354,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           onClick={() => wrapCreate(handleCreateHabitTracker)}
           className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#44403c] font-medium transition-all hover:scale-[1.01]"
         >
-          <Flame className="w-3.5 h-3.5 text-[#ff7a00]" />
+          <Flame className="w-3.5 h-3.5 text-[#dc2626]" />
           <span>Habit Tracker</span>
         </button>
 
@@ -363,7 +363,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           onClick={() => wrapCreate(handleCreateTodoPlanner)}
           className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#44403c] font-medium transition-all hover:scale-[1.01]"
         >
-          <CheckSquare className="w-3.5 h-3.5 text-[#ff7a00]" />
+          <CheckSquare className="w-3.5 h-3.5 text-[#dc2626]" />
           <span>To-Do Planner</span>
         </button>
 
@@ -372,7 +372,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           onClick={() => wrapCreate(handleCreatePomodoro)}
           className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#44403c] font-medium transition-all hover:scale-[1.01]"
         >
-          <Zap className="w-3.5 h-3.5 text-[#ff7a00]" />
+          <Zap className="w-3.5 h-3.5 text-[#d97706]" />
           <span>Arc Focus Timer</span>
         </button>
 
@@ -381,7 +381,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
           onClick={() => wrapCreate(handleCreateJournal)}
           className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#44403c] font-medium transition-all hover:scale-[1.01]"
         >
-          <BookOpen className="w-3.5 h-3.5 text-[#ff7a00]" />
+          <BookOpen className="w-3.5 h-3.5 text-[#dc2626]" />
           <span>Daily Journal</span>
         </button>
 
@@ -397,7 +397,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         {/* Study & Learning Plans Pill */}
         <button
           onClick={() => wrapCreate(handleCreatePlansHub)}
-          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#44403c] font-bold text-[#ff7a00] bg-[#fff3e5] transition-all hover:scale-[1.01] border border-[#ff7a00]/30"
+          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#dc2626] font-extrabold bg-[#fff1f2] transition-all hover:scale-[1.01] border border-[#fecdd3]"
         >
           <span className="text-sm">🎯</span>
           <span>Study & Learning Plans</span>
@@ -408,7 +408,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       {favoritePages.length > 0 && (
         <div className="mt-2 px-2">
           <div className="px-2 py-1 text-[10px] font-black uppercase text-[#a8a29e] tracking-wider flex items-center space-x-1">
-            <Star className="w-3 h-3 fill-[#ff7a00] text-[#ff7a00]" />
+            <Star className="w-3 h-3 fill-[#d97706] text-[#d97706]" />
             <span>FAVORITES</span>
           </div>
           <div className="space-y-0.5">

@@ -92,7 +92,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
 
           {/* Workspace Shield Logo */}
           <div className="hidden sm:flex items-center space-x-2 shrink-0">
-            <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[#ff7a00] to-[#ff9500] text-white flex items-center justify-center shadow-xs orange-pulse">
+            <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[#dc2626] via-[#f59e0b] to-[#b91c1c] text-white flex items-center justify-center shadow-xs gold-red-pulse">
               <Shield className="w-3.5 h-3.5 text-white" />
             </div>
             <span className="text-xs font-black text-gradient-flow text-glow hover-text-shimmer truncate max-w-[140px] md:max-w-none">
@@ -106,7 +106,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
               <ChevronRight className="w-3.5 h-3.5 text-[#a8a29e] shrink-0" />
               <div className="flex items-center space-x-1 min-w-0">
                 {page.icon && <span className="text-xs shrink-0 animate-text-pop">{page.icon}</span>}
-                <span className={`text-xs truncate transition-all duration-300 ${index === breadcrumbs.length - 1 ? 'font-bold text-[#1c1917] hover:text-[#ff7a00] animate-text-reveal' : 'text-[#78716c] hover:text-[#1c1917]'}`}>
+                <span className={`text-xs truncate transition-all duration-300 ${index === breadcrumbs.length - 1 ? 'font-bold text-[#1c1917] hover:text-[#dc2626] animate-text-reveal' : 'text-[#78716c] hover:text-[#1c1917]'}`}>
                   {page.title || 'Untitled'}
                 </span>
               </div>
@@ -116,10 +116,10 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
 
         {/* Right Section: Ask JARVIS, Notifications & Actions */}
         <div className="flex items-center space-x-2 shrink-0">
-          {/* Ask JARVIS Button (ChatGPT Orange Accent) */}
+          {/* Ask JARVIS Button (Gold & Red Accent) */}
           <button
             onClick={() => setIsAiModalOpen(true)}
-            className="flex items-center space-x-1.5 px-2 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#ff7a00] to-[#ff9500] hover:from-[#e66e00] hover:to-[#e68600] text-white text-xs font-black shadow-sm transition-all hover:scale-105 orange-pulse"
+            className="flex items-center space-x-1.5 px-2 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#dc2626] via-[#f59e0b] to-[#b91c1c] hover:from-[#b91c1c] hover:to-[#d97706] text-white text-xs font-black shadow-sm transition-all hover:scale-105 gold-red-pulse"
             title="Open JARVIS AI Assistant"
           >
             <Zap className="w-3.5 h-3.5 text-white fill-white" />
@@ -131,11 +131,11 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
             <button
               onClick={() => toggleFavorite(activePage.id)}
               className={`hidden sm:flex p-1.5 rounded-lg hover:bg-[#f2ebe1] transition-colors ${
-                activePage.is_favorite ? 'text-[#ff7a00]' : 'text-[#a8a29e]'
+                activePage.is_favorite ? 'text-[#d97706]' : 'text-[#a8a29e]'
               }`}
               title={activePage.is_favorite ? 'Remove from Favorites' : 'Add to Favorites'}
             >
-              <Star className={`w-4 h-4 ${activePage.is_favorite ? 'fill-[#ff7a00]' : ''}`} />
+              <Star className={`w-4 h-4 ${activePage.is_favorite ? 'fill-[#d97706]' : ''}`} />
             </button>
           )}
 

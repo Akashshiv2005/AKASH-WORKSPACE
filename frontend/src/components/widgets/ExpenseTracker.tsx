@@ -5,7 +5,7 @@ import { useWorkspaceStore } from '../../store/useWorkspaceStore';
 import { PieChart as RechartsPie, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
 import { useEffect } from 'react';
 
-const COLORS = ['#ff7a00', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'];
+const COLORS = ['#dc2626', '#f59e0b', '#3b82f6', '#10b981', '#8b5cf6', '#ef4444'];
 
 export const ExpenseTracker: React.FC = () => {
   const { activeWorkspace } = useWorkspaceStore();
@@ -118,8 +118,8 @@ export const ExpenseTracker: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* Total Expenses */}
         <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] flex items-center space-x-4 shadow-xs hover:scale-[1.02] transition-all stark-hud-card">
-          <div className="p-3 rounded-xl bg-[#fff3e5] text-[#ff7a00] shadow-xs">
-            <Wallet className="w-5 h-5 text-[#ff7a00]" />
+          <div className="p-3 rounded-xl bg-amber-500/10 text-red-600 shadow-xs border border-amber-500/20">
+            <Wallet className="w-5 h-5 text-red-600" />
           </div>
           <div>
             <div className="text-2xl font-black text-gradient-flow text-glow animate-count-pulse">
@@ -162,11 +162,11 @@ export const ExpenseTracker: React.FC = () => {
         <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] shadow-xs stark-hud-card">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-2">
-              <Target className="w-4 h-4 text-[#ff7a00]" />
+              <Target className="w-4 h-4 text-red-600" />
               <h3 className="text-sm font-black text-[#1c1917]">Savings Goal</h3>
             </div>
             {!isEditingGoal && (
-              <button onClick={() => setIsEditingGoal(true)} className="p-1 text-[#a8a29e] hover:text-[#ff7a00] transition-colors">
+              <button onClick={() => setIsEditingGoal(true)} className="p-1 text-[#a8a29e] hover:text-red-600 transition-colors">
                 <Edit2 className="w-3.5 h-3.5" />
               </button>
             )}
@@ -178,20 +178,20 @@ export const ExpenseTracker: React.FC = () => {
                 type="number"
                 value={newGoal}
                 onChange={(e) => setNewGoal(e.target.value)}
-                className="w-full px-3 py-1.5 bg-[#faf7f2] border border-[#f0e8dc] rounded-xl text-sm font-bold outline-none focus:border-[#ff7a00]"
+                className="w-full px-3 py-1.5 bg-[#faf7f2] border border-[#f0e8dc] rounded-xl text-sm font-bold outline-none focus:border-red-600"
                 autoFocus
               />
-              <button type="submit" className="px-3 py-1.5 bg-[#ff7a00] text-white text-xs font-black rounded-xl">Save</button>
+              <button type="submit" className="px-3 py-1.5 bg-gradient-to-r from-red-600 to-amber-500 text-white text-xs font-black rounded-xl">Save</button>
             </form>
           ) : (
             <div className="space-y-2">
               <div className="flex justify-between items-end">
                 <div className="text-2xl font-black text-[#1c1917]">{formatCurrency(total)} <span className="text-sm text-[#a8a29e] font-semibold">/ {formatCurrency(savingsGoal)}</span></div>
-                <div className="text-xs font-bold text-[#ff7a00]">{goalProgress.toFixed(1)}%</div>
+                <div className="text-xs font-bold text-red-600">{goalProgress.toFixed(1)}%</div>
               </div>
               <div className="w-full bg-[#f0e8dc] h-3 rounded-full overflow-hidden shadow-inner">
                 <div
-                  className={`h-full transition-all duration-1000 ${goalProgress > 100 ? 'bg-red-500' : 'bg-gradient-to-r from-[#ff7a00] to-[#ff9500]'}`}
+                  className={`h-full transition-all duration-1000 ${goalProgress > 100 ? 'bg-red-500' : 'bg-gradient-to-r from-red-600 via-amber-500 to-amber-400'}`}
                   style={{ width: `${Math.min(goalProgress, 100)}%` }}
                 />
               </div>
@@ -253,14 +253,14 @@ export const ExpenseTracker: React.FC = () => {
         {/* Header Controls */}
         <div className="p-4 border-b border-[#f2e8da] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center space-x-2">
-            <PieChart className="w-4 h-4 text-[#ff7a00]" />
+            <PieChart className="w-4 h-4 text-red-600" />
             <h3 className="text-sm font-black text-[#1c1917] tracking-wide">Expense History</h3>
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
             <button
               onClick={() => setIsAdding(!isAdding)}
-              className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#ff7a00] to-[#ff9500] hover:from-[#e66e00] hover:to-[#e68600] text-white text-xs font-black shadow-xs transition-all hover:scale-105"
+              className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-700 hover:to-amber-600 text-white text-xs font-black shadow-xs transition-all hover:scale-105"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>Add Expense</span>
@@ -276,7 +276,7 @@ export const ExpenseTracker: React.FC = () => {
               placeholder="Amount (₹)"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              className="w-full sm:w-28 px-3 py-1.5 bg-white border border-[#f0e8dc] rounded-xl text-xs outline-none focus:border-[#ff7a00] text-[#1c1917] font-bold"
+              className="w-full sm:w-28 px-3 py-1.5 bg-white border border-[#f0e8dc] rounded-xl text-xs outline-none focus:border-red-600 text-[#1c1917] font-bold"
               autoFocus
             />
             <input
@@ -284,7 +284,7 @@ export const ExpenseTracker: React.FC = () => {
               placeholder="What was this for?"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="flex-1 min-w-0 px-3 py-1.5 bg-white border border-[#f0e8dc] rounded-xl text-xs outline-none focus:border-[#ff7a00] text-[#1c1917] font-medium"
+              className="flex-1 min-w-0 px-3 py-1.5 bg-white border border-[#f0e8dc] rounded-xl text-xs outline-none focus:border-red-600 text-[#1c1917] font-medium"
             />
             <select
               value={category}
@@ -309,7 +309,7 @@ export const ExpenseTracker: React.FC = () => {
             <div className="flex items-center space-x-2">
               <button
                 type="submit"
-                className="px-3.5 py-1.5 bg-[#ff7a00] text-white text-xs font-black rounded-xl whitespace-nowrap hover:bg-[#e66e00] transition-colors"
+                className="px-3.5 py-1.5 bg-gradient-to-r from-red-600 to-amber-500 text-white text-xs font-black rounded-xl whitespace-nowrap hover:from-red-700 hover:to-amber-600 transition-colors"
               >
                 Save
               </button>

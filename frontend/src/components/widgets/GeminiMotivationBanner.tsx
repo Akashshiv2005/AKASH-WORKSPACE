@@ -46,11 +46,11 @@ export const GeminiMotivationBanner: React.FC = () => {
 
   return (
     <div className="my-6 select-none animate-fade-in-up">
-      <div className="rounded-2xl bg-[#fffaf3] border border-[#ffe9d1] p-6 text-[#1c1917] space-y-4 shadow-sm">
+      <div className="rounded-2xl bg-[#fffaf3] border border-amber-500/20 p-6 text-[#1c1917] space-y-4 shadow-sm">
         {/* Header Row */}
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#ff7a00] to-[#ff9500] text-white flex items-center justify-center shadow-xs animate-float">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-red-600 to-amber-500 text-white flex items-center justify-center shadow-xs animate-float">
               <Shield className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -66,7 +66,7 @@ export const GeminiMotivationBanner: React.FC = () => {
           <button
             onClick={fetchMotivation}
             disabled={loading}
-            className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-white hover:bg-[#fff7ed] border border-[#ffd8b3] text-xs font-bold text-[#ff7a00] transition-all hover:scale-105 shadow-xs"
+            className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-white hover:bg-amber-50 border border-amber-500/30 text-xs font-bold text-red-600 transition-all hover:scale-105 shadow-xs"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
             <span className="hover-text-shimmer">{loading ? 'Generating...' : 'Refresh JARVIS Quote'}</span>
@@ -75,19 +75,19 @@ export const GeminiMotivationBanner: React.FC = () => {
 
         {/* Quote Block (Exact ChatGPT Quote Styling) */}
         <div className="p-5 rounded-2xl bg-[#fffcf7] border border-[#f5ede2] space-y-3 relative shadow-xs">
-          <Quote className="w-10 h-10 text-[#ff7a00]/10 absolute right-4 top-3 pointer-events-none" />
-          <p className="text-sm font-semibold italic text-[#1c1917] leading-relaxed animate-text-reveal hover:text-[#ff7a00] transition-colors duration-300">
+          <Quote className="w-10 h-10 text-red-600/10 absolute right-4 top-3 pointer-events-none" />
+          <p className="text-sm font-semibold italic text-[#1c1917] leading-relaxed animate-text-reveal hover:text-red-600 transition-colors duration-300">
             "{motivation.quote}"
           </p>
-          <div className="text-xs font-bold text-[#ff7a00] shimmer-text-orange inline-block">
+          <div className="text-xs font-bold text-red-600 shimmer-text-orange inline-block">
             — {motivation.author}
           </div>
         </div>
 
         {/* Live Typewriter Mindset Ticker (Letter-by-Letter typing & Backspacing) */}
-        <div className="flex items-center space-x-2 text-xs text-[#78716c] pt-2 border-t border-[#ffe9d1]/70 overflow-hidden">
-          <div className="flex items-center space-x-1 font-bold text-[#ff7a00] uppercase tracking-wider text-[10px] shrink-0">
-            <Sparkles className="w-3 h-3 text-[#ff7a00]" />
+        <div className="flex items-center space-x-2 text-xs text-[#78716c] pt-2 border-t border-amber-500/20 overflow-hidden">
+          <div className="flex items-center space-x-1 font-bold text-red-600 uppercase tracking-wider text-[10px] shrink-0">
+            <Sparkles className="w-3 h-3 text-amber-500" />
             <span>EXECUTIVE TIP:</span>
           </div>
           <TypewriterText
@@ -101,7 +101,7 @@ export const GeminiMotivationBanner: React.FC = () => {
             deletingSpeed={22}
             pauseDuration={2800}
             className="text-xs font-semibold text-[#1c1917] truncate"
-            cursorClassName="text-[#ff7a00]"
+            cursorClassName="text-red-600"
           />
         </div>
       </div>

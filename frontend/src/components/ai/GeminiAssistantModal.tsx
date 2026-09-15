@@ -203,14 +203,14 @@ Instructions:
     <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-50 p-4 select-none font-['Sora']">
       <div className="w-full max-w-xl bg-white border border-[#f2e8da] rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[580px] text-[#1c1917] animate-fade-in-up">
         {/* Header Bar */}
-        <div className="p-4 bg-gradient-to-r from-[#ff7a00] to-[#ff9500] text-white flex items-center justify-between shadow-xs">
+        <div className="p-4 bg-gradient-to-r from-red-600 via-amber-600 to-amber-500 text-white flex items-center justify-between shadow-xs">
           <div className="flex items-center space-x-2.5">
             <div className="p-2 rounded-2xl bg-white/20 backdrop-blur-md shadow-xs animate-float">
-              <Sparkles className="w-5 h-5 text-white" />
+              <Sparkles className="w-5 h-5 text-amber-200" />
             </div>
             <div>
               <h3 className="text-sm font-black tracking-wide">JARVIS AI Personal Assistant</h3>
-              <p className="text-[11px] text-amber-100 font-medium">Personal executive companion for Akash Shiv (v2.0 Amber Engine)</p>
+              <p className="text-[11px] text-amber-100 font-medium">Personal executive companion for Akash Shiv (v2.0 Crimson & Gold Engine)</p>
             </div>
           </div>
 
@@ -226,24 +226,24 @@ Instructions:
         <div className="p-2.5 bg-[#faf7f2] border-b border-[#f0e8dc] flex items-center space-x-2 overflow-x-auto text-[11px]">
           <button
             onClick={() => sendMessage('hi')}
-            className="px-3 py-1 rounded-full bg-[#fff3e5] text-[#ff7a00] border border-[#ffe0c2] font-extrabold shrink-0 flex items-center space-x-1 hover:scale-105 transition-all"
+            className="px-3 py-1 rounded-full bg-amber-500/10 text-red-600 border border-amber-500/30 font-extrabold shrink-0 flex items-center space-x-1 hover:scale-105 transition-all"
           >
             <span>👋 Say Hello</span>
           </button>
 
           <button
             onClick={() => sendMessage('what is to day to do')}
-            className="px-3 py-1 rounded-full bg-[#fff3e5] text-[#ff7a00] border border-[#ffe0c2] font-extrabold shrink-0 flex items-center space-x-1 hover:scale-105 transition-all"
+            className="px-3 py-1 rounded-full bg-amber-500/10 text-red-600 border border-amber-500/30 font-extrabold shrink-0 flex items-center space-x-1 hover:scale-105 transition-all"
           >
-            <Target className="w-3 h-3 text-[#ff7a00]" />
+            <Target className="w-3 h-3 text-red-600" />
             <span>Today To-Do Tasks</span>
           </button>
 
           <button
             onClick={() => sendMessage('create the habit dont use mobile 3 hrs')}
-            className="px-3 py-1 rounded-full bg-[#fff3e5] text-[#ff7a00] border border-[#ffe0c2] font-extrabold shrink-0 flex items-center space-x-1 hover:scale-105 transition-all"
+            className="px-3 py-1 rounded-full bg-amber-500/10 text-red-600 border border-amber-500/30 font-extrabold shrink-0 flex items-center space-x-1 hover:scale-105 transition-all"
           >
-            <Flame className="w-3 h-3 text-[#ff7a00]" />
+            <Flame className="w-3 h-3 text-red-600" />
             <span>Auto Create Habit</span>
           </button>
 
@@ -269,17 +269,17 @@ Instructions:
                 className={`w-8 h-8 rounded-2xl flex items-center justify-center shrink-0 text-white font-bold text-xs shadow-xs ${
                   msg.sender === 'user'
                     ? 'bg-[#1c1917]'
-                    : 'bg-gradient-to-br from-[#ff7a00] to-[#ff9500]'
+                    : 'bg-gradient-to-br from-red-600 to-amber-500'
                 }`}
               >
-                {msg.sender === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+                {msg.sender === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4 text-amber-200" />}
               </div>
 
               <div className="space-y-1.5 max-w-[80%]">
                 <div
                   className={`p-3.5 rounded-2xl leading-relaxed whitespace-pre-line shadow-xs ${
                     msg.sender === 'user'
-                      ? 'bg-gradient-to-r from-[#ff7a00] to-[#ff9500] text-white font-semibold rounded-tr-none'
+                      ? 'bg-gradient-to-r from-red-600 to-amber-600 text-white font-semibold rounded-tr-none'
                       : 'bg-[#faf7f2] text-[#1c1917] border border-[#f0e8dc] rounded-tl-none font-medium'
                   }`}
                 >
@@ -301,8 +301,8 @@ Instructions:
             </div>
           ))}
           {loading && (
-            <div className="flex items-center space-x-2 text-[#ff7a00] text-xs font-bold italic">
-              <Sparkles className="w-4 h-4 animate-spin" />
+            <div className="flex items-center space-x-2 text-red-600 text-xs font-bold italic">
+              <Sparkles className="w-4 h-4 animate-spin text-amber-500" />
               <span>JARVIS is thinking & responding...</span>
             </div>
           )}
@@ -321,12 +321,12 @@ Instructions:
             placeholder="Ask JARVIS: 'what is to day to do', 'create habit...', 'hi'..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className="flex-1 px-4 py-2.5 bg-[#faf7f2] border border-[#f0e8dc] rounded-2xl text-xs outline-none focus:border-[#ff7a00] text-[#1c1917] font-medium transition-colors"
+            className="flex-1 px-4 py-2.5 bg-[#faf7f2] border border-[#f0e8dc] rounded-2xl text-xs outline-none focus:border-red-600 text-[#1c1917] font-medium transition-colors"
           />
           <button
             type="submit"
             disabled={loading || !input.trim()}
-            className="p-2.5 rounded-2xl bg-gradient-to-r from-[#ff7a00] to-[#ff9500] hover:from-[#e66e00] hover:to-[#e68600] text-white disabled:opacity-40 transition-all shadow-xs"
+            className="p-2.5 rounded-2xl bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-700 hover:to-amber-600 text-white disabled:opacity-40 transition-all shadow-xs"
           >
             <Send className="w-4 h-4" />
           </button>
