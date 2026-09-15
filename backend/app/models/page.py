@@ -1,6 +1,6 @@
 import uuid
 from typing import List, Optional, TYPE_CHECKING
-from sqlalchemy import String, Boolean, Float, ForeignKey, Index
+from sqlalchemy import String, Boolean, Float, ForeignKey, Index, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base, TimestampMixin
 
@@ -49,6 +49,10 @@ class Page(Base, TimestampMixin):
     )
     cover_image: Mapped[Optional[str]] = mapped_column(
         String(1000),
+        nullable=True,
+    )
+    content: Mapped[Optional[str]] = mapped_column(
+        Text,
         nullable=True,
     )
     is_favorite: Mapped[bool] = mapped_column(

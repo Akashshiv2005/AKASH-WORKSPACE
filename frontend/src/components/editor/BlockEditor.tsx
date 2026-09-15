@@ -118,7 +118,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = ({ page }) => {
       {page.widget_type === 'dsa_planner' && <DsaPlanner />}
 
       {/* Widget Render: Plans & Learning Hub */}
-      {page.widget_type === 'plans_hub' && <PlansHub />}
+      {page.widget_type === 'plans_hub' && <PlansHub page={page} />}
 
       {/* Floating Toolbar when selecting text */}
       {editor.state.selection && !editor.state.selection.empty && (

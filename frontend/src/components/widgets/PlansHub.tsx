@@ -15,6 +15,7 @@ import {
   Target
 } from 'lucide-react';
 import { apiClient } from '../../api/client';
+import { Page, usePageStore } from '../../store/usePageStore';
 
 export interface PlanProblem {
   id: string;
@@ -59,6 +60,10 @@ export interface Plan {
   days: PlanDay[];
   notes: PlanNote[];
   attachments: PlanAttachment[];
+}
+
+interface PlansHubProps {
+  page?: Page;
 }
 
 // Default pre-built 30-Day DSA Curriculum template
@@ -212,7 +217,8 @@ const INITIAL_PLANS: Plan[] = [
   },
 ];
 
-export const PlansHub: React.FC = () => {
+export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
+  const { updatePage } = usePageStore();
   const [plans, setPlans] = useState<Plan[]>(INITIAL_PLANS);
   const [selectedPlanId, setSelectedPlanId] = useState<string>('plan-dsa-30');
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
@@ -234,25 +240,42 @@ export const PlansHub: React.FC = () => {
   const [emailStatus, setEmailStatus] = useState<string | null>(null);
   const [isSendingEmail, setIsSendingEmail] = useState(false);
 
-  // Load from localStorage
+  // Load from page.content (Database) or localStorage fallback
   useEffect(() => {
     try {
+      if (page?.content) {
+        const parsed = typeof page.content === 'string' && page.content.startsWith('[')
+          ? JSON.parse(page.content)
+          : null;
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setPlans(parsed);
+          setSelectedPlanId(parsed[0].id);
+          return;
+        }
+      }
+
       const saved = localStorage.getItem('akash_plans_hub_data');
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
           setPlans(parsed);
+          setSelectedPlanId(parsed[0].id);
         }
       }
     } catch {
-      // ignore
+      // fallback
     }
-  }, []);
+  }, [page?.id]);
 
-  // Save to localStorage on updates
-  useEffect(() => {
-    localStorage.setItem('akash_plans_hub_data', JSON.stringify(plans));
-  }, [plans]);
+  // Sync state to Database (via updatePage) and localStorage
+  const savePlansState = (updatedPlans: Plan[]) => {
+    setPlans(updatedPlans);
+    localStorage.setItem('akash_plans_hub_data', JSON.stringify(updatedPlans));
+
+    if (page?.id) {
+      updatePage(page.id, { content: JSON.stringify(updatedPlans) });
+    }
+  };
 
   const activePlan = plans.find((p) => p.id === selectedPlanId) || plans[0];
 
@@ -265,20 +288,18 @@ export const PlansHub: React.FC = () => {
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
 
-      // Match patterns like "Day 1:", "Day 01 -", "Day 1", "Week 1 Day 2"
       const dayMatch = line.match(/(?:Day|day)\s*(\d+)\s*[:\-\s]*(.*)/i);
       if (dayMatch) {
         const dNum = parseInt(dayMatch[1], 10) || currentDayNum;
         const dTitle = dayMatch[2] || line;
-        
-        // Grab next lines as theory / tasks until next Day line
+
         const theoryLines: string[] = [];
         let j = i + 1;
         while (j < lines.length && !lines[j].match(/(?:Day|day)\s*\d+/i)) {
           theoryLines.push(lines[j]);
           j++;
         }
-        i = j - 1; // Advance main loop
+        i = j - 1;
 
         parsedDays.push({
           day: dNum,
@@ -291,10 +312,8 @@ export const PlansHub: React.FC = () => {
         });
         currentDayNum = dNum + 1;
       } else if (line.match(/^(?:Week|Module|\d+\.)/i)) {
-        // Section header
         continue;
       } else if (parsedDays.length === 0 && line.length > 5) {
-        // Fallback for lines without explicit "Day X"
         parsedDays.push({
           day: currentDayNum,
           title: line,
@@ -308,7 +327,6 @@ export const PlansHub: React.FC = () => {
       }
     }
 
-    // Fallback if parsing returned empty
     if (parsedDays.length === 0) {
       return Array.from({ length: 7 }).map((_, idx) => ({
         day: idx + 1,
@@ -342,7 +360,8 @@ export const PlansHub: React.FC = () => {
       attachments: [],
     };
 
-    setPlans([...plans, newPlan]);
+    const nextPlans = [...plans, newPlan];
+    savePlansState(nextPlans);
     setSelectedPlanId(newPlan.id);
     setShowCreateModal(false);
     setNewPlanTitle('');
@@ -357,32 +376,32 @@ export const PlansHub: React.FC = () => {
     }
     if (confirm('Are you sure you want to delete this plan?')) {
       const filtered = plans.filter((p) => p.id !== planId);
-      setPlans(filtered);
+      savePlansState(filtered);
       setSelectedPlanId(filtered[0].id);
     }
   };
 
   // Toggle Day Completion
   const toggleDayComplete = (dayNum: number) => {
-    setPlans(
-      plans.map((p) => {
-        if (p.id !== activePlan.id) return p;
-        const updatedDays = p.days.map((d) =>
-          d.day === dayNum ? { ...d, completed: !d.completed } : d
-        );
-        return { ...p, days: updatedDays };
-      })
-    );
+    const updated = plans.map((p) => {
+      if (p.id !== activePlan.id) return p;
+      const updatedDays = p.days.map((d) =>
+        d.day === dayNum ? { ...d, completed: !d.completed } : d
+      );
+      return { ...p, days: updatedDays };
+    });
+    savePlansState(updated);
   };
 
   // Set Active Focus Day
   const setActiveDay = (dayNum: number) => {
-    setPlans(
-      plans.map((p) => (p.id === activePlan.id ? { ...p, activeDay: dayNum } : p))
+    const updated = plans.map((p) =>
+      p.id === activePlan.id ? { ...p, activeDay: dayNum } : p
     );
+    savePlansState(updated);
   };
 
-  // Add Note to Plan
+  // Add Note to Plan (Persisted in DB)
   const handleAddNote = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newNoteTitle.trim()) return;
@@ -394,18 +413,17 @@ export const PlansHub: React.FC = () => {
       updatedAt: new Date().toLocaleDateString(),
     };
 
-    setPlans(
-      plans.map((p) =>
-        p.id === activePlan.id ? { ...p, notes: [newNote, ...p.notes] } : p
-      )
+    const updated = plans.map((p) =>
+      p.id === activePlan.id ? { ...p, notes: [newNote, ...p.notes] } : p
     );
+    savePlansState(updated);
 
     setNewNoteTitle('');
     setNewNoteContent('');
     setShowNoteForm(false);
   };
 
-  // Handle File Upload Attachment
+  // Handle File Upload Attachment (Persisted in DB as Base64/DataURL)
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -423,26 +441,30 @@ export const PlansHub: React.FC = () => {
           uploadedAt: new Date().toLocaleDateString(),
         };
 
-        setPlans((prevPlans) =>
-          prevPlans.map((p) =>
+        setPlans((prevPlans) => {
+          const next = prevPlans.map((p) =>
             p.id === activePlan.id
               ? { ...p, attachments: [newAttachment, ...p.attachments] }
               : p
-          )
-        );
+          );
+          if (page?.id) {
+            updatePage(page.id, { content: JSON.stringify(next) });
+          }
+          localStorage.setItem('akash_plans_hub_data', JSON.stringify(next));
+          return next;
+        });
       };
       reader.readAsDataURL(file);
     });
   };
 
   const deleteAttachment = (attId: string) => {
-    setPlans(
-      plans.map((p) =>
-        p.id === activePlan.id
-          ? { ...p, attachments: p.attachments.filter((a) => a.id !== attId) }
-          : p
-      )
+    const updated = plans.map((p) =>
+      p.id === activePlan.id
+        ? { ...p, attachments: p.attachments.filter((a) => a.id !== attId) }
+        : p
     );
+    savePlansState(updated);
   };
 
   // Notifications
@@ -490,20 +512,20 @@ export const PlansHub: React.FC = () => {
   const currentDayData = activePlan.days.find((d) => d.day === activePlan.activeDay) || activePlan.days[0];
 
   return (
-    <div className="space-y-6 pt-2 text-[#1c1917]">
+    <div className="w-full max-w-full overflow-x-hidden min-w-0 space-y-6 pt-2 text-[#1c1917] select-none">
       {/* HEADER BAR & PLANS HUB SELECTOR */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-[#ff7a00] via-[#ff9500] to-[#e66000] p-6 rounded-2xl text-white shadow-xl">
-        <div className="space-y-1">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-[#ff7a00] via-[#ff9500] to-[#e66000] p-6 rounded-2xl text-white shadow-xl min-w-0">
+        <div className="space-y-1 min-w-0 flex-1">
           <div className="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
             <Target className="w-3.5 h-3.5 text-yellow-300" />
             <span>Plans & Learning Hub</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight">{activePlan.title}</h1>
-          <p className="text-xs sm:text-sm text-white/90 max-w-xl">{activePlan.description}</p>
+          <h1 className="text-xl sm:text-2xl font-black tracking-tight truncate max-w-full">{activePlan.title}</h1>
+          <p className="text-xs text-white/90 max-w-xl break-words line-clamp-2">{activePlan.description}</p>
         </div>
 
         {/* Action Buttons & Progress Badge */}
-        <div className="flex items-center space-x-3 shrink-0">
+        <div className="flex items-center space-x-3 shrink-0 flex-wrap gap-2">
           <div className="bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/30 text-center">
             <div className="text-base font-black text-white">{percentLearned}%</div>
             <div className="text-[10px] text-white/80 font-bold uppercase">Learned</div>
@@ -519,13 +541,13 @@ export const PlansHub: React.FC = () => {
       </div>
 
       {/* PLANS SELECTION CAROUSEL / ROW */}
-      <div className="space-y-2">
+      <div className="space-y-2 min-w-0">
         <div className="text-xs font-black uppercase text-[#a8a29e] tracking-wider flex items-center justify-between px-1">
           <span>YOUR ACTIVE PLANS ({plans.length})</span>
           <span className="text-[11px] font-semibold text-[#ff7a00]">Click a plan to switch view</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 min-w-0">
           {plans.map((p) => {
             const pDone = p.days.filter((d) => d.completed).length;
             const pTotal = p.days.length;
@@ -536,29 +558,29 @@ export const PlansHub: React.FC = () => {
               <div
                 key={p.id}
                 onClick={() => setSelectedPlanId(p.id)}
-                className={`p-4 rounded-xl border cursor-pointer transition-all relative group ${
+                className={`p-4 rounded-xl border cursor-pointer transition-all relative group min-w-0 max-w-full ${
                   isSelected
                     ? 'bg-white border-[#ff7a00] shadow-lg ring-2 ring-[#ff7a00]/30'
                     : 'bg-[#faf7f2] border-[#f0e8dc] hover:border-[#ff7a00]/40'
                 }`}
               >
-                <div className="flex items-start justify-between">
-                  <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-[#fff3e5] text-[#ff7a00]">
+                <div className="flex items-start justify-between min-w-0">
+                  <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-[#fff3e5] text-[#ff7a00] truncate max-w-[80%]">
                     {p.category}
                   </span>
 
                   <button
                     onClick={(e) => handleDeletePlan(p.id, e)}
-                    className="opacity-0 group-hover:opacity-100 p-1 text-[#a8a29e] hover:text-red-500 rounded transition-all"
+                    className="opacity-0 group-hover:opacity-100 p-1 text-[#a8a29e] hover:text-red-500 rounded transition-all shrink-0"
                     title="Delete Plan"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
 
-                <h3 className="text-sm font-extrabold text-[#1c1917] mt-2 truncate">{p.title}</h3>
+                <h3 className="text-xs font-extrabold text-[#1c1917] mt-2 truncate min-w-0">{p.title}</h3>
 
-                <div className="mt-3 space-y-1">
+                <div className="mt-3 space-y-1 min-w-0">
                   <div className="flex justify-between text-[11px] font-bold text-[#44403c]">
                     <span>{pPct}% Learned</span>
                     <span>{pDone}/{pTotal} Days</span>
@@ -577,51 +599,51 @@ export const PlansHub: React.FC = () => {
       </div>
 
       {/* PLAN DETAILS CONTAINER */}
-      <div className="bg-white rounded-2xl border border-[#f0e8dc] shadow-xl p-6 space-y-6">
+      <div className="bg-white rounded-2xl border border-[#f0e8dc] shadow-xl p-5 space-y-6 min-w-0 max-w-full overflow-hidden">
         {/* DETAIL NAVIGATION TABS */}
-        <div className="flex items-center justify-between border-b border-[#f0e8dc] pb-4">
-          <div className="flex items-center space-x-2">
+        <div className="flex items-center justify-between border-b border-[#f0e8dc] pb-4 flex-wrap gap-2 min-w-0">
+          <div className="flex items-center space-x-2 flex-wrap gap-1">
             <button
               onClick={() => setDetailTab('roadmap')}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-extrabold transition-all ${
+              className={`flex items-center space-x-2 px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all ${
                 detailTab === 'roadmap'
                   ? 'bg-[#ff7a00] text-white shadow-md'
                   : 'bg-[#faf7f2] text-[#44403c] hover:bg-[#f2ebe1]'
               }`}
             >
-              <Layers className="w-4 h-4" />
+              <Layers className="w-3.5 h-3.5" />
               <span>Day-Wise Roadmap</span>
             </button>
 
             <button
               onClick={() => setDetailTab('notes')}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-extrabold transition-all ${
+              className={`flex items-center space-x-2 px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all ${
                 detailTab === 'notes'
                   ? 'bg-[#ff7a00] text-white shadow-md'
                   : 'bg-[#faf7f2] text-[#44403c] hover:bg-[#f2ebe1]'
               }`}
             >
-              <FileText className="w-4 h-4" />
+              <FileText className="w-3.5 h-3.5" />
               <span>Notes ({activePlan.notes.length})</span>
             </button>
 
             <button
               onClick={() => setDetailTab('uploads')}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-extrabold transition-all ${
+              className={`flex items-center space-x-2 px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all ${
                 detailTab === 'uploads'
                   ? 'bg-[#ff7a00] text-white shadow-md'
                   : 'bg-[#faf7f2] text-[#44403c] hover:bg-[#f2ebe1]'
               }`}
             >
-              <Upload className="w-4 h-4" />
+              <Upload className="w-3.5 h-3.5" />
               <span>Uploaded Files ({activePlan.attachments.length})</span>
             </button>
           </div>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 shrink-0">
             <button
               onClick={sendPushNotification}
-              className="p-2 rounded-xl border border-[#e7dfd4] hover:border-[#ff7a00] text-[#ff7a00] bg-[#fff3e5]"
+              className="p-1.5 rounded-xl border border-[#e7dfd4] hover:border-[#ff7a00] text-[#ff7a00] bg-[#fff3e5]"
               title="Notify Today's Lesson"
             >
               <Bell className="w-4 h-4" />
@@ -629,7 +651,7 @@ export const PlansHub: React.FC = () => {
             <button
               onClick={sendEmailNotification}
               disabled={isSendingEmail}
-              className="p-2 rounded-xl border border-[#ff7a00]/30 text-[#ff7a00] hover:bg-[#ff7a00]/10 font-bold text-xs"
+              className="p-1.5 rounded-xl border border-[#ff7a00]/30 text-[#ff7a00] hover:bg-[#ff7a00]/10 font-bold text-xs"
               title="Send Email Reminder"
             >
               <Send className="w-4 h-4" />
@@ -638,28 +660,28 @@ export const PlansHub: React.FC = () => {
         </div>
 
         {emailStatus && (
-          <div className="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 flex items-center space-x-2">
+          <div className="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 flex items-center space-x-2 min-w-0">
             <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span>{emailStatus}</span>
+            <span className="truncate">{emailStatus}</span>
           </div>
         )}
 
         {/* ROADMAP TAB */}
         {detailTab === 'roadmap' && (
-          <div className="space-y-6">
+          <div className="space-y-6 min-w-0 max-w-full">
             {/* TODAY'S GOAL FOCUS SPOTLIGHT CARD */}
             {currentDayData && (
-              <div className="bg-gradient-to-br from-[#fff8f0] to-[#fff3e5] border-2 border-[#ff7a00]/40 rounded-2xl p-5 shadow-sm relative overflow-hidden">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-r from-[#ff7a00] to-[#ff9500] text-white flex items-center justify-center font-black text-lg shadow-md shrink-0">
+              <div className="bg-gradient-to-br from-[#fff8f0] to-[#fff3e5] border-2 border-[#ff7a00]/40 rounded-2xl p-4 shadow-sm relative overflow-hidden min-w-0 max-w-full">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 min-w-0">
+                  <div className="flex items-center space-x-3 min-w-0 flex-1">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-[#ff7a00] to-[#ff9500] text-white flex items-center justify-center font-black text-sm shadow-md shrink-0">
                       D{currentDayData.day}
                     </div>
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <div className="text-[10px] font-black uppercase text-[#ff7a00] tracking-wider">
                         WHAT TO LEARN TODAY
                       </div>
-                      <h2 className="text-base font-extrabold text-[#1c1917] mt-0.5">
+                      <h2 className="text-xs font-extrabold text-[#1c1917] mt-0.5 truncate max-w-full">
                         {currentDayData.title}
                       </h2>
                     </div>
@@ -667,30 +689,30 @@ export const PlansHub: React.FC = () => {
 
                   <button
                     onClick={() => toggleDayComplete(currentDayData.day)}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-black shadow-md transition-all shrink-0 ${
+                    className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-black shadow-md transition-all shrink-0 ${
                       currentDayData.completed
                         ? 'bg-emerald-600 text-white hover:bg-emerald-700'
                         : 'bg-gradient-to-r from-[#ff7a00] to-[#ff9500] text-white hover:opacity-95'
                     }`}
                   >
-                    <CheckCircle2 className="w-4 h-4" />
+                    <CheckCircle2 className="w-3.5 h-3.5" />
                     <span>{currentDayData.completed ? 'Completed ✓' : 'Mark Today Complete'}</span>
                   </button>
                 </div>
 
-                <p className="text-xs text-[#44403c] mt-3 bg-white/70 backdrop-blur-xs p-3 rounded-xl border border-[#f0e8dc] leading-relaxed font-medium">
+                <p className="text-xs text-[#44403c] mt-3 bg-white/70 backdrop-blur-xs p-3 rounded-xl border border-[#f0e8dc] leading-relaxed font-medium break-words max-w-full">
                   {currentDayData.theory}
                 </p>
               </div>
             )}
 
-            {/* DAY-WISE LIST */}
-            <div className="space-y-2">
+            {/* DAY-WISE LIST (STRICT RESPONSIVE GRID WITH FIXED MIN-W-0) */}
+            <div className="space-y-2 min-w-0 max-w-full">
               <h3 className="text-xs font-black uppercase text-[#1c1917] tracking-wider">
                 ALL {activePlan.days.length} DAYS ROADMAP
               </h3>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 min-w-0 max-w-full">
                 {activePlan.days.map((d) => {
                   const isActive = d.day === activePlan.activeDay;
 
@@ -698,7 +720,7 @@ export const PlansHub: React.FC = () => {
                     <div
                       key={d.day}
                       onClick={() => setActiveDay(d.day)}
-                      className={`p-4 rounded-xl border cursor-pointer transition-all ${
+                      className={`p-3.5 rounded-xl border cursor-pointer transition-all min-w-0 max-w-full overflow-hidden ${
                         isActive
                           ? 'bg-[#fff3e5] border-[#ff7a00] ring-2 ring-[#ff7a00]/20'
                           : d.completed
@@ -706,10 +728,10 @@ export const PlansHub: React.FC = () => {
                           : 'bg-[#faf7f2] border-[#f0e8dc] hover:border-[#ff7a00]/40'
                       }`}
                     >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
+                      <div className="flex items-center justify-between min-w-0 gap-2">
+                        <div className="flex items-center space-x-2 min-w-0 flex-1">
                           <span
-                            className={`w-6 h-6 rounded-md text-xs font-black flex items-center justify-center ${
+                            className={`w-6 h-6 rounded-md text-[11px] font-black flex items-center justify-center shrink-0 ${
                               d.completed
                                 ? 'bg-emerald-600 text-white'
                                 : isActive
@@ -719,7 +741,7 @@ export const PlansHub: React.FC = () => {
                           >
                             {d.day}
                           </span>
-                          <span className="text-xs font-extrabold text-[#1c1917] truncate">
+                          <span className="text-xs font-extrabold text-[#1c1917] truncate max-w-full min-w-0 flex-1">
                             {d.title}
                           </span>
                         </div>
@@ -729,7 +751,7 @@ export const PlansHub: React.FC = () => {
                             e.stopPropagation();
                             toggleDayComplete(d.day);
                           }}
-                          className="text-[#a8a29e] hover:text-[#ff7a00]"
+                          className="text-[#a8a29e] hover:text-[#ff7a00] shrink-0"
                         >
                           {d.completed ? (
                             <CheckCircle2 className="w-5 h-5 text-emerald-600 fill-emerald-100" />
@@ -739,7 +761,7 @@ export const PlansHub: React.FC = () => {
                         </button>
                       </div>
 
-                      <p className="text-[11px] text-[#78716c] line-clamp-2 mt-2">
+                      <p className="text-[11px] text-[#78716c] line-clamp-2 mt-2 break-words max-w-full min-w-0 leading-snug">
                         {d.theory}
                       </p>
                     </div>
@@ -752,8 +774,8 @@ export const PlansHub: React.FC = () => {
 
         {/* NOTES TAB */}
         {detailTab === 'notes' && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
+          <div className="space-y-4 min-w-0 max-w-full">
+            <div className="flex items-center justify-between min-w-0">
               <h3 className="text-xs font-black uppercase text-[#1c1917]">
                 Study Notes ({activePlan.notes.length})
               </h3>
@@ -767,7 +789,7 @@ export const PlansHub: React.FC = () => {
             </div>
 
             {showNoteForm && (
-              <form onSubmit={handleAddNote} className="bg-[#faf7f2] border border-[#f0e8dc] p-4 rounded-xl space-y-3">
+              <form onSubmit={handleAddNote} className="bg-[#faf7f2] border border-[#f0e8dc] p-4 rounded-xl space-y-3 min-w-0">
                 <input
                   type="text"
                   placeholder="Note Title (e.g. Dynamic Programming Formulas)..."
@@ -800,17 +822,17 @@ export const PlansHub: React.FC = () => {
               </form>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 min-w-0">
               {activePlan.notes.length === 0 ? (
                 <p className="text-xs text-[#a8a29e] py-4">No notes created yet for this plan.</p>
               ) : (
                 activePlan.notes.map((note) => (
-                  <div key={note.id} className="p-4 bg-[#faf7f2] border border-[#f0e8dc] rounded-xl space-y-2">
-                    <div className="flex items-center justify-between">
-                      <h4 className="text-xs font-extrabold text-[#1c1917]">{note.title}</h4>
-                      <span className="text-[10px] text-[#a8a29e]">{note.updatedAt}</span>
+                  <div key={note.id} className="p-4 bg-[#faf7f2] border border-[#f0e8dc] rounded-xl space-y-2 min-w-0 max-w-full">
+                    <div className="flex items-center justify-between min-w-0">
+                      <h4 className="text-xs font-extrabold text-[#1c1917] truncate min-w-0">{note.title}</h4>
+                      <span className="text-[10px] text-[#a8a29e] shrink-0 ml-2">{note.updatedAt}</span>
                     </div>
-                    <p className="text-xs font-mono text-[#44403c] whitespace-pre-wrap bg-white p-3 rounded-lg border border-[#e7dfd4]">
+                    <p className="text-xs font-mono text-[#44403c] whitespace-pre-wrap bg-white p-3 rounded-lg border border-[#e7dfd4] break-words max-w-full">
                       {note.content}
                     </p>
                   </div>
@@ -822,14 +844,14 @@ export const PlansHub: React.FC = () => {
 
         {/* UPLOADED FILES TAB */}
         {detailTab === 'uploads' && (
-          <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#faf7f2] border border-[#f0e8dc] p-4 rounded-xl">
+          <div className="space-y-4 min-w-0 max-w-full">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#faf7f2] border border-[#f0e8dc] p-4 rounded-xl min-w-0">
               <div>
                 <h3 className="text-xs font-black uppercase text-[#1c1917]">
                   Upload Notes & Attachments
                 </h3>
                 <p className="text-[11px] text-[#78716c]">
-                  Upload PDFs, images, docs, or cheat sheets attached to this plan.
+                  Upload PDFs, images, docs, or cheat sheets. Synced directly to backend database.
                 </p>
               </div>
 
@@ -845,23 +867,23 @@ export const PlansHub: React.FC = () => {
               </label>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 min-w-0">
               {activePlan.attachments.length === 0 ? (
                 <div className="col-span-full py-8 text-center text-xs text-[#a8a29e]">
                   No document attachments uploaded yet. Click Upload Document above.
                 </div>
               ) : (
                 activePlan.attachments.map((att) => (
-                  <div key={att.id} className="p-3 bg-white border border-[#f0e8dc] rounded-xl flex items-center justify-between shadow-xs">
-                    <div className="flex items-center space-x-2 min-w-0">
+                  <div key={att.id} className="p-3 bg-white border border-[#f0e8dc] rounded-xl flex items-center justify-between shadow-xs min-w-0 max-w-full">
+                    <div className="flex items-center space-x-2 min-w-0 flex-1">
                       <FileText className="w-5 h-5 text-[#ff7a00] shrink-0" />
-                      <div className="min-w-0">
-                        <div className="text-xs font-bold text-[#1c1917] truncate">{att.name}</div>
-                        <div className="text-[10px] text-[#a8a29e]">{att.size} • {att.uploadedAt}</div>
+                      <div className="min-w-0 flex-1">
+                        <div className="text-xs font-bold text-[#1c1917] truncate max-w-full">{att.name}</div>
+                        <div className="text-[10px] text-[#a8a29e] truncate">{att.size} • {att.uploadedAt}</div>
                       </div>
                     </div>
 
-                    <div className="flex items-center space-x-1 shrink-0">
+                    <div className="flex items-center space-x-1 shrink-0 ml-2">
                       <a
                         href={att.dataUrl}
                         download={att.name}

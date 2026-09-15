@@ -32,6 +32,7 @@ class PageService:
             title=data.title or "Untitled",
             icon=data.icon or "📄",
             cover_image=data.cover_image,
+            content=data.content,
             created_by=user_id,
             position=float(max_pos),
         )
@@ -59,6 +60,8 @@ class PageService:
             page.icon = data.icon
         if data.cover_image is not None:
             page.cover_image = data.cover_image
+        if data.content is not None:
+            page.content = data.content
         if data.is_favorite is not None:
             page.is_favorite = data.is_favorite
         if data.is_archived is not None:
@@ -90,6 +93,7 @@ class PageService:
             title=f"{original.title} (Copy)",
             icon=original.icon,
             cover_image=original.cover_image,
+            content=original.content,
             created_by=user_id,
             position=original.position + 0.1,
         )
