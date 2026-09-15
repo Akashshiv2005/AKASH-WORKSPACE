@@ -41,8 +41,37 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isAuthModalOpen: open, authMode: mode, error: null }),
 
   fetchCurrentUser: async () => {
-    const token = localStorage.getItem('access_token');
+    let token = localStorage.getItem('access_token');
     if (!token) {
+      // Auto-authenticate default executive session for seamless cross-device mobile & PC syncing
+      try {
+        const res = await apiClient.post('/auth/login', {
+          email_or_username: 'akash.shiv@workspace.ai',
+          password: 'AkashShiv2026!',
+        });
+        if (res.data?.access_token) {
+          localStorage.setItem('access_token', res.data.access_token);
+          localStorage.setItem('refresh_token', res.data.refresh_token);
+          set({ user: res.data.user || DEFAULT_USER, isAuthenticated: true, error: null });
+          return;
+        }
+      } catch {
+        try {
+          const regRes = await apiClient.post('/auth/register', {
+            email: 'akash.shiv@workspace.ai',
+            username: 'akash_shiv',
+            password: 'AkashShiv2026!',
+          });
+          if (regRes.data?.access_token) {
+            localStorage.setItem('access_token', regRes.data.access_token);
+            localStorage.setItem('refresh_token', regRes.data.refresh_token);
+            set({ user: regRes.data.user || DEFAULT_USER, isAuthenticated: true, error: null });
+            return;
+          }
+        } catch {
+          // fallback to local default
+        }
+      }
       set({ user: DEFAULT_USER, isAuthenticated: true });
       return;
     }
@@ -60,7 +89,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   login: async (email, password) => {
     set({ isLoading: true, error: null });
     try {
-      const res = await apiClient.post('/auth/login', { email, password });
+      const res = await apiClient.post('/auth/login', { email_or_username: email, password });
       const { access_token, refresh_token } = res.data;
       localStorage.setItem('access_token', access_token);
       localStorage.setItem('refresh_token', refresh_token);
