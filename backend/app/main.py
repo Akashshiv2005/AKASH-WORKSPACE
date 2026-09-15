@@ -61,18 +61,20 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# CORS Middleware
-raw_origins = settings.CORS_ORIGINS or []
-clean_origins = [o for o in raw_origins if o != "*"]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=clean_origins,
-    allow_origin_regex=r"https://.*\.vercel\.app|http://localhost:\d+|http://127\.0\.0\.1:\d+",
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Universal CORS Middleware
+@app.middleware("http")
+async def custom_cors_middleware(request: Request, call_next):
+    if request.method == "OPTIONS":
+        response = JSONResponse(status_code=200, content={"status": "ok"})
+    else:
+        response = await call_next(request)
+    
+    origin = request.headers.get("origin") or "*"
+    response.headers["Access-Control-Allow-Origin"] = origin
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    response.headers["Access-Control-Allow-Methods"] = "*"
+    response.headers["Access-Control-Allow-Headers"] = "*"
+    return response
 
 # Global Exception Handlers
 @app.exception_handler(StarletteHTTPException)
