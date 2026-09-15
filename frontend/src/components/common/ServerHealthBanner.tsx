@@ -9,7 +9,7 @@ export const ServerHealthBanner: React.FC = () => {
 
   const checkHealth = useCallback(async () => {
     try {
-      const res = await apiClient.get('/health', { timeout: 5000 });
+      const res = await apiClient.get('/health', { timeout: 30000 });
       if (res.status === 200) {
         setStatus('connected');
         setRetryCount(0);
@@ -17,7 +17,7 @@ export const ServerHealthBanner: React.FC = () => {
     } catch {
       setRetryCount((prev) => {
         const next = prev + 1;
-        if (next >= 10) {
+        if (next >= 15) {
           setStatus('offline');
         } else {
           setStatus('waking_up');
@@ -39,12 +39,12 @@ export const ServerHealthBanner: React.FC = () => {
     return () => clearInterval(keepAliveInterval);
   }, [checkHealth]);
 
-  // Auto retry loop if server is waking up (up to 10 attempts)
+  // Auto retry loop if server is waking up (up to 15 attempts)
   useEffect(() => {
-    if (status === 'waking_up' && retryCount < 10) {
+    if (status === 'waking_up' && retryCount < 15) {
       const timer = setTimeout(() => {
         checkHealth();
-      }, 3500);
+      }, 4000);
       return () => clearTimeout(timer);
     }
   }, [status, retryCount, checkHealth]);

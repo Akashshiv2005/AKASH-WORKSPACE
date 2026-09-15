@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { apiClient } from '../api/client';
+import { useWorkspaceStore } from './useWorkspaceStore';
 
 export interface User {
   id: string;
@@ -53,6 +54,7 @@ export const useAuthStore = create<AuthState>((set) => ({
           localStorage.setItem('access_token', res.data.access_token);
           localStorage.setItem('refresh_token', res.data.refresh_token);
           set({ user: res.data.user || DEFAULT_USER, isAuthenticated: true, error: null });
+          useWorkspaceStore.getState().fetchWorkspaces();
           return;
         }
       } catch {
@@ -66,6 +68,7 @@ export const useAuthStore = create<AuthState>((set) => ({
             localStorage.setItem('access_token', regRes.data.access_token);
             localStorage.setItem('refresh_token', regRes.data.refresh_token);
             set({ user: regRes.data.user || DEFAULT_USER, isAuthenticated: true, error: null });
+            useWorkspaceStore.getState().fetchWorkspaces();
             return;
           }
         } catch {
@@ -96,6 +99,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ isAuthenticated: true, isAuthModalOpen: false, error: null });
       const userRes = await apiClient.get<User>('/auth/me');
       set({ user: userRes.data });
+      useWorkspaceStore.getState().fetchWorkspaces();
       return true;
     } catch (err: any) {
       const message = err.response?.data?.detail || 'Invalid email or password';

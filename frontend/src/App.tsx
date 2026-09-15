@@ -12,6 +12,9 @@ import { ServerHealthBanner } from './components/common/ServerHealthBanner';
 import { usePageStore } from './store/usePageStore';
 import { useWorkspaceStore } from './store/useWorkspaceStore';
 import { useAuthStore } from './store/useAuthStore';
+import { useTaskStore } from './store/useTaskStore';
+import { useHabitStore } from './store/useHabitStore';
+import { useExpenseStore } from './store/useExpenseStore';
 
 export const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -28,13 +31,20 @@ export const App: React.FC = () => {
   const { fetchPages, pages, activePageId } = usePageStore();
 
   useEffect(() => {
-    fetchCurrentUser();
-    fetchWorkspaces();
+    const initializeAppData = async () => {
+      await fetchCurrentUser();
+      await fetchWorkspaces();
+    };
+    initializeAppData();
   }, []);
 
   useEffect(() => {
-    if (activeWorkspace) {
-      fetchPages(activeWorkspace.id);
+    if (activeWorkspace?.id) {
+      const wsId = activeWorkspace.id;
+      fetchPages(wsId);
+      useTaskStore.getState().fetchTasks(wsId);
+      useHabitStore.getState().fetchHabits(wsId);
+      useExpenseStore.getState().fetchExpenses(wsId);
     }
   }, [activeWorkspace?.id]);
 

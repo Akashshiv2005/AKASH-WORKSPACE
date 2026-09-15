@@ -1,13 +1,14 @@
 import axios from 'axios';
 
 const getBaseUrl = () => {
-  if (import.meta.env.VITE_API_BASE_URL) {
-    return import.meta.env.VITE_API_BASE_URL;
-  }
+  const envUrl = import.meta.env.VITE_API_BASE_URL;
   if (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
-    return 'https://akash-workspace.onrender.com/api';
+    if (!envUrl || envUrl.includes('localhost') || envUrl.includes('127.0.0.1')) {
+      return 'https://akash-workspace.onrender.com/api';
+    }
+    return envUrl;
   }
-  return '/api';
+  return envUrl || '/api';
 };
 
 const API_BASE_URL = getBaseUrl();
