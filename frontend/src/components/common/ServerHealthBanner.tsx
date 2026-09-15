@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { RefreshCw, Zap, X } from 'lucide-react';
-import { apiClient } from '../../api/client';
+import axios from 'axios';
+import { API_BASE_URL } from '../../api/client';
 
 export const ServerHealthBanner: React.FC = () => {
   const [status, setStatus] = useState<'checking' | 'connected' | 'waking_up' | 'offline'>('checking');
@@ -9,7 +10,7 @@ export const ServerHealthBanner: React.FC = () => {
 
   const checkHealth = useCallback(async () => {
     try {
-      const res = await apiClient.get('/health', { timeout: 30000 });
+      const res = await axios.get(`${API_BASE_URL}/health`, { timeout: 30000 });
       if (res.status === 200) {
         setStatus('connected');
         setRetryCount(0);
@@ -33,7 +34,7 @@ export const ServerHealthBanner: React.FC = () => {
 
     // Periodic keep-alive ping every 5 minutes while active
     const keepAliveInterval = setInterval(() => {
-      apiClient.get('/health/ping').catch(() => {});
+      axios.get(`${API_BASE_URL}/health/ping`).catch(() => {});
     }, 5 * 60 * 1000);
 
     return () => clearInterval(keepAliveInterval);
@@ -61,7 +62,7 @@ export const ServerHealthBanner: React.FC = () => {
           {status === 'checking' && 'Checking backend status...'}
           {status === 'waking_up' && (
             <>
-              Render backend waking up from sleep mode... Attempt {retryCount}/10 (~30s free tier delay)
+              Render backend waking up from sleep mode... Attempt {retryCount}/15 (~30s free tier delay)
             </>
           )}
           {status === 'offline' && 'Backend connection offline. Click retry to reconnect.'}
