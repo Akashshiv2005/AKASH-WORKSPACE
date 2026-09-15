@@ -77,7 +77,7 @@ export const TodoPlanner: React.FC = () => {
           </div>
           <div>
             <h3 className="text-base font-black text-[#1c1917] tracking-wide heading-animated cursor-default">
-              Kanban Task Board
+              Task Board
             </h3>
             <p className="text-xs text-[#78716c] animate-text-reveal">
               <span className="font-bold text-[#ff7a00]">{completedTasks.length}</span> of {tasks.length} tasks completed

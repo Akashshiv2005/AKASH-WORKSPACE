@@ -84,7 +84,7 @@ export const GeminiAssistantModal: React.FC<GeminiAssistantModalProps> = ({
       if (lower.includes('medium')) priority = 'Medium';
 
       addTask(taskName, priority);
-      actions.push(`✅ Created ${priority} Priority Task: "${taskName}" on Kanban Board`);
+      actions.push(`✅ Created ${priority} Priority Task: "${taskName}" on Task Board`);
     }
 
     return actions;

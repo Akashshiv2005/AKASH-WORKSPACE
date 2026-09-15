@@ -8,7 +8,7 @@ export interface Page {
   icon?: string;
   cover_image?: string;
   content?: string | any;
-  widget_type?: 'habit_tracker' | 'todo_planner' | 'pomodoro' | 'journal' | 'expense_tracker' | null;
+  widget_type?: 'habit_tracker' | 'todo_planner' | 'pomodoro' | 'journal' | 'expense_tracker' | 'dsa_planner' | 'plans_hub' | null;
   workspace_id: string;
   parent_id?: string | null;
   is_favorite: boolean;
@@ -32,7 +32,7 @@ interface PageState {
   setSearchQuery: (query: string) => void;
   setSearching: (open: boolean) => void;
 
-  createPage: (workspaceId: string, parentId?: string | null, title?: string, widgetType?: 'habit_tracker' | 'todo_planner' | 'pomodoro' | 'journal' | 'expense_tracker' | null) => Promise<Page>;
+  createPage: (workspaceId: string, parentId?: string | null, title?: string, widgetType?: 'habit_tracker' | 'todo_planner' | 'pomodoro' | 'journal' | 'expense_tracker' | 'dsa_planner' | 'plans_hub' | null) => Promise<Page>;
   updatePage: (pageId: string, updates: Partial<Page>) => Promise<void>;
   toggleFavorite: (pageId: string) => Promise<void>;
   archivePage: (pageId: string) => Promise<void>;
@@ -66,7 +66,7 @@ const DEMO_PAGES: Page[] = [
   },
   {
     id: 'page-todo-planner',
-    title: 'Task Planner & Kanban Goals',
+    title: 'Task Planner Goals',
     icon: '📋',
     cover_image: '',
     content: JSON.stringify({
@@ -109,9 +109,9 @@ const DEMO_PAGES: Page[] = [
     position: 2,
   },
   {
-    id: 'page-journal',
-    title: "Akash Shiv's Daily Journal & Gratitude",
-    icon: '🧘',
+    id: 'page-plans-hub',
+    title: '🎯 Study & Learning Plans',
+    icon: '🎯',
     cover_image: '',
     content: JSON.stringify({
       type: 'doc',
@@ -119,16 +119,16 @@ const DEMO_PAGES: Page[] = [
         {
           type: 'heading',
           attrs: { level: 1 },
-          content: [{ type: 'text', text: 'Daily Gratitude & Reflection Log' }],
+          content: [{ type: 'text', text: 'Interactive Plans & Learning Hub' }],
         },
       ],
     }),
-    widget_type: 'journal',
+    widget_type: 'plans_hub',
     workspace_id: 'workspace-akash-shiv',
     parent_id: null,
-    is_favorite: false,
+    is_favorite: true,
     is_archived: false,
-    position: 3,
+    position: 4,
   },
 ];
 
@@ -137,7 +137,7 @@ export const usePageStore = create<PageState>()(
     (set, get) => ({
       pages: DEMO_PAGES,
       archivedPages: [],
-      activePageId: 'page-habit-tracker',
+      activePageId: 'page-plans-hub',
       isLoading: false,
       isSearching: false,
       searchQuery: '',
@@ -186,6 +186,8 @@ export const usePageStore = create<PageState>()(
           if (widgetType === 'todo_planner') return '📋';
           if (widgetType === 'pomodoro') return '⚡';
           if (widgetType === 'journal') return '📖';
+          if (widgetType === 'dsa_planner') return '🎓';
+          if (widgetType === 'plans_hub') return '🎯';
           return '📄';
         };
 

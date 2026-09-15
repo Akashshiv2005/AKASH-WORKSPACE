@@ -22,3 +22,9 @@ def health_check(db: Session = Depends(get_db)):
         "version": settings.VERSION,
         "database": db_status,
     }
+
+
+@router.get("/ping", summary="Lightweight Ping Keep-Alive")
+def ping():
+    return {"status": "pong", "message": "Server is awake"}
+

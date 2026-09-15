@@ -12,6 +12,8 @@ import { TodoPlanner } from '../widgets/TodoPlanner';
 import { PomodoroTimer } from '../widgets/PomodoroTimer';
 import { DailyJournal } from '../widgets/DailyJournal';
 import { ExpenseTracker } from '../widgets/ExpenseTracker';
+import { DsaPlanner } from '../widgets/DsaPlanner';
+import { PlansHub } from '../widgets/PlansHub';
 import { GeminiMotivationBanner } from '../widgets/GeminiMotivationBanner';
 import {
   Heading1,
@@ -111,6 +113,12 @@ export const BlockEditor: React.FC<BlockEditorProps> = ({ page }) => {
 
       {/* Widget Render: Expense Tracker */}
       {page.widget_type === 'expense_tracker' && <ExpenseTracker />}
+
+      {/* Widget Render: 30-Day DSA Planner */}
+      {page.widget_type === 'dsa_planner' && <DsaPlanner />}
+
+      {/* Widget Render: Plans & Learning Hub */}
+      {page.widget_type === 'plans_hub' && <PlansHub />}
 
       {/* Floating Toolbar when selecting text */}
       {editor.state.selection && !editor.state.selection.empty && (

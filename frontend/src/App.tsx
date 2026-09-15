@@ -8,6 +8,7 @@ import { EmailNotificationModal } from './components/notifications/EmailNotifica
 import { PageHeader } from './components/editor/PageHeader';
 import { BlockEditor } from './components/editor/BlockEditor';
 import { FloatingAiOrb } from './components/widgets/FloatingAiOrb';
+import { ServerHealthBanner } from './components/common/ServerHealthBanner';
 import { usePageStore } from './store/usePageStore';
 import { useWorkspaceStore } from './store/useWorkspaceStore';
 import { useAuthStore } from './store/useAuthStore';
@@ -60,6 +61,9 @@ export const App: React.FC = () => {
 
       {/* Center Layout Area */}
       <div className="flex-1 flex flex-col h-screen min-w-0 overflow-hidden relative">
+        {/* Render Cold-Start & Keep-Alive Banner */}
+        <ServerHealthBanner />
+
         {/* Header Bar */}
         <HeaderBar
           isSidebarOpen={isSidebarOpen}

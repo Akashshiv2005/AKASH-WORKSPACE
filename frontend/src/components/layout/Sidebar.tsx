@@ -93,6 +93,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     }
   };
 
+  const handleCreatePlansHub = () => {
+    if (activeWorkspace) {
+      createPage(activeWorkspace.id, null, "Study & Learning Plans", 'plans_hub');
+    }
+  };
+
   const handleCreateChildPage = (parentId: string, e: React.MouseEvent) => {
     e.stopPropagation();
     if (activeWorkspace) {
@@ -386,6 +392,15 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         >
           <span className="text-sm">💰</span>
           <span>Expense Tracker</span>
+        </button>
+
+        {/* Study & Learning Plans Pill */}
+        <button
+          onClick={() => wrapCreate(handleCreatePlansHub)}
+          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#44403c] font-bold text-[#ff7a00] bg-[#fff3e5] transition-all hover:scale-[1.01] border border-[#ff7a00]/30"
+        >
+          <span className="text-sm">🎯</span>
+          <span>Study & Learning Plans</span>
         </button>
       </div>
 
