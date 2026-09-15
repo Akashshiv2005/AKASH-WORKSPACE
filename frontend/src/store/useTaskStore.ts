@@ -99,11 +99,18 @@ export const useTaskStore = create<TaskState>()(
             apiClient.get<any[]>(`/workspaces/${workspaceId}/tasks?archived=true`),
           ]);
 
-          if (resActive.data) {
+          const hasActive = resActive.data && resActive.data.length > 0;
+          const hasArchived = resArchived.data && resArchived.data.length > 0;
+
+          if (hasActive) {
             set({ tasks: resActive.data.map(mapBackendTask) });
           }
-          if (resArchived.data) {
+          if (hasArchived) {
             set({ archivedTasks: resArchived.data.map(mapBackendTask) });
+          }
+
+          if (!hasActive && !hasArchived) {
+            await get().resetBoard(workspaceId);
           }
         } catch (err) {
           console.error('Failed to fetch tasks from DB:', err);

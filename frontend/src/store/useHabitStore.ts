@@ -113,11 +113,18 @@ export const useHabitStore = create<HabitState>()(
             apiClient.get<any[]>(`/workspaces/${workspaceId}/habits?archived=true`)
           ]);
           
-          if (resActive.data) {
+          const hasActive = resActive.data && resActive.data.length > 0;
+          const hasArchived = resArchived.data && resArchived.data.length > 0;
+
+          if (hasActive) {
             set({ habits: resActive.data.map(mapBackendHabit) });
           }
-          if (resArchived.data) {
+          if (hasArchived) {
             set({ archivedHabits: resArchived.data.map(mapBackendHabit) });
+          }
+
+          if (!hasActive && !hasArchived) {
+            await get().resetDefaultHabits(workspaceId);
           }
         } catch (err) {
           console.error("Failed to fetch habits from DB:", err);
