@@ -514,7 +514,7 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
   return (
     <div className="w-full max-w-full overflow-x-hidden min-w-0 space-y-6 pt-2 text-[#1c1917] select-none">
       {/* HEADER BAR & PLANS HUB SELECTOR */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-[#ff7a00] via-[#ff9500] to-[#e66000] p-6 rounded-2xl text-white shadow-xl min-w-0">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-red-700 via-amber-500 to-red-600 p-6 rounded-2xl text-white shadow-xl min-w-0">
         <div className="space-y-1 min-w-0 flex-1">
           <div className="inline-flex items-center space-x-2 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
             <Target className="w-3.5 h-3.5 text-yellow-300" />
@@ -527,12 +527,12 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
         {/* Action Buttons & Progress Badge */}
         <div className="flex items-center space-x-3 shrink-0 flex-wrap gap-2">
           <div className="bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/30 text-center">
-            <div className="text-base font-black text-white">{percentLearned}%</div>
+            <div className="text-base font-black text-yellow-200">{percentLearned}%</div>
             <div className="text-[10px] text-white/80 font-bold uppercase">Learned</div>
           </div>
           <button
             onClick={() => setShowCreateModal(true)}
-            className="flex items-center space-x-1.5 px-4 py-2 bg-white text-[#ff7a00] font-black rounded-xl text-xs shadow-lg hover:bg-orange-50 transition-all"
+            className="flex items-center space-x-1.5 px-4 py-2 bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 text-red-950 font-black rounded-xl text-xs shadow-lg hover:brightness-110 transition-all border border-yellow-200"
           >
             <Plus className="w-4 h-4" />
             <span>+ Create / Import Plan</span>
@@ -544,7 +544,7 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
       <div className="space-y-2 min-w-0">
         <div className="text-xs font-black uppercase text-[#a8a29e] tracking-wider flex items-center justify-between px-1">
           <span>YOUR ACTIVE PLANS ({plans.length})</span>
-          <span className="text-[11px] font-semibold text-[#ff7a00]">Click a plan to switch view</span>
+          <span className="text-[11px] font-semibold text-red-600">Click a plan to switch view</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 min-w-0">
@@ -560,12 +560,12 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
                 onClick={() => setSelectedPlanId(p.id)}
                 className={`p-4 rounded-xl border cursor-pointer transition-all relative group min-w-0 max-w-full ${
                   isSelected
-                    ? 'bg-white border-[#ff7a00] shadow-lg ring-2 ring-[#ff7a00]/30'
-                    : 'bg-[#faf7f2] border-[#f0e8dc] hover:border-[#ff7a00]/40'
+                    ? 'bg-white border-red-500 shadow-lg ring-2 ring-red-400/30'
+                    : 'bg-[#faf7f2] border-[#f0e8dc] hover:border-red-400/40'
                 }`}
               >
                 <div className="flex items-start justify-between min-w-0">
-                  <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-[#fff3e5] text-[#ff7a00] truncate max-w-[80%]">
+                  <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-300/60 truncate max-w-[80%]">
                     {p.category}
                   </span>
 
@@ -582,12 +582,12 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
 
                 <div className="mt-3 space-y-1 min-w-0">
                   <div className="flex justify-between text-[11px] font-bold text-[#44403c]">
-                    <span>{pPct}% Learned</span>
+                    <span className="text-red-600 font-extrabold">{pPct}% Learned</span>
                     <span>{pDone}/{pTotal} Days</span>
                   </div>
                   <div className="w-full bg-[#f0e8dc] h-2 rounded-full overflow-hidden">
                     <div
-                      className="bg-gradient-to-r from-[#ff7a00] to-[#ff9500] h-full rounded-full transition-all duration-300"
+                      className="bg-gradient-to-r from-red-600 via-amber-500 to-yellow-500 h-full rounded-full transition-all duration-300"
                       style={{ width: `${pPct}%` }}
                     />
                   </div>
@@ -607,7 +607,7 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
               onClick={() => setDetailTab('roadmap')}
               className={`flex items-center space-x-2 px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all ${
                 detailTab === 'roadmap'
-                  ? 'bg-[#ff7a00] text-white shadow-md'
+                  ? 'bg-gradient-to-r from-red-600 to-amber-600 text-white shadow-md'
                   : 'bg-[#faf7f2] text-[#44403c] hover:bg-[#f2ebe1]'
               }`}
             >
@@ -619,7 +619,7 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
               onClick={() => setDetailTab('notes')}
               className={`flex items-center space-x-2 px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all ${
                 detailTab === 'notes'
-                  ? 'bg-[#ff7a00] text-white shadow-md'
+                  ? 'bg-gradient-to-r from-red-600 to-amber-600 text-white shadow-md'
                   : 'bg-[#faf7f2] text-[#44403c] hover:bg-[#f2ebe1]'
               }`}
             >
@@ -631,7 +631,7 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
               onClick={() => setDetailTab('uploads')}
               className={`flex items-center space-x-2 px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all ${
                 detailTab === 'uploads'
-                  ? 'bg-[#ff7a00] text-white shadow-md'
+                  ? 'bg-gradient-to-r from-red-600 to-amber-600 text-white shadow-md'
                   : 'bg-[#faf7f2] text-[#44403c] hover:bg-[#f2ebe1]'
               }`}
             >
@@ -671,14 +671,14 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
           <div className="space-y-6 min-w-0 max-w-full">
             {/* TODAY'S GOAL FOCUS SPOTLIGHT CARD */}
             {currentDayData && (
-              <div className="bg-gradient-to-br from-[#fff8f0] to-[#fff3e5] border-2 border-[#ff7a00]/40 rounded-2xl p-4 shadow-sm relative overflow-hidden min-w-0 max-w-full">
+              <div className="bg-gradient-to-br from-[#fff1f2] via-[#fffbeb] to-[#fef3c7] border-2 border-red-400/60 rounded-2xl p-4 shadow-sm relative overflow-hidden min-w-0 max-w-full">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 min-w-0">
                   <div className="flex items-center space-x-3 min-w-0 flex-1">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-[#ff7a00] to-[#ff9500] text-white flex items-center justify-center font-black text-sm shadow-md shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-red-600 via-amber-500 to-yellow-500 text-white flex items-center justify-center font-black text-sm shadow-md shrink-0">
                       D{currentDayData.day}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="text-[10px] font-black uppercase text-[#ff7a00] tracking-wider">
+                      <div className="text-[10px] font-black uppercase text-red-600 tracking-wider">
                         WHAT TO LEARN TODAY
                       </div>
                       <h2 className="text-xs font-extrabold text-[#1c1917] mt-0.5 truncate max-w-full">
@@ -692,7 +692,7 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
                     className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-black shadow-md transition-all shrink-0 ${
                       currentDayData.completed
                         ? 'bg-emerald-600 text-white hover:bg-emerald-700'
-                        : 'bg-gradient-to-r from-[#ff7a00] to-[#ff9500] text-white hover:opacity-95'
+                        : 'bg-gradient-to-r from-red-600 via-amber-500 to-yellow-500 text-white hover:opacity-95'
                     }`}
                   >
                     <CheckCircle2 className="w-3.5 h-3.5" />
@@ -700,7 +700,7 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
                   </button>
                 </div>
 
-                <p className="text-xs text-[#44403c] mt-3 bg-white/70 backdrop-blur-xs p-3 rounded-xl border border-[#f0e8dc] leading-relaxed font-medium break-words max-w-full">
+                <p className="text-xs text-[#44403c] mt-3 bg-white/80 backdrop-blur-xs p-3 rounded-xl border border-[#f0e8dc] leading-relaxed font-medium break-words max-w-full">
                   {currentDayData.theory}
                 </p>
               </div>
@@ -722,10 +722,10 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
                       onClick={() => setActiveDay(d.day)}
                       className={`p-3.5 rounded-xl border cursor-pointer transition-all min-w-0 max-w-full overflow-hidden ${
                         isActive
-                          ? 'bg-[#fff3e5] border-[#ff7a00] ring-2 ring-[#ff7a00]/20'
+                          ? 'bg-[#fff1f2] border-red-500 ring-2 ring-red-400/30'
                           : d.completed
                           ? 'bg-emerald-50/40 border-emerald-200'
-                          : 'bg-[#faf7f2] border-[#f0e8dc] hover:border-[#ff7a00]/40'
+                          : 'bg-[#faf7f2] border-[#f0e8dc] hover:border-red-400/40'
                       }`}
                     >
                       <div className="flex items-center justify-between min-w-0 gap-2">
@@ -735,7 +735,7 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
                               d.completed
                                 ? 'bg-emerald-600 text-white'
                                 : isActive
-                                ? 'bg-[#ff7a00] text-white'
+                                ? 'bg-gradient-to-r from-red-600 to-amber-500 text-white'
                                 : 'bg-[#e7dfd4] text-[#78716c]'
                             }`}
                           >
