@@ -67,37 +67,67 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
 
   const handleCreateHabitTracker = () => {
     if (activeWorkspace) {
-      createPage(activeWorkspace.id, null, 'Daily Habit Tracker & Streaks', 'habit_tracker');
+      const existing = pages.find((p) => (p.widget_type === 'habit_tracker' || p.title.toLowerCase().includes('habit')) && !p.is_archived);
+      if (existing) {
+        setActivePageId(existing.id);
+      } else {
+        createPage(activeWorkspace.id, null, 'Daily Habit Tracker & Streaks', 'habit_tracker');
+      }
     }
   };
 
   const handleCreateTodoPlanner = () => {
     if (activeWorkspace) {
-      createPage(activeWorkspace.id, null, 'Task Planner', 'todo_planner');
+      const existing = pages.find((p) => (p.widget_type === 'todo_planner' || p.title.toLowerCase().includes('task')) && !p.is_archived);
+      if (existing) {
+        setActivePageId(existing.id);
+      } else {
+        createPage(activeWorkspace.id, null, 'Task Planner', 'todo_planner');
+      }
     }
   };
 
   const handleCreatePomodoro = () => {
     if (activeWorkspace) {
-      createPage(activeWorkspace.id, null, 'Arc Pomodoro Focus Station', 'pomodoro');
+      const existing = pages.find((p) => (p.widget_type === 'pomodoro' || p.title.toLowerCase().includes('focus')) && !p.is_archived);
+      if (existing) {
+        setActivePageId(existing.id);
+      } else {
+        createPage(activeWorkspace.id, null, 'Arc Pomodoro Focus Station', 'pomodoro');
+      }
     }
   };
 
   const handleCreateJournal = () => {
     if (activeWorkspace) {
-      createPage(activeWorkspace.id, null, "Daily Journal", 'journal');
+      const existing = pages.find((p) => (p.widget_type === 'journal' || p.title.toLowerCase().includes('journal')) && !p.is_archived);
+      if (existing) {
+        setActivePageId(existing.id);
+      } else {
+        createPage(activeWorkspace.id, null, "Daily Journal", 'journal');
+      }
     }
   };
 
   const handleCreateExpenseTracker = () => {
     if (activeWorkspace) {
-      createPage(activeWorkspace.id, null, "Expense Tracker", 'expense_tracker');
+      const existing = pages.find((p) => (p.widget_type === 'expense_tracker' || p.title.toLowerCase().includes('expense')) && !p.is_archived);
+      if (existing) {
+        setActivePageId(existing.id);
+      } else {
+        createPage(activeWorkspace.id, null, "Expense Tracker", 'expense_tracker');
+      }
     }
   };
 
   const handleCreatePlansHub = () => {
     if (activeWorkspace) {
-      createPage(activeWorkspace.id, null, "Study & Learning Plans", 'plans_hub');
+      const existing = pages.find((p) => (p.widget_type === 'plans_hub' || p.title.toLowerCase().includes('learning') || p.title.toLowerCase().includes('study')) && !p.is_archived);
+      if (existing) {
+        setActivePageId(existing.id);
+      } else {
+        createPage(activeWorkspace.id, null, "Study & Learning Plans", 'plans_hub');
+      }
     }
   };
 

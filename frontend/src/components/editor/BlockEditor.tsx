@@ -115,31 +115,46 @@ export const BlockEditor: React.FC<BlockEditorProps> = ({ page }) => {
     setShowSlashMenu(false);
   };
 
+  const getEffectiveWidgetType = (): string | null => {
+    if (page.widget_type) return page.widget_type;
+    const titleLower = (page.title || '').toLowerCase();
+    if (titleLower.includes('task') || titleLower.includes('to-do') || titleLower.includes('todo')) return 'todo_planner';
+    if (titleLower.includes('habit')) return 'habit_tracker';
+    if (titleLower.includes('expense')) return 'expense_tracker';
+    if (titleLower.includes('journal')) return 'journal';
+    if (titleLower.includes('pomodoro') || titleLower.includes('focus')) return 'pomodoro';
+    if (titleLower.includes('study') || titleLower.includes('learning') || titleLower.includes('plans')) return 'plans_hub';
+    if (titleLower.includes('dsa')) return 'dsa_planner';
+    return null;
+  };
+
+  const effectiveWidgetType = getEffectiveWidgetType();
+
   return (
     <div className="relative max-w-4xl mx-auto px-4 sm:px-16 pb-24 text-[#37352f] dark:text-[#e6e6e6]">
       {/* Gemini AI Daily Motivation Banner */}
       <GeminiMotivationBanner />
 
       {/* Widget Render: Habit Tracker */}
-      {page.widget_type === 'habit_tracker' && <HabitTracker />}
+      {effectiveWidgetType === 'habit_tracker' && <HabitTracker />}
 
       {/* Widget Render: To-Do Planner */}
-      {page.widget_type === 'todo_planner' && <TodoPlanner />}
+      {effectiveWidgetType === 'todo_planner' && <TodoPlanner />}
 
       {/* Widget Render: Pomodoro Focus Timer */}
-      {page.widget_type === 'pomodoro' && <PomodoroTimer />}
+      {effectiveWidgetType === 'pomodoro' && <PomodoroTimer />}
 
       {/* Widget Render: Daily Journal & Reflection */}
-      {page.widget_type === 'journal' && <DailyJournal />}
+      {effectiveWidgetType === 'journal' && <DailyJournal />}
 
       {/* Widget Render: Expense Tracker */}
-      {page.widget_type === 'expense_tracker' && <ExpenseTracker />}
+      {effectiveWidgetType === 'expense_tracker' && <ExpenseTracker />}
 
       {/* Widget Render: 30-Day DSA Planner */}
-      {page.widget_type === 'dsa_planner' && <DsaPlanner />}
+      {effectiveWidgetType === 'dsa_planner' && <DsaPlanner />}
 
       {/* Widget Render: Plans & Learning Hub */}
-      {page.widget_type === 'plans_hub' && <PlansHub page={page} />}
+      {effectiveWidgetType === 'plans_hub' && <PlansHub page={page} />}
 
       {/* Floating Toolbar when selecting text */}
       {editor.state.selection && !editor.state.selection.empty && (
