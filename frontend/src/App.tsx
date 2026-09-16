@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Sidebar } from './components/layout/Sidebar';
 import { RightSidebar } from './components/layout/RightSidebar';
 import { HeaderBar } from './components/layout/HeaderBar';
@@ -9,6 +9,7 @@ import { PageHeader } from './components/editor/PageHeader';
 import { BlockEditor } from './components/editor/BlockEditor';
 import { FloatingAiOrb } from './components/widgets/FloatingAiOrb';
 import { ServerHealthBanner } from './components/common/ServerHealthBanner';
+import { IronManBackground } from './components/common/IronManBackground';
 import { usePageStore } from './store/usePageStore';
 import { useWorkspaceStore } from './store/useWorkspaceStore';
 import { useAuthStore } from './store/useAuthStore';
@@ -19,6 +20,7 @@ import { useExpenseStore } from './store/useExpenseStore';
 export const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
+  const mainRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     setIsSidebarOpen(window.innerWidth > 768);
@@ -59,7 +61,10 @@ export const App: React.FC = () => {
   const activePage = pages.find((p) => p.id === activePageId);
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#fdfbf7] text-[#1c1917]">
+    <div className="flex h-screen w-screen overflow-hidden bg-[#fdfbf7] dark:bg-[#121212] text-[#1c1917] dark:text-[#f3f4f6] relative">
+      {/* Iron Man Scroll Suit Canvas Background */}
+      <IronManBackground containerRef={mainRef} opacity={darkMode ? 0.35 : 0.22} />
+
       {/* Left Sidebar */}
       <Sidebar
         isOpen={isSidebarOpen}
@@ -70,7 +75,7 @@ export const App: React.FC = () => {
       />
 
       {/* Center Layout Area */}
-      <div className="flex-1 flex flex-col h-screen min-w-0 overflow-hidden relative">
+      <div className="flex-1 flex flex-col h-screen min-w-0 overflow-hidden relative z-10">
         {/* Render Cold-Start & Keep-Alive Banner */}
         <ServerHealthBanner />
 
@@ -91,7 +96,7 @@ export const App: React.FC = () => {
         />
 
         {/* Main Editor Page View */}
-        <main className="flex-1 overflow-y-auto relative">
+        <main ref={mainRef} className="flex-1 overflow-y-auto relative z-10">
           {activePage ? (
             <div className="animate-fade-in-up">
               <PageHeader page={activePage} />
