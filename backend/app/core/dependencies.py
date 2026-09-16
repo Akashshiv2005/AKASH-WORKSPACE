@@ -6,7 +6,8 @@ from app.core.security import decode_token
 from app.models.user import User
 
 oauth2_scheme = OAuth2PasswordBearer(
-    tokenUrl=f"/api/auth/login"
+    tokenUrl=f"/api/auth/login",
+    auto_error=False
 )
 
 
@@ -14,29 +15,26 @@ def get_current_user(
     db: Session = Depends(get_db),
     token: str = Depends(oauth2_scheme),
 ) -> User:
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
+    if token:
+        payload = decode_token(token)
+        if payload and payload.get("type") == "access":
+            user_id: str = payload.get("sub")
+            if user_id:
+                user = db.query(User).filter(User.id == user_id).first()
+                if user:
+                    return user
     
-    payload = decode_token(token)
-    if not payload:
-        raise credentials_exception
-    
-    token_type = payload.get("type")
-    if token_type != "access":
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid token type for authentication",
+    # Guest / Demo fallback user for unauthenticated preview
+    demo_user = db.query(User).filter(User.email == "guest@akashworkspace.com").first()
+    if not demo_user:
+        demo_user = User(
+            id="user-demo-guest",
+            email="guest@akashworkspace.com",
+            full_name="Akash Guest",
+            hashed_password="demo_hash_key",
+            is_active=True,
         )
-        
-    user_id: str = payload.get("sub")
-    if not user_id:
-        raise credentials_exception
-        
-    user = db.query(User).filter(User.id == user_id).first()
-    if not user:
-        raise credentials_exception
-        
-    return user
+        db.add(demo_user)
+        db.commit()
+        db.refresh(demo_user)
+    return demo_user
