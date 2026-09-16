@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { apiClient } from '../../api/client';
 import { callGeminiApi } from '../../api/geminiClient';
-import { Sparkles, X, Send, Bot, User, Flame, Target, Heart, CheckCircle } from 'lucide-react';
+import { Sparkles, X, Send, Bot, User, Flame, Target, Heart, CheckCircle, Mic, MicOff, Volume2, VolumeX, Radio } from 'lucide-react';
 import { useTaskStore } from '../../store/useTaskStore';
 import { useHabitStore } from '../../store/useHabitStore';
 import { usePageStore } from '../../store/usePageStore';
@@ -26,15 +26,100 @@ export const GeminiAssistantModal: React.FC<GeminiAssistantModalProps> = ({
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       sender: 'ai',
-      text: "👋 Hello Akash Shiv! I am JARVIS, your ChatGPT-powered executive companion (v2.0 Amber Engine). Ask me anything, manage your habits, create tasks, or request productivity advice!",
+      text: "👋 Hello Akash Shiv! I am JARVIS, your ChatGPT-powered voice & executive companion (v2.0 Amber Engine). Speak or type any command to manage your tasks, habits, schedule, or ask any question!",
     },
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [isVoiceOutputEnabled, setIsVoiceOutputEnabled] = useState(true);
+  const recognitionRef = useRef<any>(null);
 
   const { habits, addHabit, getBestStreak, getOverallPercentage, getTotalCheckmarks } = useHabitStore();
   const { tasks, addTask } = useTaskStore();
   const { pages } = usePageStore();
+
+  useEffect(() => {
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
+
+  const speakResponse = (text: string) => {
+    if (!('speechSynthesis' in window) || !isVoiceOutputEnabled) return;
+    try {
+      window.speechSynthesis.cancel();
+      const cleanText = text
+        .replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '')
+        .replace(/[*_#`~]/g, '')
+        .trim();
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+      window.speechSynthesis.speak(utterance);
+    } catch {
+      // ignore speech errors
+    }
+  };
+
+  const toggleVoiceInput = () => {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Voice Speech Recognition is not supported in this browser. Please use Google Chrome or Microsoft Edge.");
+      return;
+    }
+
+    if (isListening) {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+      setIsListening(false);
+      return;
+    }
+
+    try {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = true;
+      recognition.lang = 'en-US';
+
+      recognition.onstart = () => {
+        setIsListening(true);
+      };
+
+      recognition.onresult = (event: any) => {
+        const transcript = Array.from(event.results)
+          .map((result: any) => result[0].transcript)
+          .join('');
+        setInput(transcript);
+        if (event.results[0].isFinal) {
+          setIsListening(false);
+          if (transcript.trim()) {
+            sendMessage(transcript.trim());
+          }
+        }
+      };
+
+      recognition.onerror = () => {
+        setIsListening(false);
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } catch (err) {
+      console.error("Speech recognition error:", err);
+      setIsListening(false);
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -197,29 +282,59 @@ Instructions:
 
     setMessages((prev) => [...prev, aiMsg]);
     setLoading(false);
+    speakResponse(replyText);
   };
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-50 p-4 select-none font-['Sora']">
-      <div className="w-full max-w-xl bg-white border border-[#f2e8da] rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[580px] text-[#1c1917] animate-fade-in-up">
+      <div className="w-full max-w-xl bg-white border border-[#f2e8da] rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[600px] text-[#1c1917] animate-fade-in-up">
         {/* Header Bar */}
         <div className="p-4 bg-gradient-to-r from-red-600 via-amber-600 to-amber-500 text-white flex items-center justify-between shadow-xs">
-          <div className="flex items-center space-x-2.5">
-            <div className="p-2 rounded-2xl bg-white/20 backdrop-blur-md shadow-xs animate-float">
+          <div className="flex items-center space-x-2.5 min-w-0">
+            <div className="p-2 rounded-2xl bg-white/20 backdrop-blur-md shadow-xs animate-float shrink-0">
               <Sparkles className="w-5 h-5 text-amber-200" />
             </div>
-            <div>
-              <h3 className="text-sm font-black tracking-wide">JARVIS AI Personal Assistant</h3>
-              <p className="text-[11px] text-amber-100 font-medium">Personal executive companion for Akash Shiv (v2.0 Crimson & Gold Engine)</p>
+            <div className="min-w-0">
+              <h3 className="text-sm font-black tracking-wide truncate">JARVIS Voice AI Assistant</h3>
+              <p className="text-[11px] text-amber-100 font-medium truncate">ChatGPT Voice & Executive Companion for Akash Shiv</p>
             </div>
           </div>
 
-          <button
-            onClick={onClose}
-            className="p-1.5 rounded-xl hover:bg-white/20 transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center space-x-1.5 shrink-0">
+            {/* Voice Output Toggle */}
+            <button
+              type="button"
+              onClick={() => setIsVoiceOutputEnabled(!isVoiceOutputEnabled)}
+              className={`p-2 rounded-xl transition-all ${
+                isVoiceOutputEnabled ? 'bg-white/20 text-white' : 'bg-black/30 text-amber-200 opacity-60'
+              }`}
+              title={isVoiceOutputEnabled ? 'Voice Responses Enabled' : 'Voice Responses Muted'}
+            >
+              {isVoiceOutputEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+            </button>
+
+            {/* Mic Voice Assistant Toggle */}
+            <button
+              type="button"
+              onClick={toggleVoiceInput}
+              className={`p-2 rounded-xl transition-all ${
+                isListening
+                  ? 'bg-red-600 text-white animate-pulse ring-2 ring-yellow-300'
+                  : 'bg-white/20 text-white hover:bg-white/30'
+              }`}
+              title={isListening ? 'Stop Listening' : 'Start Voice Assistant'}
+            >
+              {isListening ? <Radio className="w-4 h-4 animate-spin text-yellow-300" /> : <Mic className="w-4 h-4" />}
+            </button>
+
+            <button
+              type="button"
+              onClick={onClose}
+              className="p-1.5 rounded-xl hover:bg-white/20 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Quick Suggestion Chips */}
@@ -255,6 +370,22 @@ Instructions:
             <span>Wellness Check</span>
           </button>
         </div>
+
+        {/* Listening Active Banner */}
+        {isListening && (
+          <div className="bg-gradient-to-r from-red-600 via-amber-500 to-red-600 p-2.5 text-white text-xs font-black flex items-center justify-between animate-pulse">
+            <div className="flex items-center space-x-2">
+              <Mic className="w-4 h-4 text-yellow-200 animate-bounce" />
+              <span>JARVIS Voice Listening... Speak your command now!</span>
+            </div>
+            <button
+              onClick={toggleVoiceInput}
+              className="text-[10px] uppercase underline hover:text-yellow-200 font-black"
+            >
+              Stop Mic
+            </button>
+          </div>
+        )}
 
         {/* Chat History */}
         <div className="flex-1 overflow-y-auto p-4 space-y-4 text-xs">
@@ -316,9 +447,23 @@ Instructions:
           }}
           className="p-3 border-t border-[#f0e8dc] bg-[#ffffff] flex items-center space-x-2"
         >
+          {/* Voice Microphone Trigger Button */}
+          <button
+            type="button"
+            onClick={toggleVoiceInput}
+            className={`p-2.5 rounded-2xl transition-all ${
+              isListening
+                ? 'bg-red-600 text-white animate-pulse ring-2 ring-red-400'
+                : 'bg-amber-50 text-amber-600 hover:bg-amber-100 border border-amber-200'
+            }`}
+            title={isListening ? 'Stop Voice Input' : 'Speak to JARVIS'}
+          >
+            {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+          </button>
+
           <input
             type="text"
-            placeholder="Ask JARVIS: 'what is to day to do', 'create habit...', 'hi'..."
+            placeholder={isListening ? "Listening... Speak your prompt..." : "Ask JARVIS or click mic to speak..."}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             className="flex-1 px-4 py-2.5 bg-[#faf7f2] border border-[#f0e8dc] rounded-2xl text-xs outline-none focus:border-red-600 text-[#1c1917] font-medium transition-colors"
