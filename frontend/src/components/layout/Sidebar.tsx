@@ -72,7 +72,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
 
   const handleCreateTodoPlanner = () => {
     if (activeWorkspace) {
-      createPage(activeWorkspace.id, null, 'Task Planner & Kanban', 'todo_planner');
+      createPage(activeWorkspace.id, null, 'Task Planner', 'todo_planner');
     }
   };
 
@@ -143,19 +143,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
         <div
           onClick={() => handlePageSelect(page.id)}
           style={{ paddingLeft: `${Math.max(12, level * 16 + 12)}px` }}
-          className={`group flex items-center justify-between py-1.5 pr-2 rounded-lg cursor-pointer text-xs transition-all duration-200 hover:translate-x-1 ${
-            isActive
+          className={`group flex items-center justify-between py-1.5 pr-2 rounded-lg cursor-pointer text-xs transition-all duration-200 hover:translate-x-1 ${isActive
               ? 'active-page-pill text-amber-400 font-bold shadow-xs'
               : 'hover:bg-[#f2ebe1] dark:hover:bg-zinc-800/60 text-[#44403c] dark:text-zinc-300'
-          }`}
+            }`}
         >
           <div className="flex items-center space-x-1.5 min-w-0">
             {/* Expand Arrow */}
             <button
               onClick={(e) => toggleExpand(page.id, e)}
-              className={`p-0.5 rounded hover:bg-[#e7dfd4] transition-colors ${
-                hasChildren ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'
-              }`}
+              className={`p-0.5 rounded hover:bg-[#e7dfd4] transition-colors ${hasChildren ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'
+                }`}
             >
               {isExpanded ? (
                 <ChevronDown className="w-3 h-3 text-[#78716c]" />
@@ -178,9 +176,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
                 e.stopPropagation();
                 toggleFavorite(page.id);
               }}
-              className={`p-1 rounded hover:bg-[#e7dfd4] ${
-                page.is_favorite ? 'text-[#ff7a00]' : 'text-[#a8a29e]'
-              }`}
+              className={`p-1 rounded hover:bg-[#e7dfd4] ${page.is_favorite ? 'text-[#ff7a00]' : 'text-[#a8a29e]'
+                }`}
               title="Favorite"
             >
               <Star className={`w-3 h-3 ${page.is_favorite ? 'fill-[#ff7a00]' : ''}`} />
@@ -220,275 +217,274 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
   return (
     <>
       {/* Mobile Backdrop */}
-      <div 
-        className="fixed inset-0 bg-black/20 z-40 md:hidden" 
+      <div
+        className="fixed inset-0 bg-black/20 z-40 md:hidden"
         onClick={toggleSidebar}
       />
-      <aside className="fixed left-0 md:relative z-50 w-60 h-screen bg-[#140306]/95 backdrop-blur-xl border-r border-red-900/40 text-zinc-100 flex flex-col shrink-0 select-none transition-all animate-slide-in-left">
-      {/* Workspace Switcher Header (Clean ChatGPT Layout Alignment) */}
-      <div className="p-3 border-b border-red-900/40 relative">
-        <div
-          onClick={() => setIsWorkspaceMenuOpen(!isWorkspaceMenuOpen)}
-          className="flex items-center justify-between p-2 rounded-xl hover:bg-[#f2ebe1] dark:hover:bg-zinc-900/80 cursor-pointer transition-all border border-transparent hover:border-[#e7dfd4] dark:hover:border-red-900/40"
-        >
-          <div className="flex items-center space-x-2.5 min-w-0">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#dc2626] via-[#f59e0b] to-[#b91c1c] text-white flex items-center justify-center font-black text-xs shrink-0 shadow-sm animate-float gold-red-pulse">
-              <Shield className="w-4.5 h-4.5 text-white" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <div className="text-[9px] font-black uppercase tracking-wider text-[#a8a29e] truncate leading-tight animate-text-reveal">
-                AKASH WORKSPACE
+      <aside className="fixed left-0 md:relative z-50 w-60 h-screen bg-[#0d1322]/95 backdrop-blur-xl border-r border-indigo-500/20 text-slate-100 flex flex-col shrink-0 select-none transition-all animate-slide-in-left">
+        {/* Workspace Switcher Header (Clean ChatGPT Layout Alignment) */}
+        <div className="p-3 border-b border-indigo-500/20 relative">
+          <div
+            onClick={() => setIsWorkspaceMenuOpen(!isWorkspaceMenuOpen)}
+            className="flex items-center justify-between p-2 rounded-xl hover:bg-[#f2ebe1] dark:hover:bg-zinc-900/80 cursor-pointer transition-all border border-transparent hover:border-[#e7dfd4] dark:hover:border-red-900/40"
+          >
+            <div className="flex items-center space-x-2.5 min-w-0">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#dc2626] via-[#f59e0b] to-[#b91c1c] text-white flex items-center justify-center font-black text-xs shrink-0 shadow-sm animate-float gold-red-pulse">
+                <Shield className="w-4.5 h-4.5 text-white" />
               </div>
-              <div className="text-xs font-extrabold truncate leading-tight mt-0.5 text-gradient-dark hover-text-shimmer">
-                {activeWorkspace?.name || "Akash Shiv's Workspace"}
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center space-x-1 text-[#a8a29e] shrink-0">
-            <ChevronsUpDown className="w-3.5 h-3.5 text-[#dc2626]" />
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                toggleSidebar();
-              }}
-              className="p-1 rounded hover:bg-[#e7dfd4]"
-              title="Collapse Sidebar"
-            >
-              <PanelLeftClose className="w-3.5 h-3.5" />
-            </button>
-          </div>
-        </div>
-
-        {/* Workspace Dropdown */}
-        {isWorkspaceMenuOpen && (
-          <div className="absolute top-16 left-3 right-3 bg-white border border-[#f0e8dc] rounded-xl shadow-xl py-2 z-50 text-xs animate-fade-in-up">
-            <div className="px-3 py-1 text-[10px] uppercase font-bold text-[#dc2626] tracking-wider">
-              Workspaces
-            </div>
-            {workspaces.map((ws) => (
-              <button
-                key={ws.id}
-                onClick={() => {
-                  setActiveWorkspace(ws);
-                  setIsWorkspaceMenuOpen(false);
-                }}
-                className={`w-full text-left px-3 py-2 flex items-center space-x-2 hover:bg-[#f9f6f0] ${
-                  ws.id === activeWorkspace?.id ? 'font-semibold text-[#dc2626] bg-[#fff1f2]' : 'text-[#44403c]'
-                }`}
-              >
-                <span>{ws.icon || '💼'}</span>
-                <span className="truncate">{ws.name}</span>
-              </button>
-            ))}
-
-            <div className="border-t border-[#f0e8dc] my-1" />
-
-            {isCreatingWs ? (
-              <form onSubmit={handleCreateWsSubmit} className="p-2 space-y-2">
-                <input
-                  type="text"
-                  placeholder="Workspace name..."
-                  value={newWsName}
-                  onChange={(e) => setNewWsName(e.target.value)}
-                  className="w-full px-2 py-1 bg-[#faf7f2] border border-[#f0e8dc] rounded text-xs outline-none focus:border-[#dc2626] text-[#1c1917]"
-                  autoFocus
-                />
-                <div className="flex justify-end space-x-1">
-                  <button
-                    type="button"
-                    onClick={() => setIsCreatingWs(false)}
-                    className="px-2 py-0.5 text-xs text-[#78716c]"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-2 py-0.5 text-xs bg-[#dc2626] text-white font-bold rounded"
-                  >
-                    Create
-                  </button>
+              <div className="min-w-0 flex-1">
+                <div className="text-[9px] font-black uppercase tracking-wider text-[#a8a29e] truncate leading-tight animate-text-reveal">
+                  AKASH WORKSPACE
                 </div>
-              </form>
-            ) : (
-              <button
-                onClick={() => setIsCreatingWs(true)}
-                className="w-full text-left px-3 py-1.5 flex items-center space-x-2 hover:bg-[#f9f6f0] text-[#dc2626] font-medium"
-              >
-                <Plus className="w-3.5 h-3.5" />
-                <span>+ New Workspace</span>
-              </button>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Main Navigation Links */}
-      <div className="p-2 space-y-1">
-        {onBackToLanding && (
-          <button
-            onClick={() => wrapCreate(onBackToLanding)}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-[#991b1b] to-[#7f1d1d] text-amber-300 hover:from-[#b91c1c] hover:to-[#991b1b] text-xs font-bold transition-all hover:scale-[1.01] border border-amber-500/40 shadow-md mb-1"
-          >
-            <Shield className="w-3.5 h-3.5 text-amber-300 fill-amber-300" />
-            <span>Iron Man Home</span>
-          </button>
-        )}
-
-        <button
-          onClick={() => setSearching(true)}
-          className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-red-950/40 text-xs text-zinc-200 hover:text-white transition-all hover:scale-[1.01]"
-        >
-          <div className="flex items-center space-x-2">
-            <Search className="w-3.5 h-3.5 text-amber-400" />
-            <span>Search Workspace</span>
-          </div>
-          <kbd className="px-1.5 py-0.5 bg-red-950/60 border border-red-900/40 text-[10px] font-mono rounded text-amber-400">
-            Ctrl K
-          </kbd>
-        </button>
-
-        <button
-          onClick={() => setAuthModalOpen(true, 'login')}
-          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-red-950/40 text-xs text-zinc-200 hover:text-white transition-all hover:scale-[1.01]"
-        >
-          <Settings className="w-3.5 h-3.5 text-amber-400" />
-          <span>Settings & Auth</span>
-        </button>
-
-        <div className="pt-2 px-2.5 pb-1 text-[10px] font-black uppercase text-amber-500/80 tracking-wider transition-colors duration-300">
-          HABIT & PRODUCTIVITY
-        </div>
-
-        {/* Habit Tracker Template Pill */}
-        <button
-          onClick={() => wrapCreate(handleCreateHabitTracker)}
-          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-red-950/40 text-xs text-zinc-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
-        >
-          <Flame className="w-3.5 h-3.5 text-amber-400" />
-          <span>Habit Tracker</span>
-        </button>
-
-        {/* To-Do Planner Template Pill */}
-        <button
-          onClick={() => wrapCreate(handleCreateTodoPlanner)}
-          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-red-950/40 text-xs text-zinc-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
-        >
-          <CheckSquare className="w-3.5 h-3.5 text-amber-400" />
-          <span>To-Do Planner</span>
-        </button>
-
-        {/* Pomodoro Focus Timer Pill */}
-        <button
-          onClick={() => wrapCreate(handleCreatePomodoro)}
-          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-red-950/40 text-xs text-zinc-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
-        >
-          <Zap className="w-3.5 h-3.5 text-amber-400" />
-          <span>Arc Focus Timer</span>
-        </button>
-
-        {/* Daily Journal Pill */}
-        <button
-          onClick={() => wrapCreate(handleCreateJournal)}
-          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-red-950/40 text-xs text-zinc-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
-        >
-          <BookOpen className="w-3.5 h-3.5 text-amber-400" />
-          <span>Daily Journal</span>
-        </button>
-
-        {/* Expense Tracker Pill */}
-        <button
-          onClick={() => wrapCreate(handleCreateExpenseTracker)}
-          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-red-950/40 text-xs text-zinc-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
-        >
-          <span className="text-sm">💰</span>
-          <span>Expense Tracker</span>
-        </button>
-
-        {/* Study & Learning Plans Pill */}
-        <button
-          onClick={() => wrapCreate(handleCreatePlansHub)}
-          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-[#991b1b] to-[#7f1d1d] text-amber-300 font-extrabold transition-all hover:scale-[1.01] border border-amber-500/50 shadow-md"
-        >
-          <span className="text-sm">🎯</span>
-          <span>Study & Learning Plans</span>
-        </button>
-      </div>
-
-      {/* Private Pages List */}
-      <div className="flex-1 overflow-y-auto mt-3 px-2">
-        <div className="flex items-center justify-between px-2 py-1">
-          <span className="text-[10px] font-black uppercase text-[#a8a29e] hover:text-[#ff7a00] tracking-wider transition-colors duration-300">
-            PRIVATE PAGES
-          </span>
-          <button
-            onClick={() => wrapCreate(handleCreateRootPage)}
-            className="p-1 rounded hover:bg-[#e7dfd4] text-[#78716c]"
-            title="Create root page"
-          >
-            <Plus className="w-3 h-3" />
-          </button>
-        </div>
-
-        <div className="space-y-0.5 mt-1">
-          {rootPages.map((page) => renderPageItem(page, 0))}
-        </div>
-      </div>
-
-      {/* Footer: User Profile & Trash Bin */}
-      <div className="p-2 border-t border-[#f0e8dc] space-y-1">
-        <div className="flex items-center justify-between px-2 py-1.5 rounded-lg bg-[#f0e8dc]/60">
-          <div className="flex items-center space-x-2 min-w-0">
-            <div className="w-6 h-6 rounded-full bg-gradient-to-r from-[#ff7a00] to-[#ff9500] flex items-center justify-center text-[10px] font-black text-white shrink-0">
-              A
+                <div className="text-xs font-extrabold truncate leading-tight mt-0.5 text-gradient-dark hover-text-shimmer">
+                  {activeWorkspace?.name || "Akash Shiv's Workspace"}
+                </div>
+              </div>
             </div>
-            <span className="text-xs font-bold text-[#1c1917] truncate">
-              {user?.full_name || 'Akash Shiv'}
-            </span>
+            <div className="flex items-center space-x-1 text-[#a8a29e] shrink-0">
+              <ChevronsUpDown className="w-3.5 h-3.5 text-[#dc2626]" />
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleSidebar();
+                }}
+                className="p-1 rounded hover:bg-[#e7dfd4]"
+                title="Collapse Sidebar"
+              >
+                <PanelLeftClose className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
-          <span className="w-2 h-2 rounded-full bg-[#ff7a00] animate-ping" />
-        </div>
 
-        <button
-          onClick={() => setIsTrashOpen(!isTrashOpen)}
-          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#78716c] transition-colors"
-        >
-          <Trash2 className="w-3.5 h-3.5 text-red-500" />
-          <span>Trash Bin ({archivedPages.length})</span>
-        </button>
+          {/* Workspace Dropdown */}
+          {isWorkspaceMenuOpen && (
+            <div className="absolute top-16 left-3 right-3 bg-white border border-[#f0e8dc] rounded-xl shadow-xl py-2 z-50 text-xs animate-fade-in-up">
+              <div className="px-3 py-1 text-[10px] uppercase font-bold text-[#dc2626] tracking-wider">
+                Workspaces
+              </div>
+              {workspaces.map((ws) => (
+                <button
+                  key={ws.id}
+                  onClick={() => {
+                    setActiveWorkspace(ws);
+                    setIsWorkspaceMenuOpen(false);
+                  }}
+                  className={`w-full text-left px-3 py-2 flex items-center space-x-2 hover:bg-[#f9f6f0] ${ws.id === activeWorkspace?.id ? 'font-semibold text-[#dc2626] bg-[#fff1f2]' : 'text-[#44403c]'
+                    }`}
+                >
+                  <span>{ws.icon || '💼'}</span>
+                  <span className="truncate">{ws.name}</span>
+                </button>
+              ))}
 
-        {/* Trash Modal */}
-        {isTrashOpen && (
-          <div className="mt-2 p-2 bg-white border border-[#f0e8dc] rounded-xl shadow-xl text-xs space-y-1 animate-fade-in-up">
-            <div className="font-bold text-[#1c1917] px-1">Trash Bin</div>
-            {archivedPages.length === 0 ? (
-              <p className="text-[#a8a29e] px-1 py-2 text-[11px]">No items in trash.</p>
-            ) : (
-              archivedPages.map((p) => (
-                <div key={p.id} className="flex items-center justify-between p-1 hover:bg-[#f9f6f0] rounded">
-                  <span className="truncate max-w-[110px]">{p.title || 'Untitled'}</span>
-                  <div className="flex items-center space-x-1">
+              <div className="border-t border-[#f0e8dc] my-1" />
+
+              {isCreatingWs ? (
+                <form onSubmit={handleCreateWsSubmit} className="p-2 space-y-2">
+                  <input
+                    type="text"
+                    placeholder="Workspace name..."
+                    value={newWsName}
+                    onChange={(e) => setNewWsName(e.target.value)}
+                    className="w-full px-2 py-1 bg-[#faf7f2] border border-[#f0e8dc] rounded text-xs outline-none focus:border-[#dc2626] text-[#1c1917]"
+                    autoFocus
+                  />
+                  <div className="flex justify-end space-x-1">
                     <button
-                      onClick={() => restorePage(p.id)}
-                      className="p-1 text-emerald-600 hover:bg-emerald-50 rounded"
-                      title="Restore"
+                      type="button"
+                      onClick={() => setIsCreatingWs(false)}
+                      className="px-2 py-0.5 text-xs text-[#78716c]"
                     >
-                      <RotateCcw className="w-3 h-3" />
+                      Cancel
                     </button>
                     <button
-                      onClick={() => deletePermanently(p.id)}
-                      className="p-1 text-red-500 hover:bg-red-50 rounded"
-                      title="Delete permanently"
+                      type="submit"
+                      className="px-2 py-0.5 text-xs bg-[#dc2626] text-white font-bold rounded"
                     >
-                      <Trash2 className="w-3 h-3" />
+                      Create
                     </button>
                   </div>
-                </div>
-              ))
-            )}
+                </form>
+              ) : (
+                <button
+                  onClick={() => setIsCreatingWs(true)}
+                  className="w-full text-left px-3 py-1.5 flex items-center space-x-2 hover:bg-[#f9f6f0] text-[#dc2626] font-medium"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>+ New Workspace</span>
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Main Navigation Links */}
+        <div className="p-2 space-y-1">
+          {onBackToLanding && (
+            <button
+              onClick={() => wrapCreate(onBackToLanding)}
+              className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-indigo-700 via-indigo-600 to-amber-500 text-amber-300 hover:from-indigo-600 hover:to-amber-400 text-xs font-bold transition-all hover:scale-[1.01] border border-amber-400/40 shadow-md mb-1"
+            >
+              <Shield className="w-3.5 h-3.5 text-amber-300 fill-amber-300" />
+              <span>Iron Man Home</span>
+            </button>
+          )}
+
+          <button
+            onClick={() => setSearching(true)}
+            className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-indigo-950/40 text-xs text-slate-200 hover:text-white transition-all hover:scale-[1.01]"
+          >
+            <div className="flex items-center space-x-2">
+              <Search className="w-3.5 h-3.5 text-amber-400" />
+              <span>Search Workspace</span>
+            </div>
+            <kbd className="px-1.5 py-0.5 bg-indigo-950/60 border border-indigo-500/30 text-[10px] font-mono rounded text-amber-400">
+              Ctrl K
+            </kbd>
+          </button>
+
+          <button
+            onClick={() => setAuthModalOpen(true, 'login')}
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-indigo-950/40 text-xs text-slate-200 hover:text-white transition-all hover:scale-[1.01]"
+          >
+            <Settings className="w-3.5 h-3.5 text-amber-400" />
+            <span>Settings & Auth</span>
+          </button>
+
+          <div className="pt-2 px-2.5 pb-1 text-[10px] font-black uppercase text-amber-400/80 tracking-wider transition-colors duration-300">
+            HABIT & PRODUCTIVITY
           </div>
-        )}
-      </div>
-    </aside>
+
+          {/* Habit Tracker Template Pill */}
+          <button
+            onClick={() => wrapCreate(handleCreateHabitTracker)}
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-indigo-950/40 text-xs text-slate-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
+          >
+            <Flame className="w-3.5 h-3.5 text-amber-400" />
+            <span>Habit Tracker</span>
+          </button>
+
+          {/* To-Do Planner Template Pill */}
+          <button
+            onClick={() => wrapCreate(handleCreateTodoPlanner)}
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-indigo-950/40 text-xs text-slate-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
+          >
+            <CheckSquare className="w-3.5 h-3.5 text-amber-400" />
+            <span>To-Do Planner</span>
+          </button>
+
+          {/* Pomodoro Focus Timer Pill */}
+          <button
+            onClick={() => wrapCreate(handleCreatePomodoro)}
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-indigo-950/40 text-xs text-slate-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
+          >
+            <Zap className="w-3.5 h-3.5 text-amber-400" />
+            <span>Arc Focus Timer</span>
+          </button>
+
+          {/* Daily Journal Pill */}
+          <button
+            onClick={() => wrapCreate(handleCreateJournal)}
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-indigo-950/40 text-xs text-slate-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
+          >
+            <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+            <span>Daily Journal</span>
+          </button>
+
+          {/* Expense Tracker Pill */}
+          <button
+            onClick={() => wrapCreate(handleCreateExpenseTracker)}
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-indigo-950/40 text-xs text-slate-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
+          >
+            <span className="text-sm">💰</span>
+            <span>Expense Tracker</span>
+          </button>
+
+          {/* Study & Learning Plans Pill */}
+          <button
+            onClick={() => wrapCreate(handleCreatePlansHub)}
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-indigo-700 to-indigo-900 text-amber-300 font-extrabold transition-all hover:scale-[1.01] border border-amber-400/40 shadow-md"
+          >
+            <span className="text-sm">🎯</span>
+            <span>Study & Learning Plans</span>
+          </button>
+        </div>
+
+        {/* Private Pages List */}
+        <div className="flex-1 overflow-y-auto mt-3 px-2">
+          <div className="flex items-center justify-between px-2 py-1">
+            <span className="text-[10px] font-black uppercase text-[#a8a29e] hover:text-[#ff7a00] tracking-wider transition-colors duration-300">
+              PRIVATE PAGES
+            </span>
+            <button
+              onClick={() => wrapCreate(handleCreateRootPage)}
+              className="p-1 rounded hover:bg-[#e7dfd4] text-[#78716c]"
+              title="Create root page"
+            >
+              <Plus className="w-3 h-3" />
+            </button>
+          </div>
+
+          <div className="space-y-0.5 mt-1">
+            {rootPages.map((page) => renderPageItem(page, 0))}
+          </div>
+        </div>
+
+        {/* Footer: User Profile & Trash Bin */}
+        <div className="p-2 border-t border-[#f0e8dc] space-y-1">
+          <div className="flex items-center justify-between px-2 py-1.5 rounded-lg bg-[#f0e8dc]/60">
+            <div className="flex items-center space-x-2 min-w-0">
+              <div className="w-6 h-6 rounded-full bg-gradient-to-r from-[#ff7a00] to-[#ff9500] flex items-center justify-center text-[10px] font-black text-white shrink-0">
+                A
+              </div>
+              <span className="text-xs font-bold text-[#1c1917] truncate">
+                {user?.full_name || 'Akash Shiv'}
+              </span>
+            </div>
+            <span className="w-2 h-2 rounded-full bg-[#ff7a00] animate-ping" />
+          </div>
+
+          <button
+            onClick={() => setIsTrashOpen(!isTrashOpen)}
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#78716c] transition-colors"
+          >
+            <Trash2 className="w-3.5 h-3.5 text-red-500" />
+            <span>Trash Bin ({archivedPages.length})</span>
+          </button>
+
+          {/* Trash Modal */}
+          {isTrashOpen && (
+            <div className="mt-2 p-2 bg-white border border-[#f0e8dc] rounded-xl shadow-xl text-xs space-y-1 animate-fade-in-up">
+              <div className="font-bold text-[#1c1917] px-1">Trash Bin</div>
+              {archivedPages.length === 0 ? (
+                <p className="text-[#a8a29e] px-1 py-2 text-[11px]">No items in trash.</p>
+              ) : (
+                archivedPages.map((p) => (
+                  <div key={p.id} className="flex items-center justify-between p-1 hover:bg-[#f9f6f0] rounded">
+                    <span className="truncate max-w-[110px]">{p.title || 'Untitled'}</span>
+                    <div className="flex items-center space-x-1">
+                      <button
+                        onClick={() => restorePage(p.id)}
+                        className="p-1 text-emerald-600 hover:bg-emerald-50 rounded"
+                        title="Restore"
+                      >
+                        <RotateCcw className="w-3 h-3" />
+                      </button>
+                      <button
+                        onClick={() => deletePermanently(p.id)}
+                        className="p-1 text-red-500 hover:bg-red-50 rounded"
+                        title="Delete permanently"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+        </div>
+      </aside>
     </>
   );
 };

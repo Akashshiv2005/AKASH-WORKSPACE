@@ -428,38 +428,38 @@
   animation: progress-shine 2.5s infinite linear;
 }
 
-/* Stark Industries Iron Man Red & Gold Design System */
+/* Midnight Obsidian & Arc Gold Executive Design System */
 .stark-hud-card, .glass-card {
-  background: rgba(14, 14, 18, 0.92) !important;
-  border: 1px solid rgba(220, 38, 38, 0.35) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(245, 158, 11, 0.2) !important;
+  background: rgba(21, 28, 44, 0.9) !important;
+  border: 1px solid rgba(99, 102, 241, 0.25) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(245, 158, 11, 0.15) !important;
   backdrop-filter: blur(16px);
-  color: #f4f4f5 !important;
+  color: #f8fafc !important;
 }
 
 .dark .stark-hud-card, .dark .glass-card {
-  background: rgba(14, 14, 18, 0.92) !important;
-  border: 1px solid rgba(220, 38, 38, 0.35) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(245, 158, 11, 0.2) !important;
+  background: rgba(21, 28, 44, 0.9) !important;
+  border: 1px solid rgba(99, 102, 241, 0.25) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(245, 158, 11, 0.15) !important;
   backdrop-filter: blur(16px);
-  color: #f4f4f5 !important;
+  color: #f8fafc !important;
 }
 
 .glass-header, .dark .glass-header {
-  background: rgba(9, 9, 12, 0.92) !important;
-  border-bottom: 1px solid rgba(220, 38, 38, 0.35) !important;
+  background: rgba(15, 23, 42, 0.92) !important;
+  border-bottom: 1px solid rgba(99, 102, 241, 0.25) !important;
   backdrop-filter: blur(16px);
-  color: #f4f4f5 !important;
+  color: #f8fafc !important;
 }
 
-/* Active Page Pill Highlight - Stark Gold & Crimson Red Theme */
+/* Active Page Pill Highlight - Midnight Slate & Arc Gold */
 .active-page-pill, .dark .active-page-pill {
   position: relative;
-  background: linear-gradient(90deg, rgba(153, 27, 27, 0.5) 0%, rgba(127, 29, 29, 0.25) 100%) !important;
-  border: 1px solid rgba(245, 158, 11, 0.6) !important;
-  color: #f59e0b !important;
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.35) 0%, rgba(245, 158, 11, 0.15) 100%) !important;
+  border: 1px solid rgba(245, 158, 11, 0.5) !important;
+  color: #fbbf24 !important;
   font-weight: 800 !important;
-  box-shadow: 0 0 16px rgba(220, 38, 38, 0.3), inset 0 0 8px rgba(245, 158, 11, 0.15) !important;
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.25), inset 0 0 8px rgba(245, 158, 11, 0.15) !important;
   backdrop-filter: blur(8px);
 }
 
@@ -471,7 +471,7 @@
   bottom: 10%;
   width: 4px;
   border-radius: 0 4px 4px 0;
-  background: linear-gradient(180deg, #dc2626 0%, #f59e0b 100%);
+  background: linear-gradient(180deg, #6366f1 0%, #f59e0b 100%);
   box-shadow: 0 0 10px #f59e0b;
 }
 

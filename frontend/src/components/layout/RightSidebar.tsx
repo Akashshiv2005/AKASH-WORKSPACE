@@ -100,12 +100,12 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         className="fixed inset-0 bg-black/20 z-40 md:hidden" 
         onClick={toggleRightSidebar}
       />
-      <aside className="fixed right-0 md:relative z-50 w-64 h-screen bg-[#09090b]/95 backdrop-blur-xl border-l border-red-950/50 flex flex-col shrink-0 select-none transition-all animate-slide-in-right font-['Sora'] text-zinc-100">
+      <aside className="fixed right-0 md:relative z-50 w-64 h-screen bg-[#0d1322]/95 backdrop-blur-xl border-l border-indigo-500/25 flex flex-col shrink-0 select-none transition-all animate-slide-in-right font-['Sora'] text-slate-100">
       {/* Header Bar */}
-      <div className="p-3 border-b border-red-950/50 bg-[#0c0c0f] flex items-center justify-between">
+      <div className="p-3 border-b border-indigo-500/25 bg-[#121a2c] flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <div className="p-1.5 rounded-lg bg-red-950/60 border border-amber-500/40 text-amber-400 shadow-xs">
-            <TrendingUp className="w-3.5 h-3.5" />
+          <div className="p-1.5 rounded-lg bg-indigo-950/60 border border-amber-400/40 text-amber-400 shadow-xs">
+            <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
           </div>
           <span className="text-xs font-black tracking-wide text-amber-400 uppercase animate-text-float">
             {widgetType === 'habit_tracker'

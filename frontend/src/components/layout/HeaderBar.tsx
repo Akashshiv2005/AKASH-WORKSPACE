@@ -79,13 +79,13 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
 
   return (
     <>
-      <header className="h-14 border-b border-red-950/60 bg-[#160306]/95 backdrop-blur-xl px-4 flex items-center justify-between text-zinc-100 select-none z-10 transition-colors shrink-0">
+      <header className="h-14 border-b border-indigo-500/25 bg-[#0f172a]/95 backdrop-blur-xl px-4 flex items-center justify-between text-slate-100 select-none z-10 transition-colors shrink-0">
         {/* Left Section: Workspace & Breadcrumbs */}
         <div className="flex items-center space-x-3 min-w-0">
           {!isSidebarOpen && (
             <button
               onClick={toggleSidebar}
-              className="p-1.5 rounded-lg hover:bg-red-950/60 text-amber-400 transition-colors"
+              className="p-1.5 rounded-lg hover:bg-indigo-950/60 text-amber-400 transition-colors"
               title="Open Left Sidebar"
             >
               <PanelLeft className="w-4 h-4 text-amber-400" />
@@ -96,7 +96,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           {onBackToLanding && (
             <button
               onClick={onBackToLanding}
-              className="flex items-center space-x-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-red-700 via-red-600 to-amber-500 hover:from-red-600 hover:to-amber-400 text-white font-black text-[11px] tracking-wider transition-all hover:scale-105 shadow-md border border-amber-400/50 shrink-0 whitespace-nowrap"
+              className="flex items-center space-x-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-indigo-700 via-indigo-600 to-amber-500 hover:from-indigo-600 hover:to-amber-400 text-white font-black text-[11px] tracking-wider transition-all hover:scale-105 shadow-md border border-amber-400/50 shrink-0 whitespace-nowrap"
               title="Return to Iron Man Home Landing Page"
             >
               <Shield className="w-3.5 h-3.5 text-amber-300 fill-amber-300 shrink-0" />
