@@ -180,7 +180,6 @@ export const usePageStore = create<PageState>()(
       },
 
       createPage: async (workspaceId, parentId = null, title = 'Untitled', widgetType = null) => {
-        const token = localStorage.getItem('access_token');
         const getIcon = () => {
           if (widgetType === 'habit_tracker') return '🔥';
           if (widgetType === 'todo_planner') return '📋';
@@ -191,27 +190,9 @@ export const usePageStore = create<PageState>()(
           return '📄';
         };
 
-        if (token) {
-          try {
-            const res = await apiClient.post<Page>('/pages', {
-              title,
-              workspace_id: workspaceId,
-              parent_id: parentId,
-              icon: getIcon(),
-            });
-            const newPage = { ...res.data, widget_type: widgetType, cover_image: '' };
-            set((state) => ({
-              pages: [...state.pages, newPage],
-              activePageId: newPage.id,
-            }));
-            return newPage;
-          } catch (e) {
-            // fallback to local creation
-          }
-        }
-
+        const tempId = `page-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
         const newPage: Page = {
-          id: `page-${Date.now()}`,
+          id: tempId,
           title,
           icon: getIcon(),
           cover_image: '',
@@ -223,10 +204,37 @@ export const usePageStore = create<PageState>()(
           is_archived: false,
           position: get().pages.length,
         };
+
+        // 1. Instant local state update (0ms UI lag)
         set((state) => ({
           pages: [...state.pages, newPage],
           activePageId: newPage.id,
         }));
+
+        // 2. Background API Sync (non-blocking)
+        const token = localStorage.getItem('access_token');
+        if (token) {
+          apiClient
+            .post<Page>('/pages', {
+              title,
+              workspace_id: workspaceId,
+              parent_id: parentId,
+              icon: getIcon(),
+            })
+            .then((res) => {
+              if (res.data && res.data.id) {
+                const realPage = { ...res.data, widget_type: widgetType, cover_image: '' };
+                set((state) => ({
+                  pages: state.pages.map((p) => (p.id === tempId ? realPage : p)),
+                  activePageId: state.activePageId === tempId ? realPage.id : state.activePageId,
+                }));
+              }
+            })
+            .catch(() => {
+              // Silently retain local page on network error
+            });
+        }
+
         return newPage;
       },
 

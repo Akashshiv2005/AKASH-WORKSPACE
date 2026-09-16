@@ -154,29 +154,12 @@ export const useHabitStore = create<HabitState>()(
           name = arg1;
         }
 
-        const token = localStorage.getItem('access_token');
         const habitIcon = icon || '🎯';
         const trimmedName = name.trim();
+        const tempId = `habit-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
 
-        if (token) {
-          try {
-            const res = await apiClient.post<any>(`/workspaces/${workspaceId}/habits`, {
-              name: trimmedName,
-              icon: habitIcon,
-              streak: 0,
-              completed_days: [false, false, false, false, false, false, false]
-            });
-            const newHabit = mapBackendHabit(res.data);
-            set((state) => ({ habits: [newHabit, ...state.habits] }));
-            return;
-          } catch (err) {
-            console.error("Failed to add habit to DB, saving locally:", err);
-          }
-        }
-
-        // Local fallback
         const localHabit: Habit = {
-          id: `habit-${Date.now()}`,
+          id: tempId,
           name: trimmedName,
           category: 'General',
           icon: habitIcon,
@@ -184,7 +167,32 @@ export const useHabitStore = create<HabitState>()(
           completedDays: [false, false, false, false, false, false, false],
           streak: 0,
         };
+
+        // 1. Instant local UI update
         set((state) => ({ habits: [localHabit, ...state.habits] }));
+
+        // 2. Background API Sync
+        const token = localStorage.getItem('access_token');
+        if (token) {
+          apiClient
+            .post<any>(`/workspaces/${workspaceId}/habits`, {
+              name: trimmedName,
+              icon: habitIcon,
+              streak: 0,
+              completed_days: [false, false, false, false, false, false, false]
+            })
+            .then((res) => {
+              if (res.data && res.data.id) {
+                const realHabit = mapBackendHabit(res.data);
+                set((state) => ({
+                  habits: state.habits.map((h) => (h.id === tempId ? realHabit : h)),
+                }));
+              }
+            })
+            .catch(() => {
+              // Retain local habit
+            });
+        }
       },
 
       toggleDay: async (workspaceId: string, habitId: string, dayIndex: number) => {

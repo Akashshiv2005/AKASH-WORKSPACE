@@ -140,34 +140,42 @@ export const useTaskStore = create<TaskState>()(
           title = arg1.trim();
         }
 
-        const token = localStorage.getItem('access_token');
         const trimmedTitle = title;
+        const tempId = `task-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
 
-        if (token) {
-          try {
-            const res = await apiClient.post<any>(`/workspaces/${workspaceId}/tasks`, {
-              title: trimmedTitle,
-              priority,
-              status: 'todo',
-            });
-            const newTask = mapBackendTask(res.data);
-            set((state) => ({ tasks: [newTask, ...state.tasks] }));
-            return;
-          } catch (err) {
-            console.error('Failed to create task in DB, saving locally:', err);
-          }
-        }
-
-        // Local fallback
         const localTask: TaskItem = {
-          id: `task-${Date.now()}`,
+          id: tempId,
           title: trimmedTitle,
           category: 'General',
           priority,
           status: 'todo',
           dueDate: 'Today',
         };
+
+        // 1. Instant local UI update
         set((state) => ({ tasks: [localTask, ...state.tasks] }));
+
+        // 2. Background API Sync
+        const token = localStorage.getItem('access_token');
+        if (token) {
+          apiClient
+            .post<any>(`/workspaces/${workspaceId}/tasks`, {
+              title: trimmedTitle,
+              priority,
+              status: 'todo',
+            })
+            .then((res) => {
+              if (res.data && res.data.id) {
+                const realTask = mapBackendTask(res.data);
+                set((state) => ({
+                  tasks: state.tasks.map((t) => (t.id === tempId ? realTask : t)),
+                }));
+              }
+            })
+            .catch(() => {
+              // Retain local task
+            });
+        }
       },
 
       updateStatus: async (workspaceId: string, taskId: string, status: 'todo' | 'in_progress' | 'completed') => {
