@@ -51,9 +51,9 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
   return (
     <div className="relative group max-w-4xl mx-auto pt-6 px-4 sm:px-16">
       {/* Letter-by-Letter Flow & Glowing Ticker Banner */}
-      <div className="w-full overflow-hidden py-2 px-3.5 rounded-xl bg-[#0e0e12]/90 backdrop-blur-md border border-amber-500/40 text-amber-400 text-xs font-bold mb-4 shadow-lg shadow-red-950/40 flex items-center justify-between glow-box-orange">
+      <div className="w-full overflow-hidden py-2 px-3.5 rounded-xl bg-white border border-amber-300 text-zinc-900 text-xs font-bold mb-4 shadow-xs flex items-center justify-between">
         <div className="flex items-center space-x-2.5 min-w-0 flex-1">
-          <span className="px-2 py-0.5 rounded-md bg-gradient-to-r from-red-700 via-red-600 to-amber-500 text-white text-[10px] font-black uppercase tracking-wider shrink-0 shadow-xs border border-amber-400/40 orange-pulse">
+          <span className="px-2 py-0.5 rounded-md bg-gradient-to-r from-red-600 via-red-500 to-amber-500 text-white text-[10px] font-black uppercase tracking-wider shrink-0 shadow-xs">
             LIVE FOCUS
           </span>
           <TypewriterText
@@ -66,7 +66,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
             typingSpeed={45}
             deletingSpeed={22}
             pauseDuration={2600}
-            className="truncate font-bold text-zinc-100"
+            className="truncate font-bold text-zinc-900"
             cursorClassName="typewriter-glowing-cursor"
           />
         </div>
@@ -185,7 +185,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ page }) => {
 
         {/* Static Page Title Heading */}
         <div className="flex-1 relative flex items-start min-w-[240px]">
-          <h1 className="w-full text-3xl sm:text-4xl lg:text-5xl font-black bg-gradient-to-r from-white via-zinc-100 to-amber-400 bg-clip-text text-transparent tracking-tight font-['Sora'] leading-tight py-1 select-text filter drop-shadow-md">
+          <h1 className="w-full text-3xl sm:text-4xl lg:text-5xl font-black text-zinc-900 tracking-tight font-['Sora'] leading-tight py-1 select-text">
             {page.title || 'Untitled'}
           </h1>
         </div>

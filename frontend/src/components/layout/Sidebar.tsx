@@ -351,50 +351,50 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
             <span>Settings & Auth</span>
           </button>
 
-          <div className="pt-2 px-2.5 pb-1 text-[10px] font-black uppercase text-amber-400/90 tracking-wider">
+          <div className="pt-2 px-2.5 pb-1 text-[10px] font-black uppercase text-amber-700 tracking-wider">
             HABIT & PRODUCTIVITY
           </div>
 
           {/* Habit Tracker Template Pill */}
           <button
             onClick={() => wrapCreate(handleCreateHabitTracker)}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-slate-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
           >
-            <Flame className="w-3.5 h-3.5 text-amber-400" />
+            <Flame className="w-3.5 h-3.5 text-amber-600" />
             <span>Habit Tracker</span>
           </button>
 
           {/* To-Do Planner Template Pill */}
           <button
             onClick={() => wrapCreate(handleCreateTodoPlanner)}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-slate-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
           >
-            <CheckSquare className="w-3.5 h-3.5 text-amber-400" />
+            <CheckSquare className="w-3.5 h-3.5 text-amber-600" />
             <span>To-Do Planner</span>
           </button>
 
           {/* Pomodoro Focus Timer Pill */}
           <button
             onClick={() => wrapCreate(handleCreatePomodoro)}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-slate-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
           >
-            <Zap className="w-3.5 h-3.5 text-amber-400" />
+            <Zap className="w-3.5 h-3.5 text-amber-600" />
             <span>Arc Focus Timer</span>
           </button>
 
           {/* Daily Journal Pill */}
           <button
             onClick={() => wrapCreate(handleCreateJournal)}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-slate-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
           >
-            <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+            <BookOpen className="w-3.5 h-3.5 text-amber-600" />
             <span>Daily Journal</span>
           </button>
 
           {/* Expense Tracker Pill */}
           <button
             onClick={() => wrapCreate(handleCreateExpenseTracker)}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-slate-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
           >
             <span className="text-sm">💰</span>
             <span>Expense Tracker</span>

@@ -135,14 +135,14 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
           <div className="space-y-3 animate-fade-in-up">
             {/* Active Streak Card */}
             <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-2 text-center animate-float">
-              <div className="flex items-center justify-center space-x-1.5 text-amber-400 font-bold">
-                <Flame className="w-4 h-4 fill-amber-400 text-amber-400 animate-bounce" />
-                <span className="uppercase text-[10px] tracking-wider text-slate-400 font-black">ACTIVE STREAK</span>
+              <div className="flex items-center justify-center space-x-1.5 text-amber-600 font-bold">
+                <Flame className="w-4 h-4 fill-amber-500 text-amber-500 animate-bounce" />
+                <span className="uppercase text-[10px] tracking-wider text-zinc-500 font-black">ACTIVE STREAK</span>
               </div>
-              <div className="text-3xl font-black text-amber-400 shimmer-text-orange">
+              <div className="text-3xl font-black text-red-600">
                 {bestStreak} {bestStreak === 1 ? 'Day' : 'Days'} Active
               </div>
-              <p className="text-[11px] text-slate-400">
+              <p className="text-[11px] text-zinc-500 font-medium">
                 {habits.length} daily habits configured
               </p>
             </div>
@@ -180,15 +180,15 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
               <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-2 relative animate-fade-in-up">
                 <button
                   onClick={() => setShowAssistantBox(false)}
-                  className="absolute right-3 top-3 text-slate-400 hover:text-white"
+                  className="absolute right-3 top-3 text-zinc-400 hover:text-zinc-900"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
-                <div className="flex items-center space-x-1.5 text-amber-400 font-bold text-[11px]">
-                  <Shield className="w-3.5 h-3.5 text-amber-400" />
+                <div className="flex items-center space-x-1.5 text-amber-700 font-bold text-[11px]">
+                  <Shield className="w-3.5 h-3.5 text-amber-600" />
                   <span className="uppercase text-[10px] tracking-wider font-black">JARVIS ASSISTANT</span>
                 </div>
-                <p className="text-[11px] text-slate-300">
+                <p className="text-[11px] text-zinc-600 font-medium">
                   Need habit advice or task assistance, {userFirstName}?
                 </p>
               </div>
