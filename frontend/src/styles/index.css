@@ -20,23 +20,16 @@
     line-height: 1.6;
   }
 
-  /* Gold & Crimson Red Scrollbars */
+  /* Completely Invisible Scrollbars */
   ::-webkit-scrollbar {
-    width: 7px;
-    height: 7px;
+    width: 0px;
+    height: 0px;
+    display: none;
   }
 
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: rgba(220, 38, 38, 0.4);
-    border-radius: 9999px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgba(245, 158, 11, 0.8);
+  * {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 
