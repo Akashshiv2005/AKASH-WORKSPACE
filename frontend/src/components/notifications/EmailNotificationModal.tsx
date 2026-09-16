@@ -57,7 +57,7 @@ export const EmailNotificationModal: React.FC = () => {
   const [recipientEmail, setRecipientEmail] = useState('');
   const [isEnabled, setIsEnabled] = useState(true);
   const [pendingOnly, setPendingOnly] = useState(false);
-  const [showSmtpConfig, setShowSmtpConfig] = useState(false);
+  const [showSmtpConfig, setShowSmtpConfig] = useState(true);
   const [smtpUser, setSmtpUser] = useState('');
   const [smtpPassword, setSmtpPassword] = useState('');
 
@@ -88,27 +88,50 @@ export const EmailNotificationModal: React.FC = () => {
       setRecipientEmail(settings.recipient_email || '');
       setIsEnabled(settings.is_enabled ?? true);
       setPendingOnly(settings.notify_if_pending_only ?? false);
+      if ((settings as any).custom_smtp_user) setSmtpUser((settings as any).custom_smtp_user);
+      if ((settings as any).custom_smtp_password) setSmtpPassword((settings as any).custom_smtp_password);
     }
   }, [settings]);
 
   if (!isModalOpen) return null;
 
   const handleSave = async () => {
+    const finalUser = smtpUser || recipientEmail;
     await updateSettings({
       recipient_email: recipientEmail,
       is_enabled: isEnabled,
       notify_if_pending_only: pendingOnly,
-      custom_smtp_user: smtpUser || undefined,
+      custom_smtp_user: finalUser || undefined,
       custom_smtp_password: smtpPassword || undefined,
-    });
+    } as any);
   };
 
   const handleSendTest = async () => {
-    await sendTestEmail(recipientEmail, smtpUser, smtpPassword);
+    const finalUser = smtpUser || recipientEmail;
+    if (!smtpPassword && !(import.meta as any).env?.VITE_SMTP_PASSWORD) {
+      setActiveTab('settings');
+      setShowSmtpConfig(true);
+      setStatusMessage({
+        type: 'info',
+        text: 'Please enter your 16-character Google App Password under Gmail SMTP & App Password Guide below to test emails.',
+      });
+      return;
+    }
+    await sendTestEmail(recipientEmail, finalUser, smtpPassword);
   };
 
   const handleSendDigest = async () => {
-    await sendDailyDigest(recipientEmail, smtpUser, smtpPassword);
+    const finalUser = smtpUser || recipientEmail;
+    if (!smtpPassword && !(import.meta as any).env?.VITE_SMTP_PASSWORD) {
+      setActiveTab('settings');
+      setShowSmtpConfig(true);
+      setStatusMessage({
+        type: 'info',
+        text: 'Please enter your 16-character Google App Password under Gmail SMTP & App Password Guide below to send daily digests.',
+      });
+      return;
+    }
+    await sendDailyDigest(recipientEmail, finalUser, smtpPassword);
   };
 
   const safeLogs = Array.isArray(emailLogs) ? emailLogs : [];
