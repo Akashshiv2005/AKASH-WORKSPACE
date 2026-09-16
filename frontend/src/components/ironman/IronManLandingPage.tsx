@@ -399,9 +399,9 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
 
           {/* Hero Left Text Overlay */}
           <div className="absolute left-6 md:left-12 bottom-24 md:bottom-28 z-20 max-w-sm sm:max-w-md space-y-4">
-            <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-none drop-shadow-xl">
+            <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-none drop-shadow-2xl">
               I am <br />
-              <span className="bg-gradient-to-r from-red-500 via-amber-400 to-orange-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#dc2626] via-[#ea580c] to-[#f59e0b] bg-clip-text text-transparent filter drop-shadow">
                 Iron Man.
               </span>
             </h1>
@@ -413,7 +413,7 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
             <div className="pt-2 flex items-center space-x-4">
               <button
                 onClick={onEnterWorkspace}
-                className="px-5 py-3 rounded-2xl bg-gradient-to-r from-red-600 via-orange-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-black text-xs sm:text-sm shadow-2xl shadow-red-600/40 hover:scale-105 active:scale-95 transition-all flex items-center space-x-2.5 border border-amber-300/40 pointer-events-auto"
+                className="px-5 py-3 rounded-2xl bg-gradient-to-r from-red-700 via-red-600 to-amber-500 hover:from-red-600 hover:to-amber-400 text-white font-black text-xs sm:text-sm shadow-2xl shadow-red-950/60 hover:scale-105 active:scale-95 transition-all flex items-center space-x-2.5 border border-amber-400/40 pointer-events-auto"
               >
                 <Layout className="w-4 h-4" />
                 <span>ENTER AKASH WORKSPACE</span>
@@ -428,7 +428,7 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
             return (
               <div
                 key={d.id}
-                className={`absolute right-8 top-1/3 z-30 max-w-md p-6 rounded-2xl bg-[#141416]/90 backdrop-blur-xl border border-amber-500/30 text-white shadow-2xl transition-all duration-500 ${
+                className={`absolute right-8 top-1/3 z-30 max-w-md p-6 rounded-2xl bg-[#0c0c0e]/95 backdrop-blur-xl border border-red-900/40 text-white shadow-2xl shadow-red-950/50 transition-all duration-500 ${
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'
                 }`}
               >

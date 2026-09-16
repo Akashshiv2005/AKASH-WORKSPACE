@@ -146,8 +146,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
           style={{ paddingLeft: `${Math.max(12, level * 16 + 12)}px` }}
           className={`group flex items-center justify-between py-1.5 pr-2 rounded-lg cursor-pointer text-xs transition-all duration-200 hover:translate-x-1 ${
             isActive
-              ? 'active-page-pill text-[#ff7a00] font-bold shadow-xs'
-              : 'hover:bg-[#f2ebe1] text-[#44403c]'
+              ? 'active-page-pill text-amber-400 font-bold shadow-xs'
+              : 'hover:bg-[#f2ebe1] dark:hover:bg-zinc-800/60 text-[#44403c] dark:text-zinc-300'
           }`}
         >
           <div className="flex items-center space-x-1.5 min-w-0">
@@ -225,12 +225,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
         className="fixed inset-0 bg-black/20 z-40 md:hidden" 
         onClick={toggleSidebar}
       />
-      <aside className="fixed left-0 md:relative z-50 w-60 h-screen bg-[#faf7f2] border-r border-[#f0e8dc] flex flex-col shrink-0 select-none transition-all animate-slide-in-left">
+      <aside className="fixed left-0 md:relative z-50 w-60 h-screen bg-[#faf7f2] dark:bg-[#0c0c0e]/95 dark:backdrop-blur-xl border-r border-[#f0e8dc] dark:border-red-950/40 text-[#44403c] dark:text-zinc-200 flex flex-col shrink-0 select-none transition-all animate-slide-in-left">
       {/* Workspace Switcher Header (Clean ChatGPT Layout Alignment) */}
-      <div className="p-3 border-b border-[#f0e8dc] relative">
+      <div className="p-3 border-b border-[#f0e8dc] dark:border-red-950/40 relative">
         <div
           onClick={() => setIsWorkspaceMenuOpen(!isWorkspaceMenuOpen)}
-          className="flex items-center justify-between p-2 rounded-xl hover:bg-[#f2ebe1] cursor-pointer transition-all border border-transparent hover:border-[#e7dfd4]"
+          className="flex items-center justify-between p-2 rounded-xl hover:bg-[#f2ebe1] dark:hover:bg-zinc-900/80 cursor-pointer transition-all border border-transparent hover:border-[#e7dfd4] dark:hover:border-red-900/40"
         >
           <div className="flex items-center space-x-2.5 min-w-0">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#dc2626] via-[#f59e0b] to-[#b91c1c] text-white flex items-center justify-center font-black text-xs shrink-0 shadow-sm animate-float gold-red-pulse">

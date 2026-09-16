@@ -28,7 +28,7 @@ export const App: React.FC = () => {
     setIsSidebarOpen(window.innerWidth > 768);
     setIsRightSidebarOpen(window.innerWidth > 768);
   }, []);
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
 
   const { fetchCurrentUser } = useAuthStore();
   const { fetchWorkspaces, activeWorkspace } = useWorkspaceStore();

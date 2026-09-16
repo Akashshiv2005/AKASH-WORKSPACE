@@ -436,9 +436,11 @@
 }
 
 .dark .stark-hud-card {
-  background: #ffffff;
-  border: 1px solid #f2e8da;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  background: rgba(18, 18, 22, 0.85);
+  border: 1px solid rgba(185, 28, 28, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(16px);
+  color: #f4f4f5;
 }
 
 .glass-card {
@@ -448,9 +450,11 @@
 }
 
 .dark .glass-card {
-  background: #ffffff;
-  border: 1px solid #f2e8da;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  background: rgba(18, 18, 22, 0.85);
+  border: 1px solid rgba(185, 28, 28, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(16px);
+  color: #f4f4f5;
 }
 
 .glass-header {
@@ -459,8 +463,10 @@
 }
 
 .dark .glass-header {
-  background: rgba(253, 251, 247, 0.95);
+  background: rgba(10, 10, 12, 0.85);
+  border-bottom: 1px solid rgba(185, 28, 28, 0.3);
   backdrop-filter: blur(16px);
+  color: #f4f4f5;
 }
 
 /* Active Page Pill Highlight - Gold & Crimson Red Theme */
@@ -473,10 +479,11 @@
 }
 
 .dark .active-page-pill {
-  background: #fff1f2;
-  border: 1px solid #fecdd3;
-  color: #dc2626;
+  background: rgba(153, 27, 27, 0.35);
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  color: #f59e0b;
   font-weight: 700;
+  box-shadow: 0 0 12px rgba(185, 28, 28, 0.3);
 }
 
 .active-page-pill::before {
