@@ -46,7 +46,7 @@ export const GeminiMotivationBanner: React.FC = () => {
 
   return (
     <div className="my-6 select-none animate-fade-in-up">
-      <div className="rounded-2xl bg-[#fffaf3] border border-amber-500/20 p-6 text-[#1c1917] space-y-4 shadow-sm">
+      <div className="rounded-2xl bg-[#fffaf3] dark:bg-[#121216]/90 border border-amber-500/20 dark:border-red-900/30 p-6 text-[#1c1917] dark:text-zinc-100 space-y-4 shadow-sm">
         {/* Header Row */}
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
@@ -57,7 +57,7 @@ export const GeminiMotivationBanner: React.FC = () => {
               <span className="text-xs font-black uppercase tracking-wider text-gradient-flow text-glow inline-block">
                 JARVIS AI BOOST
               </span>
-              <p className="text-xs text-[#78716c] animate-text-reveal">
+              <p className="text-xs text-[#78716c] dark:text-zinc-400 animate-text-reveal">
                 Personalized executive mindset for {fullName}
               </p>
             </div>
@@ -66,7 +66,7 @@ export const GeminiMotivationBanner: React.FC = () => {
           <button
             onClick={fetchMotivation}
             disabled={loading}
-            className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-white hover:bg-amber-50 border border-amber-500/30 text-xs font-bold text-red-600 transition-all hover:scale-105 shadow-xs"
+            className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-white dark:bg-[#1c1922] hover:bg-amber-50 dark:hover:bg-zinc-800 border border-amber-500/30 text-xs font-bold text-red-600 dark:text-amber-400 transition-all hover:scale-105 shadow-xs"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
             <span className="hover-text-shimmer">{loading ? 'Generating...' : 'Refresh JARVIS Quote'}</span>
@@ -74,12 +74,12 @@ export const GeminiMotivationBanner: React.FC = () => {
         </div>
 
         {/* Quote Block (Exact ChatGPT Quote Styling) */}
-        <div className="p-5 rounded-2xl bg-[#fffcf7] border border-[#f5ede2] space-y-3 relative shadow-xs">
-          <Quote className="w-10 h-10 text-red-600/10 absolute right-4 top-3 pointer-events-none" />
-          <p className="text-sm font-semibold italic text-[#1c1917] leading-relaxed animate-text-reveal hover:text-red-600 transition-colors duration-300">
+        <div className="p-5 rounded-2xl bg-[#fffcf7] dark:bg-[#18161f]/90 border border-[#f5ede2] dark:border-red-900/30 space-y-3 relative shadow-xs">
+          <Quote className="w-10 h-10 text-red-600/10 dark:text-amber-500/10 absolute right-4 top-3 pointer-events-none" />
+          <p className="text-sm font-semibold italic text-[#1c1917] dark:text-zinc-100 leading-relaxed animate-text-reveal hover:text-red-600 dark:hover:text-amber-400 transition-colors duration-300">
             "{motivation.quote}"
           </p>
-          <div className="text-xs font-bold text-red-600 shimmer-text-orange inline-block">
+          <div className="text-xs font-bold text-red-600 dark:text-amber-400 shimmer-text-orange inline-block">
             — {motivation.author}
           </div>
         </div>

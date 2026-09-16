@@ -9,7 +9,6 @@ import { PageHeader } from './components/editor/PageHeader';
 import { BlockEditor } from './components/editor/BlockEditor';
 import { FloatingAiOrb } from './components/widgets/FloatingAiOrb';
 import { ServerHealthBanner } from './components/common/ServerHealthBanner';
-import { IronManBackground } from './components/common/IronManBackground';
 import { IronManLandingPage } from './components/ironman/IronManLandingPage';
 import { usePageStore } from './store/usePageStore';
 import { useWorkspaceStore } from './store/useWorkspaceStore';
@@ -69,10 +68,7 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#fdfbf7] dark:bg-[#121212] text-[#1c1917] dark:text-[#f3f4f6] relative">
-      {/* Iron Man Scroll Suit Canvas Background */}
-      <IronManBackground containerRef={mainRef} opacity={darkMode ? 0.35 : 0.22} />
-
+    <div className="flex h-screen w-screen overflow-hidden bg-[#180306] text-zinc-100 relative font-['Sora'] select-none">
       {/* Left Sidebar */}
       <Sidebar
         isOpen={isSidebarOpen}

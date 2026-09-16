@@ -55,9 +55,9 @@ export const ServerHealthBanner: React.FC = () => {
   }
 
   return (
-    <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white px-4 py-2 text-xs shadow-md border-b border-orange-400 flex items-center justify-between z-50 animate-fade-in">
+    <div className="bg-[#18080a]/95 backdrop-blur-md text-amber-400 px-4 py-2 text-xs shadow-lg border-b border-red-800/60 flex items-center justify-between z-50 animate-fade-in">
       <div className="flex items-center space-x-2 min-w-0">
-        <Zap className="w-4 h-4 animate-bounce text-yellow-200 shrink-0" />
+        <Zap className="w-4 h-4 animate-bounce text-amber-400 shrink-0" />
         <span className="font-bold truncate">
           {status === 'checking' && 'Checking backend status...'}
           {status === 'waking_up' && (

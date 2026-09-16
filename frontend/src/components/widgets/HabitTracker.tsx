@@ -70,52 +70,52 @@ export const HabitTracker: React.FC = () => {
       {/* Header Summary Cards (Fully Dynamic) */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {/* Weekly Completion Rate */}
-        <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] flex items-center space-x-4 shadow-xs hover-lift transition-all stark-hud-card">
-          <div className="p-3 rounded-xl bg-[#fff3e5] text-[#ff7a00] shadow-xs hover:scale-110 transition-transform">
-            <TrendingUp className="w-5 h-5 text-[#ff7a00]" />
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#121216]/90 border border-[#f2e8da] dark:border-red-900/30 flex items-center space-x-4 shadow-xs hover-lift transition-all stark-hud-card">
+          <div className="p-3 rounded-xl bg-[#fff3e5] dark:bg-amber-950/50 text-[#ff7a00] dark:text-amber-400 shadow-xs hover:scale-110 transition-transform">
+            <TrendingUp className="w-5 h-5 text-[#ff7a00] dark:text-amber-400" />
           </div>
           <div>
             <div className="text-2xl font-black text-gradient-flow text-glow animate-count-pulse">
               {overallPercentage}%
             </div>
-            <div className="text-xs font-bold text-[#78716c] animate-text-reveal">Weekly Progress</div>
+            <div className="text-xs font-bold text-[#78716c] dark:text-zinc-400 animate-text-reveal">Weekly Progress</div>
           </div>
         </div>
 
         {/* Current Best Streak */}
-        <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] flex items-center space-x-4 shadow-xs hover-lift transition-all stark-hud-card">
-          <div className="p-3 rounded-xl bg-[#fff3e5] text-[#ff7a00] shadow-xs hover:scale-110 transition-transform">
-            <Flame className="w-5 h-5 fill-[#ff7a00] text-[#ff7a00] animate-bounce-subtle" />
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#121216]/90 border border-[#f2e8da] dark:border-red-900/30 flex items-center space-x-4 shadow-xs hover-lift transition-all stark-hud-card">
+          <div className="p-3 rounded-xl bg-[#fff3e5] dark:bg-amber-950/50 text-[#ff7a00] dark:text-amber-400 shadow-xs hover:scale-110 transition-transform">
+            <Flame className="w-5 h-5 fill-[#ff7a00] dark:fill-amber-400 text-[#ff7a00] dark:text-amber-400 animate-bounce-subtle" />
           </div>
           <div>
             <div className="text-2xl font-black text-gradient-flow text-glow animate-count-pulse">
               {bestStreak} Days
             </div>
-            <div className="text-xs font-bold text-[#78716c] animate-text-reveal">Active Streak</div>
+            <div className="text-xs font-bold text-[#78716c] dark:text-zinc-400 animate-text-reveal">Active Streak</div>
           </div>
         </div>
 
         {/* Total Completed */}
-        <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] flex items-center space-x-4 shadow-xs hover-lift transition-all stark-hud-card">
-          <div className="p-3 rounded-xl bg-[#fff3e5] text-[#ff7a00] shadow-xs hover:scale-110 transition-transform">
-            <Trophy className="w-5 h-5 text-[#ff7a00]" />
+        <div className="p-4 rounded-2xl bg-white dark:bg-[#121216]/90 border border-[#f2e8da] dark:border-red-900/30 flex items-center space-x-4 shadow-xs hover-lift transition-all stark-hud-card">
+          <div className="p-3 rounded-xl bg-[#fff3e5] dark:bg-amber-950/50 text-[#ff7a00] dark:text-amber-400 shadow-xs hover:scale-110 transition-transform">
+            <Trophy className="w-5 h-5 text-[#ff7a00] dark:text-amber-400" />
           </div>
           <div>
-            <div className="text-2xl font-black text-[#ff7a00] shimmer-text-orange animate-count-pulse">
+            <div className="text-2xl font-black text-[#ff7a00] dark:text-amber-400 shimmer-text-orange animate-count-pulse">
               {totalCheckmarks} / {maxPossible}
             </div>
-            <div className="text-xs font-bold text-[#78716c] animate-text-reveal">Habits Checked</div>
+            <div className="text-xs font-bold text-[#78716c] dark:text-zinc-400 animate-text-reveal">Habits Checked</div>
           </div>
         </div>
       </div>
 
       {/* Main Habit Table Container */}
-      <div className="rounded-2xl border border-[#f2e8da] bg-white shadow-xs overflow-hidden stark-hud-card">
+      <div className="rounded-2xl border border-[#f2e8da] dark:border-red-900/30 bg-white dark:bg-[#121216]/90 shadow-xs overflow-hidden stark-hud-card">
         {/* Table Controls Header */}
-        <div className="p-4 border-b border-[#f2e8da] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div className="p-4 border-b border-[#f2e8da] dark:border-red-900/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center space-x-2">
-            <Calendar className="w-4 h-4 text-[#ff7a00]" />
-            <h3 className="text-sm font-black text-[#1c1917] tracking-wide heading-animated cursor-default">Weekly Tracker Grid</h3>
+            <Calendar className="w-4 h-4 text-[#ff7a00] dark:text-amber-400" />
+            <h3 className="text-sm font-black text-[#1c1917] dark:text-zinc-100 tracking-wide heading-animated cursor-default">Weekly Tracker Grid</h3>
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">

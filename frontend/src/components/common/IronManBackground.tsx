@@ -164,12 +164,12 @@ export const IronManBackground: React.FC<IronManBackgroundProps> = ({
         className="absolute inset-0 h-full w-full object-cover"
         style={{ willChange: 'contents', transform: 'translateZ(0)' }}
       />
-      {/* Stark Dark Vignette Overlay for High Readability & Rich Contrast */}
+      {/* Iron Man Crimson & Gold Edge Vignette Overlay */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(120% 80% at 50% 50%, transparent 30%, rgba(10, 10, 12, 0.7) 70%, rgba(10, 10, 12, 0.96) 100%)',
+            'radial-gradient(130% 90% at 50% 50%, transparent 45%, rgba(30, 5, 9, 0.45) 75%, rgba(18, 3, 5, 0.8) 100%)',
         }}
       />
     </div>

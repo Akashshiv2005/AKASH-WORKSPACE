@@ -131,7 +131,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
 
   // Group pages by parent
   const rootPages = pages.filter((p) => !p.parent_id);
-  const favoritePages = pages.filter((p) => p.is_favorite);
 
   const renderPageItem = (page: Page, level = 0) => {
     const children = pages.filter((p) => p.parent_id === page.id);
@@ -225,9 +224,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
         className="fixed inset-0 bg-black/20 z-40 md:hidden" 
         onClick={toggleSidebar}
       />
-      <aside className="fixed left-0 md:relative z-50 w-60 h-screen bg-[#faf7f2] dark:bg-[#0c0c0e]/95 dark:backdrop-blur-xl border-r border-[#f0e8dc] dark:border-red-950/40 text-[#44403c] dark:text-zinc-200 flex flex-col shrink-0 select-none transition-all animate-slide-in-left">
+      <aside className="fixed left-0 md:relative z-50 w-60 h-screen bg-[#140306]/95 backdrop-blur-xl border-r border-red-900/40 text-zinc-100 flex flex-col shrink-0 select-none transition-all animate-slide-in-left">
       {/* Workspace Switcher Header (Clean ChatGPT Layout Alignment) */}
-      <div className="p-3 border-b border-[#f0e8dc] dark:border-red-950/40 relative">
+      <div className="p-3 border-b border-red-900/40 relative">
         <div
           onClick={() => setIsWorkspaceMenuOpen(!isWorkspaceMenuOpen)}
           className="flex items-center justify-between p-2 rounded-xl hover:bg-[#f2ebe1] dark:hover:bg-zinc-900/80 cursor-pointer transition-all border border-transparent hover:border-[#e7dfd4] dark:hover:border-red-900/40"
@@ -328,78 +327,78 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
         {onBackToLanding && (
           <button
             onClick={() => wrapCreate(onBackToLanding)}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg bg-[#0a0a0b] text-white hover:bg-zinc-800 text-xs font-bold transition-all hover:scale-[1.01] border border-amber-500/30 shadow-xs mb-1"
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-[#991b1b] to-[#7f1d1d] text-amber-300 hover:from-[#b91c1c] hover:to-[#991b1b] text-xs font-bold transition-all hover:scale-[1.01] border border-amber-500/40 shadow-md mb-1"
           >
-            <Shield className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+            <Shield className="w-3.5 h-3.5 text-amber-300 fill-amber-300" />
             <span>Iron Man Home</span>
           </button>
         )}
 
         <button
           onClick={() => setSearching(true)}
-          className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#44403c] transition-all hover:scale-[1.01]"
+          className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-red-950/40 text-xs text-zinc-200 hover:text-white transition-all hover:scale-[1.01]"
         >
           <div className="flex items-center space-x-2">
-            <Search className="w-3.5 h-3.5 text-[#dc2626]" />
+            <Search className="w-3.5 h-3.5 text-amber-400" />
             <span>Search Workspace</span>
           </div>
-          <kbd className="px-1.5 py-0.5 bg-[#f0e8dc] text-[10px] font-mono rounded text-[#78716c]">
+          <kbd className="px-1.5 py-0.5 bg-red-950/60 border border-red-900/40 text-[10px] font-mono rounded text-amber-400">
             Ctrl K
           </kbd>
         </button>
 
         <button
           onClick={() => setAuthModalOpen(true, 'login')}
-          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#44403c] transition-all hover:scale-[1.01]"
+          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-red-950/40 text-xs text-zinc-200 hover:text-white transition-all hover:scale-[1.01]"
         >
-          <Settings className="w-3.5 h-3.5 text-[#dc2626]" />
+          <Settings className="w-3.5 h-3.5 text-amber-400" />
           <span>Settings & Auth</span>
         </button>
 
-        <div className="pt-2 px-2.5 pb-1 text-[10px] font-black uppercase text-[#a8a29e] hover:text-[#dc2626] tracking-wider transition-colors duration-300">
+        <div className="pt-2 px-2.5 pb-1 text-[10px] font-black uppercase text-amber-500/80 tracking-wider transition-colors duration-300">
           HABIT & PRODUCTIVITY
         </div>
 
         {/* Habit Tracker Template Pill */}
         <button
           onClick={() => wrapCreate(handleCreateHabitTracker)}
-          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#44403c] font-medium transition-all hover:scale-[1.01]"
+          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-red-950/40 text-xs text-zinc-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
         >
-          <Flame className="w-3.5 h-3.5 text-[#dc2626]" />
+          <Flame className="w-3.5 h-3.5 text-amber-400" />
           <span>Habit Tracker</span>
         </button>
 
         {/* To-Do Planner Template Pill */}
         <button
           onClick={() => wrapCreate(handleCreateTodoPlanner)}
-          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#44403c] font-medium transition-all hover:scale-[1.01]"
+          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-red-950/40 text-xs text-zinc-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
         >
-          <CheckSquare className="w-3.5 h-3.5 text-[#dc2626]" />
+          <CheckSquare className="w-3.5 h-3.5 text-amber-400" />
           <span>To-Do Planner</span>
         </button>
 
         {/* Pomodoro Focus Timer Pill */}
         <button
           onClick={() => wrapCreate(handleCreatePomodoro)}
-          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#44403c] font-medium transition-all hover:scale-[1.01]"
+          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-red-950/40 text-xs text-zinc-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
         >
-          <Zap className="w-3.5 h-3.5 text-[#d97706]" />
+          <Zap className="w-3.5 h-3.5 text-amber-400" />
           <span>Arc Focus Timer</span>
         </button>
 
         {/* Daily Journal Pill */}
         <button
           onClick={() => wrapCreate(handleCreateJournal)}
-          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#44403c] font-medium transition-all hover:scale-[1.01]"
+          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-red-950/40 text-xs text-zinc-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
         >
-          <BookOpen className="w-3.5 h-3.5 text-[#dc2626]" />
+          <BookOpen className="w-3.5 h-3.5 text-amber-400" />
           <span>Daily Journal</span>
         </button>
 
         {/* Expense Tracker Pill */}
         <button
           onClick={() => wrapCreate(handleCreateExpenseTracker)}
-          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#44403c] font-medium transition-all hover:scale-[1.01]"
+          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-red-950/40 text-xs text-zinc-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
         >
           <span className="text-sm">💰</span>
           <span>Expense Tracker</span>
@@ -408,38 +407,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
         {/* Study & Learning Plans Pill */}
         <button
           onClick={() => wrapCreate(handleCreatePlansHub)}
-          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#dc2626] font-extrabold bg-[#fff1f2] transition-all hover:scale-[1.01] border border-[#fecdd3]"
+          className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-[#991b1b] to-[#7f1d1d] text-amber-300 font-extrabold transition-all hover:scale-[1.01] border border-amber-500/50 shadow-md"
         >
           <span className="text-sm">🎯</span>
           <span>Study & Learning Plans</span>
         </button>
       </div>
-
-      {/* Favorites Section */}
-      {favoritePages.length > 0 && (
-        <div className="mt-2 px-2">
-          <div className="px-2 py-1 text-[10px] font-black uppercase text-[#a8a29e] tracking-wider flex items-center space-x-1">
-            <Star className="w-3 h-3 fill-[#d97706] text-[#d97706]" />
-            <span>FAVORITES</span>
-          </div>
-          <div className="space-y-0.5">
-            {favoritePages.map((page) => (
-              <div
-                key={page.id}
-                onClick={() => handlePageSelect(page.id)}
-                className={`flex items-center space-x-2 px-2.5 py-1.5 rounded-lg cursor-pointer text-xs transition-all ${
-                  activePageId === page.id
-                    ? 'active-page-pill text-[#ff7a00] font-bold'
-                    : 'hover:bg-[#f2ebe1] text-[#44403c]'
-                }`}
-              >
-                <span>{page.icon || '📄'}</span>
-                <span className="truncate">{page.title || 'Untitled'}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Private Pages List */}
       <div className="flex-1 overflow-y-auto mt-3 px-2">

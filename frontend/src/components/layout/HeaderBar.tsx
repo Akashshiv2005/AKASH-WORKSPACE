@@ -79,16 +79,16 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
 
   return (
     <>
-      <header className="h-12 border-b border-[#f0e8dc] glass-header px-4 flex items-center justify-between text-[#1c1917] select-none z-10 transition-colors">
+      <header className="h-14 border-b border-red-950/60 bg-[#160306]/95 backdrop-blur-xl px-4 flex items-center justify-between text-zinc-100 select-none z-10 transition-colors shrink-0">
         {/* Left Section: Workspace & Breadcrumbs */}
-        <div className="flex items-center space-x-2.5 min-w-0">
+        <div className="flex items-center space-x-3 min-w-0">
           {!isSidebarOpen && (
             <button
               onClick={toggleSidebar}
-              className="p-1 rounded-lg hover:bg-[#f2ebe1] text-[#78716c] transition-colors"
+              className="p-1.5 rounded-lg hover:bg-red-950/60 text-amber-400 transition-colors"
               title="Open Left Sidebar"
             >
-              <PanelLeft className="w-4 h-4 text-[#ff7a00]" />
+              <PanelLeft className="w-4 h-4 text-amber-400" />
             </button>
           )}
 
@@ -96,17 +96,17 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           {onBackToLanding && (
             <button
               onClick={onBackToLanding}
-              className="flex items-center space-x-1 px-2.5 py-1 rounded-xl bg-black text-white hover:bg-zinc-800 text-[11px] font-black tracking-wider transition-all hover:scale-105 shadow-xs border border-amber-500/30"
+              className="flex items-center space-x-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-red-700 via-red-600 to-amber-500 hover:from-red-600 hover:to-amber-400 text-white font-black text-[11px] tracking-wider transition-all hover:scale-105 shadow-md border border-amber-400/50 shrink-0 whitespace-nowrap"
               title="Return to Iron Man Home Landing Page"
             >
-              <Shield className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-              <span className="hidden md:inline">IRON MAN HOME</span>
+              <Shield className="w-3.5 h-3.5 text-amber-300 fill-amber-300 shrink-0" />
+              <span>IRON MAN HOME</span>
             </button>
           )}
 
           {/* Workspace Shield Logo */}
           <div className="hidden sm:flex items-center space-x-2 shrink-0">
-            <span className="text-xs font-black text-gradient-flow text-glow hover-text-shimmer truncate max-w-[140px] md:max-w-none">
+            <span className="text-xs font-extrabold text-amber-400 tracking-wide truncate max-w-[140px] md:max-w-none">
               {activeWorkspace?.name || "Akash Shiv's Workspace"}
             </span>
           </div>
@@ -114,10 +114,10 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           {/* Breadcrumb Path */}
           {breadcrumbs.map((page, index) => (
             <React.Fragment key={page.id}>
-              <ChevronRight className="w-3.5 h-3.5 text-[#a8a29e] shrink-0" />
+              <ChevronRight className="w-3.5 h-3.5 text-amber-500/70 shrink-0" />
               <div className="flex items-center space-x-1 min-w-0">
-                {page.icon && <span className="text-xs shrink-0 animate-text-pop">{page.icon}</span>}
-                <span className={`text-xs truncate transition-all duration-300 ${index === breadcrumbs.length - 1 ? 'font-bold text-[#1c1917] hover:text-[#dc2626] animate-text-reveal' : 'text-[#78716c] hover:text-[#1c1917]'}`}>
+                {page.icon && <span className="text-xs shrink-0">{page.icon}</span>}
+                <span className={`text-xs truncate transition-all ${index === breadcrumbs.length - 1 ? 'font-bold text-amber-300' : 'text-zinc-300 hover:text-white'}`}>
                   {page.title || 'Untitled'}
                 </span>
               </div>
@@ -130,41 +130,41 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           {/* Ask JARVIS Button (Gold & Red Accent) */}
           <button
             onClick={() => setIsAiModalOpen(true)}
-            className="flex items-center space-x-1.5 px-2 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#dc2626] via-[#f59e0b] to-[#b91c1c] hover:from-[#b91c1c] hover:to-[#d97706] text-white text-xs font-black shadow-sm transition-all hover:scale-105 gold-red-pulse"
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-red-700 via-red-600 to-amber-500 hover:from-red-600 hover:to-amber-400 text-white text-xs font-black shadow-md transition-all hover:scale-105 border border-amber-400/40"
             title="Open JARVIS AI Assistant"
           >
-            <Zap className="w-3.5 h-3.5 text-white fill-white" />
-            <span className="tracking-wide hidden sm:inline shimmer-text-orange !text-white hover-lift">Ask JARVIS</span>
+            <Zap className="w-3.5 h-3.5 text-amber-300 fill-amber-300" />
+            <span className="tracking-wide hidden sm:inline text-white">Ask JARVIS</span>
           </button>
 
           {/* Favorite Button */}
           {activePage && (
             <button
               onClick={() => toggleFavorite(activePage.id)}
-              className={`hidden sm:flex p-1.5 rounded-lg hover:bg-[#f2ebe1] transition-colors ${
-                activePage.is_favorite ? 'text-[#d97706]' : 'text-[#a8a29e]'
+              className={`hidden sm:flex p-1.5 rounded-lg hover:bg-red-950/60 transition-colors ${
+                activePage.is_favorite ? 'text-amber-400' : 'text-zinc-400'
               }`}
               title={activePage.is_favorite ? 'Remove from Favorites' : 'Add to Favorites'}
             >
-              <Star className={`w-4 h-4 ${activePage.is_favorite ? 'fill-[#d97706]' : ''}`} />
+              <Star className={`w-4 h-4 ${activePage.is_favorite ? 'fill-amber-400 text-amber-400' : ''}`} />
             </button>
           )}
 
           {/* Theme Toggle */}
           <button
             onClick={() => setDarkMode(!darkMode)}
-            className="hidden sm:flex p-1.5 rounded-lg hover:bg-[#f2ebe1] text-[#78716c] transition-colors"
+            className="hidden sm:flex p-1.5 rounded-lg hover:bg-red-950/60 text-amber-400 transition-colors"
             title="Toggle Theme"
           >
-            {darkMode ? <Sun className="w-4 h-4 text-[#ff7a00]" /> : <Moon className="w-4 h-4 text-[#78716c]" />}
+            {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-zinc-400" />}
           </button>
 
           {/* Right Side Dock Toggle Button */}
           {toggleRightSidebar && (
             <button
               onClick={toggleRightSidebar}
-              className={`p-1.5 rounded-lg hover:bg-[#f2ebe1] transition-colors ${
-                isRightSidebarOpen ? 'text-[#ff7a00] font-bold' : 'text-[#78716c]'
+              className={`p-1.5 rounded-lg hover:bg-red-950/60 transition-colors ${
+                isRightSidebarOpen ? 'text-amber-400 font-bold' : 'text-zinc-400'
               }`}
               title="Toggle Productivity Dock"
             >
@@ -175,22 +175,22 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           {/* Notifications Icon */}
           <button
             onClick={() => setNotificationModalOpen(true)}
-            className="group relative flex p-1.5 rounded-lg hover:bg-[#f2ebe1] text-[#78716c] hover:text-[#ff7a00] hover:scale-110 active:scale-90 transition-all duration-200"
+            className="group relative flex p-1.5 rounded-lg hover:bg-red-950/60 text-amber-400 hover:scale-110 active:scale-90 transition-all duration-200"
             title="Gmail Daily Digest & Task Reminders"
           >
             <Bell className="w-4 h-4 group-hover:rotate-12 transition-transform" />
             {notificationSettings?.is_enabled && (
-              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#ff7a00] ring-2 ring-white animate-pulse" />
+              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-amber-400 ring-2 ring-red-900 animate-pulse" />
             )}
           </button>
 
           {/* Share Button */}
           <button
             onClick={handleShare}
-            className="hidden sm:flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs hover:bg-[#f2ebe1] text-[#44403c] transition-colors"
+            className="hidden sm:flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs hover:bg-red-950/60 text-zinc-300 transition-colors border border-amber-500/20"
             title="Share link"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Share2 className="w-3.5 h-3.5 text-[#78716c]" />}
+            {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Share2 className="w-3.5 h-3.5 text-amber-400" />}
             <span className="hidden sm:inline font-medium">{copied ? 'Copied!' : 'Share'}</span>
           </button>
 

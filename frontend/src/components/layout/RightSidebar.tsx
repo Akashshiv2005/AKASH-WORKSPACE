@@ -100,14 +100,14 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         className="fixed inset-0 bg-black/20 z-40 md:hidden" 
         onClick={toggleRightSidebar}
       />
-      <aside className="fixed right-0 md:relative z-50 w-64 h-screen bg-[#faf7f2] border-l border-[#f0e8dc] flex flex-col shrink-0 select-none transition-all animate-slide-in-right font-['Sora']">
+      <aside className="fixed right-0 md:relative z-50 w-64 h-screen bg-[#09090b]/95 backdrop-blur-xl border-l border-red-950/50 flex flex-col shrink-0 select-none transition-all animate-slide-in-right font-['Sora'] text-zinc-100">
       {/* Header Bar */}
-      <div className="p-3 border-b border-[#f0e8dc] flex items-center justify-between">
+      <div className="p-3 border-b border-red-950/50 bg-[#0c0c0f] flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <div className="p-1.5 rounded-lg bg-[#fff3e5] text-[#ff7a00] shadow-xs">
+          <div className="p-1.5 rounded-lg bg-red-950/60 border border-amber-500/40 text-amber-400 shadow-xs">
             <TrendingUp className="w-3.5 h-3.5" />
           </div>
-          <span className="text-xs font-black tracking-wide text-[#1c1917] uppercase animate-text-float">
+          <span className="text-xs font-black tracking-wide text-amber-400 uppercase animate-text-float">
             {widgetType === 'habit_tracker'
               ? 'HABIT INSPECTOR'
               : widgetType === 'todo_planner'
@@ -121,7 +121,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         </div>
         <button
           onClick={toggleRightSidebar}
-          className="p-1 rounded-lg hover:bg-[#f2ebe1] text-[#78716c]"
+          className="p-1 rounded-lg hover:bg-zinc-800 text-zinc-400 hover:text-white"
           title="Close Dock"
         >
           <PanelRightClose className="w-4 h-4" />
@@ -134,53 +134,53 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         {widgetType === 'habit_tracker' && (
           <div className="space-y-3 animate-fade-in-up">
             {/* Active Streak Card (Dynamically Reacts) */}
-            <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] shadow-xs space-y-2 text-center animate-float">
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#121216]/90 border border-[#f2e8da] dark:border-red-900/30 shadow-xs space-y-2 text-center animate-float">
               <div className="flex items-center justify-center space-x-1.5 text-[#ff7a00] font-bold">
                 <Flame className="w-4 h-4 fill-[#ff7a00] text-[#ff7a00] animate-bounce" />
-                <span className="uppercase text-[10px] tracking-wider text-[#a8a29e] font-black">ACTIVE STREAK</span>
+                <span className="uppercase text-[10px] tracking-wider text-[#a8a29e] dark:text-zinc-400 font-black">ACTIVE STREAK</span>
               </div>
               <div className="text-3xl font-black text-[#ff7a00] shimmer-text-orange">
                 {bestStreak} {bestStreak === 1 ? 'Day' : 'Days'} Active
               </div>
-              <p className="text-[11px] text-[#78716c]">
+              <p className="text-[11px] text-[#78716c] dark:text-zinc-400">
                 {habits.length} daily habits configured
               </p>
             </div>
 
             {/* Weekly Completion Progress (Dynamically Reacts) */}
-            <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] shadow-xs space-y-2.5">
-              <div className="flex items-center justify-between text-xs font-bold text-[#1c1917]">
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#121216]/90 border border-[#f2e8da] dark:border-red-900/30 shadow-xs space-y-2.5">
+              <div className="flex items-center justify-between text-xs font-bold text-[#1c1917] dark:text-zinc-100">
                 <span className="flex items-center space-x-1.5">
                   <TrendingUp className="w-3.5 h-3.5 text-[#ff7a00]" />
-                  <span className="uppercase text-[10px] tracking-wider text-[#a8a29e] font-black">WEEKLY GOAL</span>
+                  <span className="uppercase text-[10px] tracking-wider text-[#a8a29e] dark:text-zinc-400 font-black">WEEKLY GOAL</span>
                 </span>
-                <span className="text-[#1c1917] font-black text-sm">{overallPercentage}%</span>
+                <span className="text-[#1c1917] dark:text-zinc-100 font-black text-sm">{overallPercentage}%</span>
               </div>
-              <div className="w-full bg-[#f0e8dc] h-2.5 rounded-full overflow-hidden">
+              <div className="w-full bg-[#f0e8dc] dark:bg-zinc-800 h-2.5 rounded-full overflow-hidden">
                 <div style={{ width: `${overallPercentage}%` }} className="h-full bg-gradient-to-r from-[#ff7a00] to-[#ffaa00] transition-all duration-500" />
               </div>
-              <p className="text-[10px] text-[#78716c] text-right font-medium">
+              <p className="text-[10px] text-[#78716c] dark:text-zinc-400 text-right font-medium">
                 {totalCheckmarks} of {maxCheckmarks} checked
               </p>
             </div>
 
             {/* JARVIS Habit Advice */}
-            <div className="p-4 rounded-2xl bg-[#fffcf7] border border-[#ffe9d1] shadow-xs space-y-1.5">
+            <div className="p-4 rounded-2xl bg-[#fffcf7] dark:bg-[#16141a]/90 border border-[#ffe9d1] dark:border-amber-500/30 shadow-xs space-y-1.5">
               <div className="flex items-center space-x-1.5 text-[#ff7a00] font-bold text-[11px]">
                 <Target className="w-3.5 h-3.5 text-[#ff7a00]" />
                 <span className="animate-text-float uppercase text-[10px] tracking-wider font-black">JARVIS HABIT ADVICE</span>
               </div>
-              <p className="text-[11px] text-[#44403c] leading-relaxed font-medium">
+              <p className="text-[11px] text-[#44403c] dark:text-zinc-300 leading-relaxed font-medium">
                 Consistency beats intensity every single time, {userFirstName}. Keep your streak alive!
               </p>
             </div>
 
             {/* JARVIS Assistant Teaser */}
             {showAssistantBox && (
-              <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] shadow-xs space-y-2 relative animate-fade-in-up">
+              <div className="p-4 rounded-2xl bg-white dark:bg-[#121216]/90 border border-[#f2e8da] dark:border-red-900/30 shadow-xs space-y-2 relative animate-fade-in-up">
                 <button
                   onClick={() => setShowAssistantBox(false)}
-                  className="absolute right-3 top-3 text-[#a8a29e] hover:text-[#1c1917]"
+                  className="absolute right-3 top-3 text-[#a8a29e] hover:text-[#1c1917] dark:hover:text-white"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -188,7 +188,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
                   <Shield className="w-3.5 h-3.5 text-[#ff7a00]" />
                   <span className="uppercase text-[10px] tracking-wider font-black">JARVIS ASSISTANT</span>
                 </div>
-                <p className="text-[11px] text-[#57534e]">
+                <p className="text-[11px] text-[#57534e] dark:text-zinc-300">
                   Need habit advice or task assistance, {userFirstName}?
                 </p>
               </div>
