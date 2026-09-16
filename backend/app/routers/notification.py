@@ -94,11 +94,11 @@ def update_notification_settings(
     if not setting:
         setting = NotificationSetting(
             workspace_id=ws_id,
-            recipient_email=payload.recipient_email or settings.NOTIFICATION_EMAIL or settings.SMTP_USER or "",
+            recipient_email=payload.recipient_email or settings.NOTIFICATION_EMAIL or settings.SMTP_USER or "akashsivalingam5@gmail.com",
             is_enabled=payload.is_enabled if payload.is_enabled is not None else True,
             notify_if_pending_only=payload.notify_if_pending_only if payload.notify_if_pending_only is not None else False,
-            custom_smtp_user=payload.custom_smtp_user,
-            custom_smtp_password=payload.custom_smtp_password,
+            custom_smtp_user=payload.custom_smtp_user if payload.custom_smtp_user and payload.custom_smtp_user.strip() else None,
+            custom_smtp_password=payload.custom_smtp_password if payload.custom_smtp_password and payload.custom_smtp_password.strip() else None,
         )
         db.add(setting)
     else:
@@ -109,9 +109,9 @@ def update_notification_settings(
         if payload.notify_if_pending_only is not None:
             setting.notify_if_pending_only = payload.notify_if_pending_only
         if payload.custom_smtp_user is not None:
-            setting.custom_smtp_user = payload.custom_smtp_user
+            setting.custom_smtp_user = payload.custom_smtp_user.strip() if payload.custom_smtp_user.strip() else None
         if payload.custom_smtp_password is not None:
-            setting.custom_smtp_password = payload.custom_smtp_password
+            setting.custom_smtp_password = payload.custom_smtp_password.strip() if payload.custom_smtp_password.strip() else None
 
     db.commit()
     db.refresh(setting)
@@ -146,21 +146,16 @@ def test_email(
         <p style="font-size: 12px; color: #78716c;">Sent on: {datetime.now().strftime('%B %d, %Y at %I:%M %p')}</p>
     </div>
     """
-    target_email = payload.recipient_email or settings.NOTIFICATION_EMAIL or settings.SMTP_USER
-    if not target_email:
-        return {
-            "success": False,
-            "message": "Recipient email not provided and NOTIFICATION_EMAIL not set in .env",
-            "sent_to": None,
-            "timestamp": datetime.now().isoformat(),
-        }
+    target_email = payload.recipient_email or settings.NOTIFICATION_EMAIL or settings.SMTP_USER or "akashsivalingam5@gmail.com"
+    smtp_u = payload.smtp_user if (payload.smtp_user and payload.smtp_user.strip()) else None
+    smtp_p = payload.smtp_password if (payload.smtp_password and payload.smtp_password.strip()) else None
 
     success, message = send_smtp_email(
         to_email=target_email,
         subject=subject,
         html_content=html_body,
-        custom_user=payload.smtp_user,
-        custom_pass=payload.smtp_password,
+        custom_user=smtp_u,
+        custom_pass=smtp_p,
     )
 
     # Persist log entry
