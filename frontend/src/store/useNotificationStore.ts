@@ -132,9 +132,10 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
 
   sendTestEmail: async (email, smtpUser, smtpPass) => {
     set({ isSending: true, statusMessage: null });
+    const targetEmail = email || get().settings?.recipient_email || 'akashsivalingam5@gmail.com';
     try {
       const res = await apiClient.post('/notifications/test-email', {
-        recipient_email: email,
+        recipient_email: targetEmail,
         smtp_user: smtpUser || undefined,
         smtp_password: smtpPass || undefined,
       });
@@ -145,7 +146,6 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
           text: data.message,
         },
       });
-      // Refresh logs right away to show in the logs section
       get().fetchLogs();
       return data;
     } catch (err: any) {
@@ -160,9 +160,10 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
 
   sendDailyDigest: async (email, smtpUser, smtpPass) => {
     set({ isSending: true, statusMessage: null });
+    const targetEmail = email || get().settings?.recipient_email || 'akashsivalingam5@gmail.com';
     try {
       const res = await apiClient.post('/notifications/send-digest', {
-        recipient_email: email || undefined,
+        recipient_email: targetEmail,
         smtp_user: smtpUser || undefined,
         smtp_password: smtpPass || undefined,
         force: true,

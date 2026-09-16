@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
-import { usePageStore, Page } from '../../store/usePageStore';
+import { usePageStore } from '../../store/usePageStore';
 import { useWorkspaceStore } from '../../store/useWorkspaceStore';
 import { useAuthStore } from '../../store/useAuthStore';
 import {
-  ChevronRight,
-  ChevronDown,
   Plus,
   Search,
   Settings,
   Trash2,
   PanelLeftClose,
-  Star,
   ChevronsUpDown,
   RotateCcw,
   Flame,
@@ -30,11 +27,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
   const {
     pages,
     archivedPages,
-    activePageId,
     setActivePageId,
     createPage,
-    toggleFavorite,
-    archivePage,
     restorePage,
     deletePermanently,
     setSearching,
@@ -43,9 +37,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
   const { workspaces, activeWorkspace, setActiveWorkspace, createWorkspace } = useWorkspaceStore();
   const { user, setAuthModalOpen } = useAuthStore();
 
-  const [expandedPages, setExpandedPages] = useState<Record<string, boolean>>({
-    'page-project-roadmap': true,
-  });
   const [isWorkspaceMenuOpen, setIsWorkspaceMenuOpen] = useState(false);
   const [isCreatingWs, setIsCreatingWs] = useState(false);
   const [newWsName, setNewWsName] = useState('');
@@ -53,88 +44,22 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
 
   if (!isOpen) return null;
 
-  const toggleExpand = (pageId: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    setExpandedPages((prev) => ({ ...prev, [pageId]: !prev[pageId] }));
-  };
-
-  const handleCreateRootPage = () => {
+  const openWidgetPage = (widgetType: 'habit_tracker' | 'todo_planner' | 'pomodoro' | 'journal' | 'expense_tracker') => {
     if (activeWorkspace) {
-      createPage(activeWorkspace.id, null, 'Untitled');
-    }
-  };
-
-  const handleCreateHabitTracker = () => {
-    if (activeWorkspace) {
-      const existing = pages.find((p) => (p.widget_type === 'habit_tracker' || p.title.toLowerCase().includes('habit')) && !p.is_archived);
+      const titles: Record<string, string> = {
+        habit_tracker: 'Daily Habit Tracker & Streaks',
+        todo_planner: 'Task Planner',
+        pomodoro: 'Arc Pomodoro Focus Station',
+        journal: 'Daily Journal',
+        expense_tracker: 'Expense Tracker',
+      };
+      const existing = pages.find((p) => (p.widget_type === widgetType || (p.title || '').toLowerCase().includes(widgetType.split('_')[0])) && !p.is_archived);
       if (existing) {
         setActivePageId(existing.id);
       } else {
-        createPage(activeWorkspace.id, null, 'Daily Habit Tracker & Streaks', 'habit_tracker');
+        createPage(activeWorkspace.id, null, titles[widgetType], widgetType);
       }
     }
-  };
-
-  const handleCreateTodoPlanner = () => {
-    if (activeWorkspace) {
-      const existing = pages.find((p) => (p.widget_type === 'todo_planner' || p.title.toLowerCase().includes('task')) && !p.is_archived);
-      if (existing) {
-        setActivePageId(existing.id);
-      } else {
-        createPage(activeWorkspace.id, null, 'Task Planner', 'todo_planner');
-      }
-    }
-  };
-
-  const handleCreatePomodoro = () => {
-    if (activeWorkspace) {
-      const existing = pages.find((p) => (p.widget_type === 'pomodoro' || p.title.toLowerCase().includes('focus')) && !p.is_archived);
-      if (existing) {
-        setActivePageId(existing.id);
-      } else {
-        createPage(activeWorkspace.id, null, 'Arc Pomodoro Focus Station', 'pomodoro');
-      }
-    }
-  };
-
-  const handleCreateJournal = () => {
-    if (activeWorkspace) {
-      const existing = pages.find((p) => (p.widget_type === 'journal' || p.title.toLowerCase().includes('journal')) && !p.is_archived);
-      if (existing) {
-        setActivePageId(existing.id);
-      } else {
-        createPage(activeWorkspace.id, null, "Daily Journal", 'journal');
-      }
-    }
-  };
-
-  const handleCreateExpenseTracker = () => {
-    if (activeWorkspace) {
-      const existing = pages.find((p) => (p.widget_type === 'expense_tracker' || p.title.toLowerCase().includes('expense')) && !p.is_archived);
-      if (existing) {
-        setActivePageId(existing.id);
-      } else {
-        createPage(activeWorkspace.id, null, "Expense Tracker", 'expense_tracker');
-      }
-    }
-  };
-
-  const handleCreateChildPage = (parentId: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (activeWorkspace) {
-      createPage(activeWorkspace.id, parentId, 'Untitled');
-      setExpandedPages((prev) => ({ ...prev, [parentId]: true }));
-      if (window.innerWidth <= 768) toggleSidebar();
-    }
-  };
-
-  const handlePageSelect = (pageId: string) => {
-    setActivePageId(pageId);
-    if (window.innerWidth <= 768) toggleSidebar();
-  };
-
-  const wrapCreate = (createFn: () => void) => {
-    createFn();
     if (window.innerWidth <= 768) toggleSidebar();
   };
 
@@ -146,91 +71,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
       setIsCreatingWs(false);
       setIsWorkspaceMenuOpen(false);
     }
-  };
-
-  // Group pages by parent
-  const rootPages = pages.filter((p) => !p.parent_id);
-
-  const renderPageItem = (page: Page, level = 0) => {
-    const children = pages.filter((p) => p.parent_id === page.id);
-    const hasChildren = children.length > 0;
-    const isExpanded = !!expandedPages[page.id];
-    const isActive = activePageId === page.id;
-
-    return (
-      <div key={page.id} className="select-none">
-        <div
-          onClick={() => handlePageSelect(page.id)}
-          style={{ paddingLeft: `${Math.max(12, level * 16 + 12)}px` }}
-          className={`group flex items-center justify-between py-1.5 pr-2 rounded-lg cursor-pointer text-xs transition-all duration-200 hover:translate-x-1 ${isActive
-              ? 'active-page-pill text-amber-400 font-bold shadow-xs'
-              : 'hover:bg-[#f2ebe1] dark:hover:bg-zinc-800/60 text-[#44403c] dark:text-zinc-300'
-            }`}
-        >
-          <div className="flex items-center space-x-1.5 min-w-0">
-            {/* Expand Arrow */}
-            <button
-              onClick={(e) => toggleExpand(page.id, e)}
-              className={`p-0.5 rounded hover:bg-[#e7dfd4] transition-colors ${hasChildren ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'
-                }`}
-            >
-              {isExpanded ? (
-                <ChevronDown className="w-3 h-3 text-[#78716c]" />
-              ) : (
-                <ChevronRight className="w-3 h-3 text-[#78716c]" />
-              )}
-            </button>
-
-            {/* Icon */}
-            <span className="text-xs shrink-0">{page.icon || '📄'}</span>
-
-            {/* Title */}
-            <span className="truncate font-medium">{page.title || 'Untitled'}</span>
-          </div>
-
-          {/* Quick Actions on Hover */}
-          <div className="flex items-center space-x-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                toggleFavorite(page.id);
-              }}
-              className={`p-1 rounded hover:bg-[#e7dfd4] ${page.is_favorite ? 'text-[#ff7a00]' : 'text-[#a8a29e]'
-                }`}
-              title="Favorite"
-            >
-              <Star className={`w-3 h-3 ${page.is_favorite ? 'fill-[#ff7a00]' : ''}`} />
-            </button>
-
-            <button
-              onClick={(e) => handleCreateChildPage(page.id, e)}
-              className="p-1 rounded hover:bg-[#e7dfd4] text-[#a8a29e]"
-              title="Add sub-page"
-            >
-              <Plus className="w-3 h-3" />
-            </button>
-
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                archivePage(page.id);
-              }}
-              className="p-1 rounded hover:bg-[#e7dfd4] text-[#a8a29e] hover:text-red-500"
-              title="Move to trash"
-            >
-              <Trash2 className="w-3 h-3" />
-            </button>
-          </div>
-        </div>
-
-        {/* Child Pages */}
-        {hasChildren && isExpanded && (
-          <div className="mt-0.5">
-            {children.map((child) => renderPageItem(child, level + 1))}
-          </div>
-        )}
-      </div>
-    );
   };
 
   return (
@@ -337,21 +177,21 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
           )}
         </div>
 
-        {/* Main Navigation Links */}
-        <div className="p-2 space-y-1 select-none">
+        {/* Navigation Section */}
+        <div className="p-2 space-y-1 border-b border-zinc-200 select-none flex-1 overflow-y-auto custom-scrollbar">
           {onBackToLanding && (
             <button
-              onClick={() => wrapCreate(onBackToLanding)}
-              className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-semibold transition-all hover:scale-[1.01]"
+              onClick={onBackToLanding}
+              className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-red-600 via-red-500 to-amber-500 text-white font-extrabold text-xs shadow-xs hover:scale-[1.01] transition-all"
             >
-              <Shield className="w-3.5 h-3.5 text-red-600 fill-red-600" />
+              <Shield className="w-3.5 h-3.5 text-amber-200 fill-amber-200" />
               <span>Iron Man Home</span>
             </button>
           )}
 
           <button
             onClick={() => setSearching(true)}
-            className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-900 transition-all hover:scale-[1.01]"
+            className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
           >
             <div className="flex items-center space-x-2">
               <Search className="w-3.5 h-3.5 text-amber-600" />
@@ -376,7 +216,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
 
           {/* Habit Tracker Template Pill */}
           <button
-            onClick={() => wrapCreate(handleCreateHabitTracker)}
+            onClick={() => openWidgetPage('habit_tracker')}
             className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
           >
             <Flame className="w-3.5 h-3.5 text-amber-600" />
@@ -385,7 +225,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
 
           {/* To-Do Planner Template Pill */}
           <button
-            onClick={() => wrapCreate(handleCreateTodoPlanner)}
+            onClick={() => openWidgetPage('todo_planner')}
             className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
           >
             <CheckSquare className="w-3.5 h-3.5 text-amber-600" />
@@ -394,7 +234,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
 
           {/* Pomodoro Focus Timer Pill */}
           <button
-            onClick={() => wrapCreate(handleCreatePomodoro)}
+            onClick={() => openWidgetPage('pomodoro')}
             className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
           >
             <Zap className="w-3.5 h-3.5 text-amber-600" />
@@ -403,7 +243,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
 
           {/* Daily Journal Pill */}
           <button
-            onClick={() => wrapCreate(handleCreateJournal)}
+            onClick={() => openWidgetPage('journal')}
             className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
           >
             <BookOpen className="w-3.5 h-3.5 text-amber-600" />
@@ -412,30 +252,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
 
           {/* Expense Tracker Pill */}
           <button
-            onClick={() => wrapCreate(handleCreateExpenseTracker)}
+            onClick={() => openWidgetPage('expense_tracker')}
             className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
           >
             <span className="text-sm">💰</span>
             <span>Expense Tracker</span>
           </button>
-        </div>
-
-        {/* Page Tree Section */}
-        <div className="flex-1 overflow-y-auto px-2 py-2 select-none custom-scrollbar">
-          <div className="flex items-center justify-between px-2 py-1 text-[10px] font-bold text-zinc-500 uppercase tracking-wider">
-            <span>Private Pages</span>
-            <button
-              onClick={() => wrapCreate(handleCreateRootPage)}
-              className="p-1 rounded hover:bg-zinc-200 text-zinc-500 hover:text-zinc-900"
-              title="Create root page"
-            >
-              <Plus className="w-3 h-3" />
-            </button>
-          </div>
-
-          <div className="space-y-0.5 mt-1">
-            {rootPages.map((page) => renderPageItem(page, 0))}
-          </div>
         </div>
 
         {/* Footer: User Profile & Trash Bin */}
