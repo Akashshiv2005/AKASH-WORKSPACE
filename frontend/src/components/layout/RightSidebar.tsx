@@ -201,22 +201,22 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
           <div className="space-y-3 animate-fade-in-up">
             {/* Priority Operations Breakdown */}
             <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-3">
-              <div className="flex items-center space-x-1.5 text-amber-400 font-bold text-[11px]">
-                <Target className="w-3.5 h-3.5 text-amber-400" />
-                <span className="uppercase tracking-wider animate-text-float font-black">OPERATIONS BREAKDOWN</span>
+              <div className="flex items-center space-x-1.5 text-amber-700 font-bold text-[11px]">
+                <Target className="w-3.5 h-3.5 text-amber-600" />
+                <span className="uppercase tracking-wider font-black">OPERATIONS BREAKDOWN</span>
               </div>
 
               <div className="space-y-2">
-                <div className="flex items-center justify-between p-2 rounded-xl bg-rose-950/50 border border-rose-500/30">
-                  <span className="text-rose-300 font-bold text-xs">High Priority</span>
-                  <span className="px-2 py-0.5 rounded-full bg-rose-600 text-white font-black text-xs">{highPriorityTasks} Tasks</span>
+                <div className="flex items-center justify-between p-2 rounded-xl bg-rose-50 border border-rose-200">
+                  <span className="text-rose-800 font-bold text-xs">High Priority</span>
+                  <span className="px-2 py-0.5 rounded-full bg-red-600 text-white font-black text-xs">{highPriorityTasks} Tasks</span>
                 </div>
-                <div className="flex items-center justify-between p-2 rounded-xl bg-amber-950/50 border border-amber-500/30">
-                  <span className="text-amber-300 font-bold text-xs">Medium Priority</span>
-                  <span className="px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 font-black text-xs">{mediumPriorityTasks} Tasks</span>
+                <div className="flex items-center justify-between p-2 rounded-xl bg-amber-50 border border-amber-200">
+                  <span className="text-amber-800 font-bold text-xs">Medium Priority</span>
+                  <span className="px-2 py-0.5 rounded-full bg-amber-500 text-white font-black text-xs">{mediumPriorityTasks} Tasks</span>
                 </div>
-                <div className="flex items-center justify-between p-2 rounded-xl bg-emerald-950/50 border border-emerald-500/30">
-                  <span className="text-emerald-300 font-bold text-xs">Low Priority</span>
+                <div className="flex items-center justify-between p-2 rounded-xl bg-emerald-50 border border-emerald-200">
+                  <span className="text-emerald-800 font-bold text-xs">Low Priority</span>
                   <span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white font-black text-xs">{lowPriorityTasks} Tasks</span>
                 </div>
               </div>
@@ -224,22 +224,22 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
 
             {/* Column Pipeline Ratios */}
             <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-2">
-              <div className="flex items-center space-x-1.5 text-amber-400 font-bold text-[11px]">
-                <ListTodo className="w-3.5 h-3.5 text-amber-400" />
+              <div className="flex items-center space-x-1.5 text-amber-700 font-bold text-[11px]">
+                <ListTodo className="w-3.5 h-3.5 text-amber-600" />
                 <span className="uppercase tracking-wider font-black">PIPELINE STATUS</span>
               </div>
               <div className="grid grid-cols-3 gap-2 text-center pt-1">
-                <div className="p-2 rounded-xl bg-rose-950/40 border border-rose-500/25">
-                  <div className="font-black text-rose-400 text-sm">{todoCount}</div>
-                  <div className="text-[10px] text-slate-400">To Do</div>
+                <div className="p-2 rounded-xl bg-rose-50 border border-rose-200">
+                  <div className="font-black text-rose-700 text-sm">{todoCount}</div>
+                  <div className="text-[10px] text-zinc-600 font-medium">To Do</div>
                 </div>
-                <div className="p-2 rounded-xl bg-amber-950/40 border border-amber-500/25">
-                  <div className="font-black text-amber-400 text-sm">{inProgressCount}</div>
-                  <div className="text-[10px] text-slate-400">In Progress</div>
+                <div className="p-2 rounded-xl bg-amber-50 border border-amber-200">
+                  <div className="font-black text-amber-700 text-sm">{inProgressCount}</div>
+                  <div className="text-[10px] text-zinc-600 font-medium">In Progress</div>
                 </div>
-                <div className="p-2 rounded-xl bg-emerald-950/40 border border-emerald-500/25">
-                  <div className="font-black text-emerald-400 text-sm">{completedCount}</div>
-                  <div className="text-[10px] text-slate-400">Done</div>
+                <div className="p-2 rounded-xl bg-emerald-50 border border-emerald-200">
+                  <div className="font-black text-emerald-700 text-sm">{completedCount}</div>
+                  <div className="text-[10px] text-zinc-600 font-medium">Done</div>
                 </div>
               </div>
             </div>

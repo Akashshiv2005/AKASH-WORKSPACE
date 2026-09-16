@@ -275,12 +275,12 @@ export const TodoPlanner: React.FC = () => {
       {/* 3-Column Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Column 1: To Do */}
-        <div className="rounded-2xl border border-amber-500/30 bg-[#1c0f13]/90 p-3.5 space-y-3 shadow-lg">
+        <div className="rounded-2xl border border-zinc-200 bg-amber-50/30 p-3.5 space-y-3 shadow-xs">
           <div className="flex items-center justify-between px-1">
             <div className="flex items-center space-x-2">
               <span className="w-3 h-3 rounded-full bg-rose-500 shadow-xs" />
-              <span className="text-xs font-black text-white">To Do</span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-rose-950/70 text-rose-300 font-bold border border-rose-500/40 animate-count-pulse">
+              <span className="text-xs font-black text-zinc-900">To Do</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 font-bold border border-rose-200">
                 {todoTasks.length}
               </span>
             </div>
@@ -288,30 +288,30 @@ export const TodoPlanner: React.FC = () => {
 
           <div className="space-y-2.5">
             {todoTasks.length === 0 ? (
-              <div className="p-4 text-center text-xs text-slate-400 border border-dashed border-amber-500/20 rounded-xl animate-text-reveal">
+              <div className="p-4 text-center text-xs text-zinc-400 border border-dashed border-zinc-300 rounded-xl">
                 No tasks to do
               </div>
             ) : (
               todoTasks.map((task) => (
                 <div
                   key={task.id}
-                  className="p-3.5 rounded-xl bg-[#140b0e]/90 hover:bg-[#1a0e12] border border-amber-500/20 hover:border-amber-400/60 shadow-md hover-lift transition-all duration-300 space-y-2.5 group"
+                  className="p-3.5 rounded-xl bg-white hover:bg-amber-50/50 border border-zinc-200 hover:border-amber-300 shadow-xs hover-lift transition-all duration-300 space-y-2.5 group"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex items-start space-x-2">
                       <button
                         onClick={() => updateStatus(workspaceId, task.id, 'in_progress')}
-                        className="mt-0.5 text-slate-400 hover:text-amber-400 transition-colors"
+                        className="mt-0.5 text-zinc-400 hover:text-amber-600 transition-colors"
                       >
                         <Circle className="w-4 h-4" />
                       </button>
-                      <span className="text-xs font-semibold text-white leading-snug group-hover:text-amber-300 transition-colors">
+                      <span className="text-xs font-semibold text-zinc-900 leading-snug group-hover:text-red-600 transition-colors">
                         {task.title}
                       </span>
                     </div>
                     <button
                       onClick={() => deleteTask(workspaceId, task.id)}
-                      className="p-1 opacity-0 group-hover:opacity-100 text-slate-400 hover:text-rose-400 transition-opacity"
+                      className="p-1 opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-rose-600 transition-opacity"
                       title="Move to trash"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -324,7 +324,7 @@ export const TodoPlanner: React.FC = () => {
                     </span>
                     <button
                       onClick={() => updateStatus(workspaceId, task.id, 'in_progress')}
-                      className="text-amber-400 hover-text-shimmer font-bold"
+                      className="text-amber-600 hover:text-amber-700 font-bold"
                     >
                       Start →
                     </button>
@@ -336,12 +336,12 @@ export const TodoPlanner: React.FC = () => {
         </div>
 
         {/* Column 2: In Progress */}
-        <div className="rounded-2xl border border-amber-500/30 bg-[#1c0f13]/90 p-3.5 space-y-3 shadow-lg">
+        <div className="rounded-2xl border border-zinc-200 bg-amber-50/30 p-3.5 space-y-3 shadow-xs">
           <div className="flex items-center justify-between px-1">
             <div className="flex items-center space-x-2">
               <span className="w-3 h-3 rounded-full bg-amber-500 shadow-xs" />
-              <span className="text-xs font-black text-white">In Progress</span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-amber-950/70 text-amber-300 font-bold border border-amber-500/40 animate-count-pulse">
+              <span className="text-xs font-black text-zinc-900">In Progress</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold border border-amber-300">
                 {inProgressTasks.length}
               </span>
             </div>
@@ -349,30 +349,30 @@ export const TodoPlanner: React.FC = () => {
 
           <div className="space-y-2.5">
             {inProgressTasks.length === 0 ? (
-              <div className="p-4 text-center text-xs text-slate-400 border border-dashed border-amber-500/20 rounded-xl animate-text-reveal">
+              <div className="p-4 text-center text-xs text-zinc-400 border border-dashed border-zinc-300 rounded-xl">
                 No active tasks
               </div>
             ) : (
               inProgressTasks.map((task) => (
                 <div
                   key={task.id}
-                  className="p-3.5 rounded-xl bg-[#140b0e]/90 hover:bg-[#1a0e12] border border-amber-500/30 hover:border-amber-400 shadow-md hover-lift transition-all duration-300 space-y-2.5 group"
+                  className="p-3.5 rounded-xl bg-white hover:bg-amber-50/50 border border-zinc-200 hover:border-amber-300 shadow-xs hover-lift transition-all duration-300 space-y-2.5 group"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex items-start space-x-2">
                       <button
                         onClick={() => updateStatus(workspaceId, task.id, 'completed')}
-                        className="mt-0.5 text-amber-400 transition-colors"
+                        className="mt-0.5 text-amber-600 transition-colors"
                       >
                         <Clock className="w-4 h-4 animate-spin-slow" />
                       </button>
-                      <span className="text-xs font-semibold text-white leading-snug group-hover:text-amber-300 transition-colors">
+                      <span className="text-xs font-semibold text-zinc-900 leading-snug group-hover:text-red-600 transition-colors">
                         {task.title}
                       </span>
                     </div>
                     <button
                       onClick={() => deleteTask(workspaceId, task.id)}
-                      className="p-1 opacity-0 group-hover:opacity-100 text-slate-400 hover:text-rose-400 transition-opacity"
+                      className="p-1 opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-rose-600 transition-opacity"
                       title="Move to trash"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -385,7 +385,7 @@ export const TodoPlanner: React.FC = () => {
                     </span>
                     <button
                       onClick={() => updateStatus(workspaceId, task.id, 'completed')}
-                      className="text-emerald-400 hover-text-shimmer font-bold"
+                      className="text-emerald-600 hover:text-emerald-700 font-bold"
                     >
                       Complete ✓
                     </button>
@@ -397,12 +397,12 @@ export const TodoPlanner: React.FC = () => {
         </div>
 
         {/* Column 3: Completed */}
-        <div className="rounded-2xl border border-amber-500/30 bg-[#1c0f13]/90 p-3.5 space-y-3 shadow-lg">
+        <div className="rounded-2xl border border-zinc-200 bg-amber-50/30 p-3.5 space-y-3 shadow-xs">
           <div className="flex items-center justify-between px-1">
             <div className="flex items-center space-x-2">
               <span className="w-3 h-3 rounded-full bg-emerald-500 shadow-xs" />
-              <span className="text-xs font-black text-emerald-400">Completed</span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-950/70 text-emerald-300 font-bold border border-emerald-500/40 animate-count-pulse">
+              <span className="text-xs font-black text-zinc-900">Completed</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold border border-emerald-300">
                 {completedTasks.length}
               </span>
             </div>
@@ -410,30 +410,30 @@ export const TodoPlanner: React.FC = () => {
 
           <div className="space-y-2.5">
             {completedTasks.length === 0 ? (
-              <div className="p-4 text-center text-xs text-slate-400 border border-dashed border-amber-500/20 rounded-xl">
+              <div className="p-4 text-center text-xs text-zinc-400 border border-dashed border-zinc-300 rounded-xl">
                 No completed tasks
               </div>
             ) : (
               completedTasks.map((task) => (
                 <div
                   key={task.id}
-                  className="p-3.5 rounded-xl bg-[#140b0e]/90 hover:bg-[#1a0e12] border border-amber-500/20 hover:border-emerald-400/60 shadow-md space-y-2.5 opacity-80 group hover:opacity-100 hover-lift transition-all duration-300"
+                  className="p-3.5 rounded-xl bg-white hover:bg-amber-50/50 border border-zinc-200 hover:border-emerald-300 shadow-xs space-y-2.5 opacity-80 group hover:opacity-100 hover-lift transition-all duration-300"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex items-start space-x-2">
                       <button
                         onClick={() => updateStatus(workspaceId, task.id, 'todo')}
-                        className="mt-0.5 text-emerald-400 transition-colors"
+                        className="mt-0.5 text-emerald-600 transition-colors"
                       >
-                        <CheckCircle2 className="w-4 h-4 fill-emerald-950/60" />
+                        <CheckCircle2 className="w-4 h-4" />
                       </button>
-                      <span className="text-xs font-semibold text-slate-400 line-through">
+                      <span className="text-xs font-semibold text-zinc-500 line-through">
                         {task.title}
                       </span>
                     </div>
                     <button
                       onClick={() => deleteTask(workspaceId, task.id)}
-                      className="p-1 opacity-0 group-hover:opacity-100 text-slate-400 hover:text-rose-400 transition-opacity"
+                      className="p-1 opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-rose-600 transition-opacity"
                       title="Move to trash"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -446,7 +446,7 @@ export const TodoPlanner: React.FC = () => {
                     </span>
                     <button
                       onClick={() => updateStatus(workspaceId, task.id, 'todo')}
-                      className="text-slate-400 hover:text-slate-200 hover:underline font-medium"
+                      className="text-zinc-500 hover:text-zinc-900 hover:underline font-medium"
                     >
                       Reopen
                     </button>
