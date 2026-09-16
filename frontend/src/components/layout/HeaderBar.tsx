@@ -96,16 +96,17 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           {onBackToLanding && (
             <button
               onClick={onBackToLanding}
-              className="flex items-center space-x-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-red-600 via-red-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-black text-[11px] tracking-wider transition-all hover:scale-105 shadow-sm border border-amber-400/50 shrink-0 whitespace-nowrap"
+              className="flex items-center space-x-1 px-2.5 sm:px-3 py-1 rounded-full bg-gradient-to-r from-red-600 via-red-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-black text-[10px] sm:text-[11px] tracking-wider transition-all hover:scale-105 shadow-sm border border-amber-400/50 shrink-0 whitespace-nowrap"
               title="Return to Iron Man Home Landing Page"
             >
               <Shield className="w-3.5 h-3.5 text-amber-200 fill-amber-200 shrink-0" />
-              <span>IRON MAN HOME</span>
+              <span className="hidden xs:inline">IRON MAN HOME</span>
+              <span className="xs:hidden">HOME</span>
             </button>
           )}
 
           {/* Workspace Shield Logo */}
-          <div className="hidden sm:flex items-center space-x-2 shrink-0">
+          <div className="hidden md:flex items-center space-x-2 shrink-0">
             <span className="text-xs font-black text-zinc-900 tracking-wide truncate max-w-[140px] md:max-w-none">
               {activeWorkspace?.name || "Akash Shiv's Workspace"}
             </span>
@@ -117,7 +118,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
               <ChevronRight className="w-3.5 h-3.5 text-amber-500 shrink-0" />
               <div className="flex items-center space-x-1 min-w-0">
                 {page.icon && <span className="text-xs shrink-0">{page.icon}</span>}
-                <span className={`text-xs truncate transition-all ${index === breadcrumbs.length - 1 ? 'font-bold text-red-600' : 'text-zinc-600 hover:text-zinc-900'}`}>
+                <span className={`text-xs truncate max-w-[70px] xs:max-w-[110px] sm:max-w-[200px] transition-all ${index === breadcrumbs.length - 1 ? 'font-bold text-red-600' : 'text-zinc-600 hover:text-zinc-900'}`}>
                   {page.title || 'Untitled'}
                 </span>
               </div>
@@ -126,11 +127,11 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
         </div>
 
         {/* Right Section: Ask JARVIS, Notifications & Actions */}
-        <div className="flex items-center space-x-2 shrink-0">
+        <div className="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
           {/* Ask JARVIS Button */}
           <button
             onClick={() => setIsAiModalOpen(true)}
-            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-red-600 via-red-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white text-xs font-black shadow-sm transition-all hover:scale-105 border border-amber-400/40"
+            className="flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl bg-gradient-to-r from-red-600 via-red-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white text-xs font-black shadow-sm transition-all hover:scale-105 border border-amber-400/40"
             title="Open JARVIS AI Assistant"
           >
             <Zap className="w-3.5 h-3.5 text-amber-200 fill-amber-200" />

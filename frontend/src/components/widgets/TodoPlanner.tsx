@@ -311,7 +311,7 @@ export const TodoPlanner: React.FC = () => {
                     </div>
                     <button
                       onClick={() => deleteTask(workspaceId, task.id)}
-                      className="p-1 opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-rose-600 transition-opacity"
+                      className="p-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 text-zinc-400 hover:text-rose-600 transition-opacity"
                       title="Move to trash"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -372,7 +372,7 @@ export const TodoPlanner: React.FC = () => {
                     </div>
                     <button
                       onClick={() => deleteTask(workspaceId, task.id)}
-                      className="p-1 opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-rose-600 transition-opacity"
+                      className="p-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 text-zinc-400 hover:text-rose-600 transition-opacity"
                       title="Move to trash"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -433,7 +433,7 @@ export const TodoPlanner: React.FC = () => {
                     </div>
                     <button
                       onClick={() => deleteTask(workspaceId, task.id)}
-                      className="p-1 opacity-0 group-hover:opacity-100 text-zinc-400 hover:text-rose-600 transition-opacity"
+                      className="p-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 text-zinc-400 hover:text-rose-600 transition-opacity"
                       title="Move to trash"
                     >
                       <Trash2 className="w-3.5 h-3.5" />

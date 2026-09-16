@@ -571,7 +571,7 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
 
                   <button
                     onClick={(e) => handleDeletePlan(p.id, e)}
-                    className="opacity-0 group-hover:opacity-100 p-1 text-[#a8a29e] hover:text-red-500 rounded transition-all shrink-0"
+                    className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 p-1 text-[#a8a29e] hover:text-red-500 rounded transition-all shrink-0"
                     title="Delete Plan"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
