@@ -79,13 +79,13 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
 
   return (
     <>
-      <header className="h-14 border-b border-zinc-200 bg-white px-4 flex items-center justify-between text-zinc-900 select-none z-10 transition-colors shrink-0 shadow-xs">
+      <header className="h-14 border-b border-zinc-200 bg-white px-2 sm:px-4 flex items-center justify-between text-zinc-900 select-none z-10 transition-colors shrink-0 shadow-xs">
         {/* Left Section: Workspace & Breadcrumbs */}
-        <div className="flex items-center space-x-3 min-w-0">
+        <div className="flex items-center space-x-1.5 sm:space-x-3 min-w-0">
           {!isSidebarOpen && (
             <button
               onClick={toggleSidebar}
-              className="p-1.5 rounded-lg hover:bg-amber-50 text-amber-600 transition-colors"
+              className="p-1 sm:p-1.5 rounded-lg hover:bg-amber-50 text-amber-600 transition-colors shrink-0"
               title="Open Left Sidebar"
             >
               <PanelLeft className="w-4 h-4 text-amber-600" />
@@ -96,12 +96,11 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           {onBackToLanding && (
             <button
               onClick={onBackToLanding}
-              className="flex items-center space-x-1 px-2.5 sm:px-3 py-1 rounded-full bg-gradient-to-r from-red-600 via-red-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-black text-[10px] sm:text-[11px] tracking-wider transition-all hover:scale-105 shadow-sm border border-amber-400/50 shrink-0 whitespace-nowrap"
+              className="flex items-center space-x-1 px-2 sm:px-3 py-1 rounded-full bg-gradient-to-r from-red-600 via-red-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-black text-[10px] sm:text-[11px] tracking-wider transition-all hover:scale-105 shadow-sm border border-amber-400/50 shrink-0 whitespace-nowrap"
               title="Return to Iron Man Home Landing Page"
             >
-              <Shield className="w-3.5 h-3.5 text-amber-200 fill-amber-200 shrink-0" />
-              <span className="hidden xs:inline">IRON MAN HOME</span>
-              <span className="xs:hidden">HOME</span>
+              <Shield className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-200 fill-amber-200 shrink-0" />
+              <span>HOME</span>
             </button>
           )}
 
@@ -113,25 +112,28 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           </div>
 
           {/* Breadcrumb Path */}
-          {breadcrumbs.map((page, index) => (
-            <React.Fragment key={page.id}>
-              <ChevronRight className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-              <div className="flex items-center space-x-1 min-w-0">
-                {page.icon && <span className="text-xs shrink-0">{page.icon}</span>}
-                <span className={`text-xs truncate max-w-[70px] xs:max-w-[110px] sm:max-w-[200px] transition-all ${index === breadcrumbs.length - 1 ? 'font-bold text-red-600' : 'text-zinc-600 hover:text-zinc-900'}`}>
-                  {page.title || 'Untitled'}
-                </span>
-              </div>
-            </React.Fragment>
-          ))}
+          {breadcrumbs.map((page, index) => {
+            const isLast = index === breadcrumbs.length - 1;
+            return (
+              <React.Fragment key={page.id}>
+                <ChevronRight className={`w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-500 shrink-0 ${!isLast ? 'hidden sm:inline' : ''}`} />
+                <div className={`items-center space-x-1 min-w-0 ${!isLast ? 'hidden sm:flex' : 'flex'}`}>
+                  {page.icon && <span className="text-xs shrink-0">{page.icon}</span>}
+                  <span className={`text-xs truncate max-w-[110px] xs:max-w-[150px] sm:max-w-[200px] transition-all ${isLast ? 'font-bold text-red-600' : 'text-zinc-600 hover:text-zinc-900'}`}>
+                    {page.title || 'Untitled'}
+                  </span>
+                </div>
+              </React.Fragment>
+            );
+          })}
         </div>
 
         {/* Right Section: Ask JARVIS, Notifications & Actions */}
-        <div className="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
+        <div className="flex items-center space-x-1 sm:space-x-2 shrink-0">
           {/* Ask JARVIS Button */}
           <button
             onClick={() => setIsAiModalOpen(true)}
-            className="flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl bg-gradient-to-r from-red-600 via-red-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white text-xs font-black shadow-sm transition-all hover:scale-105 border border-amber-400/40"
+            className="flex items-center space-x-1 px-2 sm:px-3 py-1 sm:py-1.5 rounded-xl bg-gradient-to-r from-red-600 via-red-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white text-xs font-black shadow-sm transition-all hover:scale-105 border border-amber-400/40"
             title="Open JARVIS AI Assistant"
           >
             <Zap className="w-3.5 h-3.5 text-amber-200 fill-amber-200" />
@@ -142,9 +144,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           {activePage && (
             <button
               onClick={() => toggleFavorite(activePage.id)}
-              className={`hidden sm:flex p-1.5 rounded-lg hover:bg-amber-50 transition-colors ${
-                activePage.is_favorite ? 'text-amber-500' : 'text-zinc-400'
-              }`}
+              className="hidden sm:flex p-1.5 rounded-lg hover:bg-amber-50 transition-colors text-zinc-400"
               title={activePage.is_favorite ? 'Remove from Favorites' : 'Add to Favorites'}
             >
               <Star className={`w-4 h-4 ${activePage.is_favorite ? 'fill-amber-400 text-amber-500' : ''}`} />
@@ -173,10 +173,10 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
             </button>
           )}
 
-          {/* Notifications Icon */}
+          {/* Notifications Icon (Desktop & Tablet) */}
           <button
             onClick={() => setNotificationModalOpen(true)}
-            className="group relative flex p-1.5 rounded-lg hover:bg-amber-50 text-amber-600 hover:scale-110 active:scale-90 transition-all duration-200"
+            className="hidden sm:flex group relative p-1.5 rounded-lg hover:bg-amber-50 text-amber-600 hover:scale-110 active:scale-90 transition-all duration-200"
             title="Gmail Daily Digest & Task Reminders"
           >
             <Bell className="w-4 h-4 group-hover:rotate-12 transition-transform" />
@@ -250,11 +250,11 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
             </div>
           )}
 
-          <div className="w-[1px] h-4 bg-zinc-200 mx-1" />
+          <div className="hidden sm:block w-[1px] h-4 bg-zinc-200 mx-1" />
 
           {/* User Auth Profile Trigger */}
           {isAuthenticated ? (
-            <div className="flex items-center space-x-2 pl-1">
+            <div className="hidden sm:flex items-center space-x-2 pl-1">
               <div className="w-7 h-7 rounded-full bg-gradient-to-br from-red-600 to-amber-500 text-white flex items-center justify-center text-xs font-black shadow-xs">
                 {user?.full_name?.charAt(0).toUpperCase() || 'A'}
               </div>
@@ -265,10 +265,10 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           ) : (
             <button
               onClick={() => setAuthModalOpen(true, 'login')}
-              className="flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white text-xs font-bold transition-all hover:scale-105 shadow-xs"
+              className="flex items-center space-x-1.5 px-2.5 py-1 rounded-xl bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white text-xs font-bold transition-all hover:scale-105 shadow-xs"
             >
               <User className="w-3.5 h-3.5" />
-              <span>Sign In</span>
+              <span className="hidden sm:inline">Sign In</span>
             </button>
           )}
         </div>

@@ -362,27 +362,27 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
     >
       {/* Top Stark Navbar */}
       <header className="fixed inset-x-0 top-0 z-50 bg-transparent border-none pointer-events-auto">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-600 via-amber-500 to-red-700 flex items-center justify-center text-white shadow-lg shadow-red-950/50">
-              <Shield className="w-4 h-4 fill-white text-white" />
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 sm:py-4 flex items-center justify-between">
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-gradient-to-br from-red-600 via-amber-500 to-red-700 flex items-center justify-center text-white shadow-lg shadow-red-950/50 shrink-0">
+              <Shield className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-white text-white" />
             </div>
             <div>
-              <span className="font-mono text-[10px] font-black uppercase tracking-[0.3em] text-amber-400 drop-shadow">
+              <span className="block font-mono text-[8px] sm:text-[10px] font-black uppercase tracking-[0.18em] sm:tracking-[0.3em] text-amber-400 drop-shadow">
                 STARK INDUSTRIES
               </span>
-              <h1 className="text-xs font-black tracking-wider text-white drop-shadow-md">AKASH WORKSPACE OS</h1>
+              <h1 className="text-[10px] sm:text-xs font-black tracking-wide sm:tracking-wider text-white drop-shadow-md leading-tight">AKASH WORKSPACE OS</h1>
             </div>
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4 shrink-0">
             <button
               onClick={onEnterWorkspace}
-              className="flex items-center space-x-2 px-5 py-2 rounded-full bg-gradient-to-r from-red-600 via-orange-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-extrabold text-xs shadow-xl shadow-red-600/40 hover:scale-105 active:scale-95 transition-all duration-300 border border-amber-400/40"
+              className="flex items-center space-x-1.5 sm:space-x-2 px-3 py-1.5 sm:px-5 sm:py-2 rounded-full bg-gradient-to-r from-red-600 via-orange-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-extrabold text-[10px] sm:text-xs shadow-xl shadow-red-600/40 hover:scale-105 active:scale-95 transition-all duration-300 border border-amber-400/40"
             >
-              <Layout className="w-4 h-4" />
+              <Layout className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span>MY WORKSPACE</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
           </div>
         </div>
@@ -401,25 +401,25 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
           />
 
           {/* HUD Corner Accents */}
-          <div className="pointer-events-none absolute left-6 top-20 text-amber-500/80">
-            <div className="border-l-2 border-t-2 border-amber-500 w-6 h-6" />
+          <div className="pointer-events-none absolute left-4 sm:left-6 top-24 sm:top-20 text-amber-500/80">
+            <div className="border-l-2 border-t-2 border-amber-500 w-5 h-5 sm:w-6 sm:h-6" />
           </div>
-          <div className="pointer-events-none absolute right-6 top-20 text-amber-500/80">
-            <div className="border-r-2 border-t-2 border-amber-500 w-6 h-6" />
+          <div className="pointer-events-none absolute right-4 sm:right-6 top-24 sm:top-20 text-amber-500/80">
+            <div className="border-r-2 border-t-2 border-amber-500 w-5 h-5 sm:w-6 sm:h-6" />
           </div>
-          <div className="pointer-events-none absolute bottom-16 left-6 text-amber-500/80">
-            <div className="border-l-2 border-b-2 border-amber-500 w-6 h-6" />
+          <div className="pointer-events-none absolute bottom-16 left-4 sm:left-6 text-amber-500/80">
+            <div className="border-l-2 border-b-2 border-amber-500 w-5 h-5 sm:w-6 sm:h-6" />
           </div>
-          <div className="pointer-events-none absolute bottom-16 right-6 text-amber-500/80">
-            <div className="border-r-2 border-b-2 border-amber-500 w-6 h-6" />
-          </div>
-
-          <div className="pointer-events-none absolute left-6 md:left-12 top-20 z-20 flex items-center space-x-2 font-mono text-[10px] uppercase tracking-[0.28em] text-zinc-400">
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
-            <span>Telemetry Link &mdash; MARK LXXXV ONLINE</span>
+          <div className="pointer-events-none absolute bottom-16 right-4 sm:right-6 text-amber-500/80">
+            <div className="border-r-2 border-b-2 border-amber-500 w-5 h-5 sm:w-6 sm:h-6" />
           </div>
 
-          <div className="pointer-events-none absolute right-6 md:right-12 top-20 z-20 flex items-center space-x-2 font-mono text-[10px] uppercase tracking-[0.28em] text-amber-400">
+          <div className="pointer-events-none absolute left-4 sm:left-6 md:left-12 top-24 sm:top-20 z-20 flex items-center space-x-2 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.18em] sm:tracking-[0.28em] text-zinc-400">
+            <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping shrink-0" />
+            <span className="truncate max-w-[200px] xs:max-w-none">Telemetry Link &mdash; MARK LXXXV ONLINE</span>
+          </div>
+
+          <div className="pointer-events-none absolute right-6 md:right-12 top-20 z-20 hidden md:flex items-center space-x-2 font-mono text-[10px] uppercase tracking-[0.28em] text-amber-400">
             <span>Arc Reactor Power &mdash; 98.7%</span>
           </div>
 
