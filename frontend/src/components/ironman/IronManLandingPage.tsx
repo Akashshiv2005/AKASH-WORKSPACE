@@ -194,24 +194,24 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
   return (
     <div className="bg-[#0a0a0b] text-white min-h-screen font-['Sora'] select-none relative">
       {/* Top Stark Navbar */}
-      <header className="fixed inset-x-0 top-0 z-50 bg-[#0a0a0b]/80 backdrop-blur-xl border-b border-white/10">
+      <header className="fixed inset-x-0 top-0 z-50 bg-transparent border-none">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-600 via-amber-500 to-red-700 flex items-center justify-center text-white shadow-lg shadow-red-950/50">
               <Shield className="w-4 h-4 fill-white text-white" />
             </div>
             <div>
-              <span className="font-mono text-[10px] font-black uppercase tracking-[0.3em] text-amber-400">
+              <span className="font-mono text-[10px] font-black uppercase tracking-[0.3em] text-amber-400 drop-shadow">
                 STARK INDUSTRIES
               </span>
-              <h1 className="text-xs font-black tracking-wider text-white">AKASH WORKSPACE OS</h1>
+              <h1 className="text-xs font-black tracking-wider text-white drop-shadow-md">AKASH WORKSPACE OS</h1>
             </div>
           </div>
 
           <div className="flex items-center space-x-4">
             <button
               onClick={onEnterWorkspace}
-              className="flex items-center space-x-2 px-5 py-2 rounded-full bg-gradient-to-r from-red-600 via-orange-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-extrabold text-xs shadow-xl shadow-red-600/30 hover:scale-105 active:scale-95 transition-all duration-300 border border-amber-400/40"
+              className="flex items-center space-x-2 px-5 py-2 rounded-full bg-gradient-to-r from-red-600 via-orange-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-extrabold text-xs shadow-xl shadow-red-600/40 hover:scale-105 active:scale-95 transition-all duration-300 border border-amber-400/40"
             >
               <Layout className="w-4 h-4" />
               <span>MY WORKSPACE</span>
@@ -235,15 +235,15 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                'radial-gradient(120% 80% at 50% 50%, transparent 25%, rgba(10,10,11,0.55) 65%, rgba(10,10,11,0.92) 100%)',
+                'radial-gradient(140% 90% at 50% 50%, transparent 40%, rgba(10,10,11,0.4) 70%, rgba(10,10,11,0.85) 100%)',
             }}
           />
 
           {/* HUD Corner Accents */}
-          <div className="pointer-events-none absolute left-6 top-24 text-amber-500/80">
+          <div className="pointer-events-none absolute left-6 top-20 text-amber-500/80">
             <div className="border-l-2 border-t-2 border-amber-500 w-6 h-6" />
           </div>
-          <div className="pointer-events-none absolute right-6 top-24 text-amber-500/80">
+          <div className="pointer-events-none absolute right-6 top-20 text-amber-500/80">
             <div className="border-r-2 border-t-2 border-amber-500 w-6 h-6" />
           </div>
           <div className="pointer-events-none absolute bottom-16 left-6 text-amber-500/80">
@@ -254,37 +254,37 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
           </div>
 
           {/* Telemetry Header Badge */}
-          <div className="pointer-events-none absolute left-8 top-28 z-20 flex items-center space-x-2 font-mono text-[10px] uppercase tracking-[0.28em] text-zinc-400">
+          <div className="pointer-events-none absolute left-6 md:left-12 top-20 z-20 flex items-center space-x-2 font-mono text-[10px] uppercase tracking-[0.28em] text-zinc-400">
             <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
             <span>Telemetry Link &mdash; MARK LXXXV ONLINE</span>
           </div>
 
-          <div className="pointer-events-none absolute right-8 top-28 z-20 flex items-center space-x-2 font-mono text-[10px] uppercase tracking-[0.28em] text-amber-400">
+          <div className="pointer-events-none absolute right-6 md:right-12 top-20 z-20 flex items-center space-x-2 font-mono text-[10px] uppercase tracking-[0.28em] text-amber-400">
             <span>Arc Reactor Power &mdash; 98.7%</span>
           </div>
 
-          {/* Hero Center Text overlay */}
-          <div className="absolute left-8 bottom-28 z-20 max-w-xl space-y-4">
-            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-amber-500/30 text-amber-400 font-mono text-[10px] uppercase tracking-[0.24em]">
+          {/* Hero Left Text Overlay */}
+          <div className="absolute left-6 md:left-12 bottom-24 md:bottom-28 z-20 max-w-sm sm:max-w-md space-y-4">
+            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-amber-500/30 text-amber-400 font-mono text-[10px] uppercase tracking-[0.24em]">
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
               <span>MARK LXXXV // EXECUTIVE OS</span>
             </div>
 
-            <h1 className="text-5xl sm:text-7xl font-black tracking-tight text-white leading-none">
+            <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-none drop-shadow-xl">
               I am <br />
               <span className="bg-gradient-to-r from-red-500 via-amber-400 to-orange-500 bg-clip-text text-transparent">
                 Iron Man.
               </span>
             </h1>
 
-            <p className="text-zinc-300 text-sm sm:text-base leading-relaxed max-w-md">
+            <p className="text-zinc-300 text-xs sm:text-sm leading-relaxed max-w-xs sm:max-w-sm drop-shadow">
               Engineered with precision. Scroll down to suit up or launch the interactive Akash Workspace dashboard.
             </p>
 
             <div className="pt-2 flex items-center space-x-4">
               <button
                 onClick={onEnterWorkspace}
-                className="px-6 py-3 rounded-2xl bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-black text-sm shadow-2xl shadow-red-600/40 hover:scale-105 transition-all flex items-center space-x-2.5 border border-amber-300/40"
+                className="px-5 py-3 rounded-2xl bg-gradient-to-r from-red-600 via-orange-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-black text-xs sm:text-sm shadow-2xl shadow-red-600/40 hover:scale-105 active:scale-95 transition-all flex items-center space-x-2.5 border border-amber-300/40"
               >
                 <Layout className="w-4 h-4" />
                 <span>ENTER AKASH WORKSPACE</span>
