@@ -105,14 +105,23 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
     const imgs2: HTMLImageElement[] = [];
 
     const totalToLoad = FRAME_COUNT_1 + FRAME_COUNT_2;
+    // Launch page as soon as first 8 frames total have loaded (or after 800ms max)
+    const MIN_REQUIRED_FRAMES = 8;
 
     const checkComplete = () => {
       const totalLoaded = count1 + count2;
-      setLoadProgress(Math.round((totalLoaded / totalToLoad) * 100));
-      if (totalLoaded >= totalToLoad) {
+      setLoadProgress(Math.min(100, Math.round((totalLoaded / totalToLoad) * 100)));
+      if (totalLoaded >= MIN_REQUIRED_FRAMES || totalLoaded >= totalToLoad) {
         setLoaded(true);
       }
     };
+
+    // Fast safety fallback: force launch after 800ms max so user never waits
+    const fallbackTimer = setTimeout(() => {
+      if (!cancelled) {
+        setLoaded(true);
+      }
+    }, 800);
 
     for (let i = 0; i < FRAME_COUNT_1; i++) {
       const img = new Image();
@@ -140,6 +149,7 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
 
     return () => {
       cancelled = true;
+      clearTimeout(fallbackTimer);
     };
   }, []);
 
