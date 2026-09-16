@@ -273,23 +273,31 @@
 }
 
 .gold-red-pulse {
-  animation: gold-red-pulse 3s infinite ease-in-out;
+  animation: gold-red-pulse 4s infinite ease-in-out;
+  will-change: box-shadow;
 }
 
 .orange-pulse {
-  animation: gold-red-pulse 3s infinite ease-in-out;
+  animation: gold-red-pulse 4s infinite ease-in-out;
+  will-change: box-shadow;
 }
 
 .animate-float {
   animation: float 4s ease-in-out infinite;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .animate-float-slow {
   animation: float-slow 6s ease-in-out infinite;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .animate-text-float {
-  animation: text-float 3s ease-in-out infinite;
+  animation: text-float 4s ease-in-out infinite;
+  will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
 .shimmer-text-orange {
@@ -298,7 +306,7 @@
   color: transparent;
   -webkit-background-clip: text;
   background-clip: text;
-  animation: text-shimmer 4s linear infinite;
+  animation: text-shimmer 6s linear infinite;
 }
 
 .text-gradient-flow {
@@ -307,7 +315,7 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: text-gradient-flow 5s ease infinite;
+  animation: text-gradient-flow 8s ease infinite;
 }
 
 .text-gradient-dark {
@@ -316,11 +324,10 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: text-gradient-flow 7s ease infinite;
 }
 
 .text-glow {
-  animation: text-glow-pulse 2.5s infinite ease-in-out;
+  text-shadow: 0 0 6px rgba(220, 38, 38, 0.15);
 }
 
 .text-glow-orange {

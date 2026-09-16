@@ -11,7 +11,7 @@ interface TypewriterTextProps {
   prefix?: string;
 }
 
-export const TypewriterText: React.FC<TypewriterTextProps> = ({
+export const TypewriterText: React.FC<TypewriterTextProps> = React.memo(({
   phrases,
   typingSpeed = 65,
   deletingSpeed = 35,
@@ -70,4 +70,4 @@ export const TypewriterText: React.FC<TypewriterTextProps> = ({
       </span>
     </span>
   );
-};
+});

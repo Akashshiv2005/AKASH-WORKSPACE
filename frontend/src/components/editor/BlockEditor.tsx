@@ -38,6 +38,27 @@ export const BlockEditor: React.FC<BlockEditorProps> = ({ page }) => {
   const { updatePage } = usePageStore();
   const [showSlashMenu, setShowSlashMenu] = useState(false);
   const [slashMenuPos, setSlashMenuPos] = useState({ top: 0, left: 0 });
+  const saveTimeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const debouncedSave = React.useCallback(
+    (pageId: string, content: string) => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+      saveTimeoutRef.current = setTimeout(() => {
+        updatePage(pageId, { content });
+      }, 500);
+    },
+    [updatePage]
+  );
+
+  useEffect(() => {
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const editor = useEditor({
     extensions: [
@@ -55,7 +76,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = ({ page }) => {
     content: page.content ? (typeof page.content === 'string' && page.content.startsWith('{') ? JSON.parse(page.content) : page.content) : '<p></p>',
     onUpdate: ({ editor }) => {
       const jsonContent = JSON.stringify(editor.getJSON());
-      updatePage(page.id, { content: jsonContent });
+      debouncedSave(page.id, jsonContent);
 
       // Detect Slash command
       const { selection } = editor.state;
