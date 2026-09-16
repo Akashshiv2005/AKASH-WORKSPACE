@@ -17,7 +17,8 @@ import {
   CheckSquare,
   Zap,
   BookOpen,
-  Shield
+  Shield,
+  Target
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -323,9 +324,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
           {onBackToLanding && (
             <button
               onClick={() => wrapCreate(onBackToLanding)}
-              className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 hover:from-amber-400 hover:to-amber-500 text-xs font-black transition-all hover:scale-[1.01] shadow-md border border-amber-400/50 mb-1"
+              className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-semibold transition-all hover:scale-[1.01]"
             >
-              <Shield className="w-3.5 h-3.5 text-slate-950 fill-slate-950" />
+              <Shield className="w-3.5 h-3.5 text-red-600 fill-red-600" />
               <span>Iron Man Home</span>
             </button>
           )}
@@ -403,10 +404,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
           {/* Study & Learning Plans Pill */}
           <button
             onClick={() => wrapCreate(handleCreatePlansHub)}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-black transition-all hover:scale-[1.01] border border-amber-400/50 shadow-md"
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
           >
-            <span className="text-sm">🎯</span>
-            <span>Study & Learning Plans</span>
+            <Target className="w-3.5 h-3.5 text-amber-600" />
+            <span className="truncate">Study & Learning Plans</span>
           </button>
         </div>
 
