@@ -52,6 +52,19 @@ export const useExpenseStore = create<ExpenseState>()(
       },
 
       addExpense: async (workspaceId, amount, description, category, payment_method) => {
+        const tempId = `exp-${Date.now()}`;
+        const newExpense: ExpenseItem = {
+          id: tempId,
+          amount,
+          description: description.trim(),
+          category,
+          payment_method,
+          date: new Date().toISOString(),
+        };
+
+        // Optimistic UI update
+        set((state) => ({ expenses: [newExpense, ...state.expenses] }));
+
         const token = localStorage.getItem('access_token');
         if (token) {
           try {
@@ -61,21 +74,13 @@ export const useExpenseStore = create<ExpenseState>()(
               category,
               payment_method
             });
-            set((state) => ({ expenses: [res.data, ...state.expenses] }));
+            // Replace temp item with server item
+            set((state) => ({
+              expenses: state.expenses.map((e) => (e.id === tempId ? res.data : e)),
+            }));
           } catch (err) {
-             console.error("Failed to add expense", err);
+            console.error("Failed to add expense on backend", err);
           }
-        } else {
-          // Fallback for offline/local
-          const newExpense: ExpenseItem = {
-            id: `exp-${Date.now()}`,
-            amount,
-            description: description.trim(),
-            category,
-            payment_method,
-            date: new Date().toISOString(),
-          };
-          set((state) => ({ expenses: [newExpense, ...state.expenses] }));
         }
       },
 

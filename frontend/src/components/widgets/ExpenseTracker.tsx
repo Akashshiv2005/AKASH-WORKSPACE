@@ -38,9 +38,10 @@ export const ExpenseTracker: React.FC = () => {
     e.preventDefault();
     if (!activeWorkspace) return;
     const numAmount = parseFloat(amount);
-    if (!description.trim() || isNaN(numAmount) || numAmount <= 0) return;
+    if (isNaN(numAmount) || numAmount <= 0) return;
     
-    await addExpense(activeWorkspace.id, numAmount, description, category, method);
+    const descToUse = description.trim() || `${category} Expense`;
+    await addExpense(activeWorkspace.id, numAmount, descToUse, category, method);
     setAmount('');
     setDescription('');
     setIsAdding(false);
