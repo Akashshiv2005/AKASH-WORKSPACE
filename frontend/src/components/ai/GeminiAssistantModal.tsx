@@ -59,8 +59,31 @@ export const GeminiAssistantModal: React.FC<GeminiAssistantModalProps> = ({
         .replace(/[*_#`~]/g, '')
         .trim();
       const utterance = new SpeechSynthesisUtterance(cleanText);
+
+      // Filter available voices for male voice profiles across Android, iOS & Desktop browsers
+      const voices = window.speechSynthesis.getVoices();
+      const maleVoice = voices.find((v) => {
+        const name = v.name.toLowerCase();
+        return (
+          name.includes('male') ||
+          name.includes('david') ||
+          name.includes('mark') ||
+          name.includes('george') ||
+          name.includes('daniel') ||
+          name.includes('alex') ||
+          name.includes('guy') ||
+          name.includes('brian') ||
+          name.includes('wavenet-d') ||
+          name.includes('standard-b')
+        );
+      }) || voices.find((v) => v.lang.startsWith('en'));
+
+      if (maleVoice) {
+        utterance.voice = maleVoice;
+      }
+
       utterance.rate = 1.0;
-      utterance.pitch = 1.0;
+      utterance.pitch = 0.85; // Deep male executive tone for JARVIS on mobile and PC
       window.speechSynthesis.speak(utterance);
     } catch {
       // ignore speech errors

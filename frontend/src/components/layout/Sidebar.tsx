@@ -17,8 +17,7 @@ import {
   CheckSquare,
   Zap,
   BookOpen,
-  Shield,
-  Target
+  Shield
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -116,17 +115,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
         setActivePageId(existing.id);
       } else {
         createPage(activeWorkspace.id, null, "Expense Tracker", 'expense_tracker');
-      }
-    }
-  };
-
-  const handleCreatePlansHub = () => {
-    if (activeWorkspace) {
-      const existing = pages.find((p) => (p.widget_type === 'plans_hub' || p.title.toLowerCase().includes('learning') || p.title.toLowerCase().includes('study')) && !p.is_archived);
-      if (existing) {
-        setActivePageId(existing.id);
-      } else {
-        createPage(activeWorkspace.id, null, "Study & Learning Plans", 'plans_hub');
       }
     }
   };
@@ -429,15 +417,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
           >
             <span className="text-sm">💰</span>
             <span>Expense Tracker</span>
-          </button>
-
-          {/* Study & Learning Plans Pill */}
-          <button
-            onClick={() => wrapCreate(handleCreatePlansHub)}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
-          >
-            <Target className="w-3.5 h-3.5 text-amber-600" />
-            <span className="truncate">Study & Learning Plans</span>
           </button>
         </div>
 
