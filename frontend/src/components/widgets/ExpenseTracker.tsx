@@ -131,11 +131,11 @@ export const ExpenseTracker: React.FC = () => {
 
         {/* GPay Total */}
         <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] flex items-center space-x-4 shadow-xs hover:scale-[1.02] transition-all stark-hud-card">
-          <div className="p-3 rounded-xl bg-blue-50 text-blue-600 shadow-xs border border-blue-100">
-            <Landmark className="w-5 h-5 text-blue-600" />
+          <div className="p-3 rounded-xl bg-amber-50 text-amber-600 shadow-xs border border-amber-200">
+            <Landmark className="w-5 h-5 text-amber-600" />
           </div>
           <div>
-            <div className="text-2xl font-black text-blue-600 animate-count-pulse">
+            <div className="text-2xl font-black text-amber-600 animate-count-pulse">
               {formatCurrency(gpayTotal)}
             </div>
             <div className="text-xs font-bold text-[#78716c] animate-text-reveal">GPay Spent</div>
@@ -337,7 +337,7 @@ export const ExpenseTracker: React.FC = () => {
                 className="flex items-center justify-between p-4 hover:bg-[#faf7f2] transition-colors group"
               >
                 <div className="flex items-center space-x-4">
-                  <div className={`p-2 rounded-xl border ${expense.payment_method === 'Cash' ? 'bg-emerald-50 border-emerald-100 text-emerald-600' : 'bg-blue-50 border-blue-100 text-blue-600'}`}>
+                  <div className={`p-2 rounded-xl border ${expense.payment_method === 'Cash' ? 'bg-emerald-50 border-emerald-100 text-emerald-600' : 'bg-amber-50 border-amber-200 text-amber-700'}`}>
                     {expense.payment_method === 'Cash' ? <Banknote className="w-4 h-4" /> : <Landmark className="w-4 h-4" />}
                   </div>
                   <div>

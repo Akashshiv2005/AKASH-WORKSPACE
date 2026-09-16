@@ -100,14 +100,14 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         className="fixed inset-0 bg-black/20 z-40 md:hidden" 
         onClick={toggleRightSidebar}
       />
-      <aside className="fixed right-0 md:relative z-50 w-64 h-screen bg-[#120a0d]/95 backdrop-blur-xl border-l border-amber-500/30 flex flex-col shrink-0 select-none transition-all animate-slide-in-right font-['Sora'] text-white">
+      <aside className="fixed right-0 md:relative z-50 w-64 h-screen bg-[#faf9f6] backdrop-blur-xl border-l border-zinc-200 flex flex-col shrink-0 select-none transition-all animate-slide-in-right font-['Sora'] text-zinc-900">
       {/* Header Bar */}
-      <div className="p-3 border-b border-amber-500/30 bg-[#1a0e12] flex items-center justify-between">
+      <div className="p-3 border-b border-zinc-200 bg-white flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <div className="p-1.5 rounded-lg bg-red-950/70 border border-amber-400/40 text-amber-400 shadow-xs">
-            <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
+          <div className="p-1.5 rounded-lg bg-amber-50 border border-amber-300 text-amber-700 shadow-xs">
+            <TrendingUp className="w-3.5 h-3.5 text-amber-600" />
           </div>
-          <span className="text-xs font-black tracking-wide text-amber-400 uppercase animate-text-float">
+          <span className="text-xs font-black tracking-wide text-amber-700 uppercase animate-text-float">
             {widgetType === 'habit_tracker'
               ? 'HABIT INSPECTOR'
               : widgetType === 'todo_planner'
@@ -121,7 +121,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         </div>
         <button
           onClick={toggleRightSidebar}
-          className="p-1 rounded-lg hover:bg-red-900/40 text-slate-300 hover:text-white"
+          className="p-1 rounded-lg hover:bg-amber-50 text-zinc-400 hover:text-zinc-900"
           title="Close Dock"
         >
           <PanelRightClose className="w-4 h-4" />
@@ -134,7 +134,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         {widgetType === 'habit_tracker' && (
           <div className="space-y-3 animate-fade-in-up">
             {/* Active Streak Card */}
-            <div className="p-4 rounded-2xl bg-[#1c0f13]/90 border border-amber-500/30 text-white shadow-lg space-y-2 text-center animate-float">
+            <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-2 text-center animate-float">
               <div className="flex items-center justify-center space-x-1.5 text-amber-400 font-bold">
                 <Flame className="w-4 h-4 fill-amber-400 text-amber-400 animate-bounce" />
                 <span className="uppercase text-[10px] tracking-wider text-slate-400 font-black">ACTIVE STREAK</span>
@@ -148,36 +148,36 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
             </div>
 
             {/* Weekly Completion Progress */}
-            <div className="p-4 rounded-2xl bg-[#1c0f13]/90 border border-amber-500/30 text-white shadow-lg space-y-2.5">
-              <div className="flex items-center justify-between text-xs font-bold text-slate-100">
+            <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-2.5">
+              <div className="flex items-center justify-between text-xs font-bold text-zinc-900">
                 <span className="flex items-center space-x-1.5">
-                  <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
-                  <span className="uppercase text-[10px] tracking-wider text-slate-400 font-black">WEEKLY GOAL</span>
+                  <TrendingUp className="w-3.5 h-3.5 text-amber-500" />
+                  <span className="uppercase text-[10px] tracking-wider text-zinc-500 font-black">WEEKLY GOAL</span>
                 </span>
-                <span className="text-amber-400 font-black text-sm">{overallPercentage}%</span>
+                <span className="text-amber-600 font-black text-sm">{overallPercentage}%</span>
               </div>
-              <div className="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden border border-indigo-500/20">
-                <div style={{ width: `${overallPercentage}%` }} className="h-full bg-gradient-to-r from-amber-500 to-amber-400 transition-all duration-500" />
+              <div className="w-full bg-zinc-100 h-2.5 rounded-full overflow-hidden border border-zinc-200">
+                <div style={{ width: `${overallPercentage}%` }} className="h-full bg-gradient-to-r from-red-600 to-amber-500 transition-all duration-500" />
               </div>
-              <p className="text-[10px] text-slate-400 text-right font-medium">
+              <p className="text-[10px] text-zinc-500 text-right font-medium">
                 {totalCheckmarks} of {maxCheckmarks} checked
               </p>
             </div>
 
             {/* JARVIS Habit Advice */}
-            <div className="p-4 rounded-2xl bg-[#131b2e]/90 border border-amber-500/30 shadow-lg space-y-1.5">
-              <div className="flex items-center space-x-1.5 text-amber-400 font-bold text-[11px]">
-                <Target className="w-3.5 h-3.5 text-amber-400" />
-                <span className="animate-text-float uppercase text-[10px] tracking-wider font-black">JARVIS HABIT ADVICE</span>
+            <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200 shadow-sm space-y-1.5">
+              <div className="flex items-center space-x-1.5 text-amber-700 font-bold text-[11px]">
+                <Target className="w-3.5 h-3.5 text-amber-600" />
+                <span className="uppercase text-[10px] tracking-wider font-black">JARVIS HABIT ADVICE</span>
               </div>
-              <p className="text-[11px] text-slate-300 leading-relaxed font-medium">
+              <p className="text-[11px] text-zinc-700 leading-relaxed font-medium">
                 Consistency beats intensity every single time, {userFirstName}. Keep your streak alive!
               </p>
             </div>
 
             {/* JARVIS Assistant Teaser */}
             {showAssistantBox && (
-              <div className="p-4 rounded-2xl bg-[#1c0f13]/90 border border-amber-500/30 text-white shadow-lg space-y-2 relative animate-fade-in-up">
+              <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-2 relative animate-fade-in-up">
                 <button
                   onClick={() => setShowAssistantBox(false)}
                   className="absolute right-3 top-3 text-slate-400 hover:text-white"
@@ -200,7 +200,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         {widgetType === 'todo_planner' && (
           <div className="space-y-3 animate-fade-in-up">
             {/* Priority Operations Breakdown */}
-            <div className="p-4 rounded-2xl bg-[#1c0f13]/90 border border-amber-500/30 text-white shadow-lg space-y-3">
+            <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-3">
               <div className="flex items-center space-x-1.5 text-amber-400 font-bold text-[11px]">
                 <Target className="w-3.5 h-3.5 text-amber-400" />
                 <span className="uppercase tracking-wider animate-text-float font-black">OPERATIONS BREAKDOWN</span>
@@ -223,7 +223,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
             </div>
 
             {/* Column Pipeline Ratios */}
-            <div className="p-4 rounded-2xl bg-[#1c0f13]/90 border border-amber-500/30 text-white shadow-lg space-y-2">
+            <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-2">
               <div className="flex items-center space-x-1.5 text-amber-400 font-bold text-[11px]">
                 <ListTodo className="w-3.5 h-3.5 text-amber-400" />
                 <span className="uppercase tracking-wider font-black">PIPELINE STATUS</span>
@@ -250,29 +250,29 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         {widgetType === 'pomodoro' && (
           <div className="space-y-3 animate-fade-in-up">
             {/* Full Focus Timer Widget */}
-            <div className="p-4 rounded-2xl bg-[#131b2e]/90 border border-amber-500/30 shadow-lg space-y-3 text-center animate-float orange-pulse">
-              <div className="flex items-center justify-between text-[11px] font-bold text-amber-400">
+            <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-3 text-center">
+              <div className="flex items-center justify-between text-[11px] font-bold text-amber-700">
                 <span className="flex items-center space-x-1">
-                  <Zap className="w-3.5 h-3.5 text-amber-400" />
-                  <span className="animate-text-float uppercase tracking-wider font-black">Focus Station</span>
+                  <Zap className="w-3.5 h-3.5 text-amber-500" />
+                  <span className="uppercase tracking-wider font-black">Focus Station</span>
                 </span>
-                <span className="px-2 py-0.5 rounded-full bg-amber-950/60 text-amber-400 border border-amber-500/30 font-bold">
+                <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300 font-bold">
                   {sessionsCount} Done
                 </span>
               </div>
 
-              <div className="text-3xl font-black font-mono text-amber-400 shimmer-text-orange">
+              <div className="text-3xl font-black font-mono text-red-600">
                 {formattedTime}
               </div>
 
               <div className="flex items-center justify-center space-x-2 pt-1">
                 <button
                   onClick={() => setIsRunning(!isRunning)}
-                  className={`px-4 py-1.5 rounded-xl text-xs font-bold text-slate-950 shadow-md flex items-center space-x-1.5 transition-all hover:scale-105 ${
-                    isRunning ? 'bg-amber-600 text-white' : 'bg-gradient-to-r from-amber-400 to-amber-500'
+                  className={`px-4 py-1.5 rounded-xl text-xs font-bold text-white shadow-md flex items-center space-x-1.5 transition-all hover:scale-105 ${
+                    isRunning ? 'bg-zinc-800 text-white' : 'bg-gradient-to-r from-red-600 via-red-500 to-amber-500'
                   }`}
                 >
-                  {isRunning ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-slate-950" />}
+                  {isRunning ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-white" />}
                   <span>{isRunning ? 'Pause' : 'Start'}</span>
                 </button>
                 <button
@@ -280,7 +280,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
                     setIsRunning(false);
                     setTimeLeft(25 * 60);
                   }}
-                  className="p-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-indigo-500/20"
+                  className="p-1.5 rounded-xl bg-zinc-100 text-zinc-700 hover:bg-zinc-200 border border-zinc-200"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                 </button>
@@ -288,16 +288,16 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
             </div>
 
             {/* Audio Presets */}
-            <div className="p-4 rounded-2xl bg-[#1c0f13]/90 border border-amber-500/30 text-white shadow-lg space-y-2">
-              <div className="flex items-center space-x-1.5 text-amber-400 font-bold text-[11px]">
-                <Volume2 className="w-3.5 h-3.5 text-amber-400" />
+            <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-2">
+              <div className="flex items-center space-x-1.5 text-amber-700 font-bold text-[11px]">
+                <Volume2 className="w-3.5 h-3.5 text-amber-600" />
                 <span className="uppercase tracking-wider font-black">Ambient Focus Audio</span>
               </div>
               <div className="space-y-1.5">
-                <button className="w-full text-left p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-indigo-500/20 text-slate-200 font-medium text-[11px]">
+                <button className="w-full text-left p-2 rounded-xl bg-zinc-50 hover:bg-amber-50 border border-zinc-200 text-zinc-800 font-medium text-[11px]">
                   🎧 Deep Concentration (432Hz)
                 </button>
-                <button className="w-full text-left p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-indigo-500/20 text-slate-200 font-medium text-[11px]">
+                <button className="w-full text-left p-2 rounded-xl bg-zinc-50 hover:bg-amber-50 border border-zinc-200 text-zinc-800 font-medium text-[11px]">
                   🌧️ High Altitude Rain & Focus
                 </button>
               </div>
@@ -319,7 +319,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
           return (
             <div className="space-y-3 animate-fade-in-up">
               {/* Today's Mood Status */}
-              <div className="p-4 rounded-2xl bg-[#1c0f13]/90 border border-amber-500/30 text-white shadow-lg space-y-2 text-center animate-float">
+              <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-2 text-center animate-float">
                 <div className="flex items-center justify-center space-x-1 text-amber-400 font-bold text-[11px]">
                   <Smile className="w-3.5 h-3.5 text-amber-400" />
                   <span className="uppercase tracking-wider font-black">Logged Mood</span>
@@ -331,7 +331,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
               </div>
 
               {/* Gratitude Counter */}
-              <div className="p-4 rounded-2xl bg-[#1c0f13]/90 border border-amber-500/30 text-white shadow-lg space-y-2">
+              <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-2">
                 <div className="flex items-center justify-between text-xs font-bold text-slate-100">
                   <span className="flex items-center space-x-1.5">
                     <BookOpen className="w-3.5 h-3.5 text-amber-400" />
@@ -353,7 +353,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         {!widgetType && (
           <div className="space-y-3 animate-fade-in-up">
             {/* Page Metrics Inspector */}
-            <div className="p-4 rounded-2xl bg-[#1c0f13]/90 border border-amber-500/30 text-white shadow-lg space-y-3">
+            <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-3">
               <div className="flex items-center space-x-1.5 text-amber-400 font-bold text-[11px]">
                 <FileText className="w-3.5 h-3.5 text-amber-400" />
                 <span className="uppercase tracking-wider animate-text-float font-black">Page Inspector</span>
@@ -376,20 +376,20 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
             </div>
 
             {/* Quick Tools */}
-            <div className="p-4 rounded-2xl bg-[#1c0f13]/90 border border-amber-500/30 text-white shadow-lg space-y-2">
-              <div className="flex items-center space-x-1.5 text-amber-400 font-bold text-[11px]">
-                <Brain className="w-3.5 h-3.5 text-amber-400" />
+            <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-2">
+              <div className="flex items-center space-x-1.5 text-amber-700 font-bold text-[11px]">
+                <Brain className="w-3.5 h-3.5 text-amber-600" />
                 <span className="uppercase tracking-wider font-black">JARVIS Tools</span>
               </div>
               <button
                 onClick={() => createPage('workspace-akash-shiv', null, 'Daily Habit Tracker', 'habit_tracker')}
-                className="w-full text-left p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-indigo-500/20 text-slate-200 font-semibold text-[11px]"
+                className="w-full text-left p-2 rounded-xl bg-zinc-50 hover:bg-amber-50 border border-zinc-200 text-zinc-800 font-semibold text-[11px]"
               >
                 🔥 Habit Tracker
               </button>
               <button
                 onClick={() => createPage('workspace-akash-shiv', null, 'Arc Focus Station', 'pomodoro')}
-                className="w-full text-left p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-indigo-500/20 text-slate-200 font-semibold text-[11px]"
+                className="w-full text-left p-2 rounded-xl bg-zinc-50 hover:bg-amber-50 border border-zinc-200 text-zinc-800 font-semibold text-[11px]"
               >
                 ⚡ Arc Focus Timer
               </button>
@@ -398,13 +398,13 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         )}
 
         {/* Global Performance Footer */}
-        <div className="p-4 rounded-2xl bg-[#131b2e]/90 border border-amber-500/30 shadow-lg space-y-1.5">
-          <div className="flex items-center justify-between text-xs font-bold text-amber-400">
+        <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200 shadow-sm space-y-1.5">
+          <div className="flex items-center justify-between text-xs font-bold text-amber-800">
             <span className="flex items-center space-x-1">
-              <Award className="w-3.5 h-3.5 text-amber-400" />
+              <Award className="w-3.5 h-3.5 text-amber-600" />
               <span className="uppercase tracking-wider font-black text-[10px]">Executive Level</span>
             </span>
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 font-black">
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500 text-white font-black">
               MAX
             </span>
           </div>

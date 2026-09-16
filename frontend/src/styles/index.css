@@ -14,8 +14,8 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #0b0708;
-    color: #ffffff;
+    background-color: #ffffff;
+    color: #111827;
     font-size: 15px;
     line-height: 1.6;
   }
@@ -45,19 +45,19 @@
 
 @keyframes gold-red-pulse {
   0%, 100% {
-    box-shadow: 0 0 14px rgba(220, 38, 38, 0.4), 0 0 28px rgba(245, 158, 11, 0.3);
+    box-shadow: 0 0 12px rgba(220, 38, 38, 0.25), 0 0 24px rgba(245, 158, 11, 0.2);
   }
   50% {
-    box-shadow: 0 0 28px rgba(220, 38, 38, 0.7), 0 0 42px rgba(245, 158, 11, 0.5);
+    box-shadow: 0 0 24px rgba(220, 38, 38, 0.45), 0 0 36px rgba(245, 158, 11, 0.35);
   }
 }
 
 @keyframes orange-pulse {
   0%, 100% {
-    box-shadow: 0 0 14px rgba(220, 38, 38, 0.4), 0 0 28px rgba(245, 158, 11, 0.3);
+    box-shadow: 0 0 12px rgba(220, 38, 38, 0.25), 0 0 24px rgba(245, 158, 11, 0.2);
   }
   50% {
-    box-shadow: 0 0 28px rgba(220, 38, 38, 0.7), 0 0 42px rgba(245, 158, 11, 0.5);
+    box-shadow: 0 0 24px rgba(220, 38, 38, 0.45), 0 0 36px rgba(245, 158, 11, 0.35);
   }
 }
 
@@ -186,7 +186,7 @@
 }
 
 .shimmer-text-orange {
-  background: linear-gradient(90deg, #dc2626 0%, #fbbf24 50%, #dc2626 100%);
+  background: linear-gradient(90deg, #dc2626 0%, #d97706 50%, #dc2626 100%);
   background-size: 200% auto;
   color: transparent;
   -webkit-background-clip: text;
@@ -195,7 +195,7 @@
 }
 
 .text-gradient-flow {
-  background: linear-gradient(135deg, #ffffff, #fbbf24, #ef4444, #ffffff);
+  background: linear-gradient(135deg, #dc2626, #d97706, #111827, #dc2626);
   background-size: 300% 300%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -204,7 +204,7 @@
 }
 
 .text-gradient-dark {
-  background: linear-gradient(135deg, #ffffff 0%, #fbbf24 50%, #ef4444 100%);
+  background: linear-gradient(135deg, #111827 0%, #b45309 50%, #dc2626 100%);
   background-size: 200% 200%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -212,13 +212,13 @@
 }
 
 .glow-box-orange {
-  box-shadow: 0 0 16px rgba(220, 38, 38, 0.3), 0 0 30px rgba(245, 158, 11, 0.2);
+  box-shadow: 0 0 14px rgba(220, 38, 38, 0.15), 0 0 24px rgba(245, 158, 11, 0.15);
   border-color: rgba(245, 158, 11, 0.4);
 }
 
 .typewriter-glowing-cursor {
-  color: #fbbf24;
-  text-shadow: 0 0 8px #fbbf24, 0 0 16px #ef4444;
+  color: #dc2626;
+  text-shadow: 0 0 6px #dc2626, 0 0 12px #f59e0b;
   animation: cursor-blink 0.8s infinite ease-in-out;
 }
 
@@ -234,7 +234,7 @@
   transition: all 0.25s ease;
 }
 .hover-text-shimmer:hover {
-  background: linear-gradient(90deg, #ffffff, #fbbf24, #ef4444);
+  background: linear-gradient(90deg, #dc2626, #d97706, #dc2626);
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -243,7 +243,7 @@
 }
 
 .heading-animated {
-  background: linear-gradient(90deg, #ffffff 0%, #fbbf24 70%, #ef4444 100%);
+  background: linear-gradient(90deg, #111827 0%, #374151 70%, #dc2626 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -271,33 +271,30 @@
 }
 .hover-lift:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.2);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* Iron Man Red, Gold & White Component Styles */
+/* Executive White Background Component Styles */
 .stark-hud-card, .glass-card {
-  background: rgba(20, 10, 12, 0.92) !important;
-  border: 1px solid rgba(245, 158, 11, 0.3) !important;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(245, 158, 11, 0.2) !important;
-  backdrop-filter: blur(16px);
-  color: #ffffff !important;
+  background: #ffffff !important;
+  border: 1px solid #f3f4f6 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+  color: #111827 !important;
 }
 
 .glass-header {
-  background: rgba(14, 7, 9, 0.95) !important;
-  border-bottom: 1px solid rgba(245, 158, 11, 0.3) !important;
-  backdrop-filter: blur(16px);
-  color: #ffffff !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid #f3f4f6 !important;
+  color: #111827 !important;
 }
 
 .active-page-pill {
   position: relative;
-  background: linear-gradient(90deg, rgba(220, 38, 38, 0.4) 0%, rgba(245, 158, 11, 0.2) 100%) !important;
-  border: 1px solid rgba(245, 158, 11, 0.6) !important;
-  color: #fbbf24 !important;
+  background: linear-gradient(90deg, #fef3c7 0%, #fee2e2 100%) !important;
+  border: 1px solid #f59e0b !important;
+  color: #b45309 !important;
   font-weight: 800 !important;
-  box-shadow: 0 0 16px rgba(220, 38, 38, 0.3), inset 0 0 8px rgba(245, 158, 11, 0.2) !important;
-  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.2) !important;
 }
 
 .active-page-pill::before {
@@ -309,7 +306,7 @@
   width: 4px;
   border-radius: 0 4px 4px 0;
   background: linear-gradient(180deg, #dc2626 0%, #f59e0b 100%);
-  box-shadow: 0 0 10px #f59e0b;
+  box-shadow: 0 0 8px #f59e0b;
 }
 
 .ProseMirror {
@@ -317,15 +314,16 @@
   min-height: 150px;
   font-size: 16px;
   line-height: 1.7;
-  color: #ffffff;
+  color: #111827;
 }
 
 .ProseMirror p.is-editor-empty:first-child::before {
-  color: #94a3b8;
+  color: #9ca3af;
   content: attr(data-placeholder);
   float: left;
   height: 0;
   pointer-events: none;
 }
+
 
 

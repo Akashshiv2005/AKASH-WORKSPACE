@@ -146,21 +146,21 @@ export const BlockEditor: React.FC<BlockEditorProps> = ({ page }) => {
         <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-black dark:bg-[#2c2c2c] text-white px-3 py-1.5 rounded-xl shadow-2xl flex items-center space-x-1 z-40 text-xs">
           <button
             onClick={() => editor.chain().focus().toggleBold().run()}
-            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('bold') ? 'text-blue-400' : ''}`}
+            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('bold') ? 'text-amber-400' : ''}`}
             title="Bold"
           >
             <Bold className="w-4 h-4" />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('italic') ? 'text-blue-400' : ''}`}
+            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('italic') ? 'text-amber-400' : ''}`}
             title="Italic"
           >
             <Italic className="w-4 h-4" />
           </button>
           <button
             onClick={() => editor.chain().focus().toggleUnderline().run()}
-            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('underline') ? 'text-blue-400' : ''}`}
+            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('underline') ? 'text-amber-400' : ''}`}
             title="Underline"
           >
             <UnderlineIcon className="w-4 h-4" />
@@ -168,7 +168,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = ({ page }) => {
 
           <button
             onClick={() => editor.chain().focus().toggleStrike().run()}
-            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('strike') ? 'text-blue-400' : ''}`}
+            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('strike') ? 'text-amber-400' : ''}`}
             title="Strikethrough"
           >
             <Strikethrough className="w-4 h-4" />
@@ -184,7 +184,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = ({ page }) => {
 
           <button
             onClick={() => editor.chain().focus().toggleCode().run()}
-            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('code') ? 'text-blue-400' : ''}`}
+            className={`p-1.5 rounded hover:bg-white/20 ${editor.isActive('code') ? 'text-amber-400' : ''}`}
             title="Code"
           >
             <Code className="w-4 h-4" />
@@ -214,7 +214,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = ({ page }) => {
             onClick={() => runCommand(() => editor.chain().focus().deleteRange({ from: editor.state.selection.from - 1, to: editor.state.selection.from }).toggleHeading({ level: 1 }).run())}
             className="w-full text-left px-2.5 py-1.5 hover:bg-[#efefee] dark:hover:bg-[#2f2f2f] rounded-lg flex items-center space-x-2.5"
           >
-            <Heading1 className="w-4 h-4 text-blue-500" />
+            <Heading1 className="w-4 h-4 text-amber-500" />
             <div>
               <p className="font-semibold">Heading 1</p>
               <p className="text-[10px] text-[#787774]">Big section title</p>

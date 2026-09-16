@@ -40,11 +40,11 @@ export const AuthModal: React.FC = () => {
 
         {/* Modal Header */}
         <div className="flex flex-col items-center text-center space-y-2 mb-6">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-600 via-indigo-600 to-purple-700 text-white flex items-center justify-center font-extrabold text-2xl shadow-xl animate-float">
-            N
+          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-600 via-red-500 to-amber-500 text-white flex items-center justify-center font-extrabold text-2xl shadow-xl animate-float">
+            A
           </div>
           <h2 className="text-2xl font-extrabold tracking-tight text-[#37352f] dark:text-white">
-            {authMode === 'login' ? 'Welcome Back' : 'Create Notion Account'}
+            {authMode === 'login' ? 'Welcome Back' : 'Create Account'}
           </h2>
           <p className="text-xs text-[#787774] dark:text-[#9b9b9b]">
             {authMode === 'login'
@@ -75,7 +75,7 @@ export const AuthModal: React.FC = () => {
                   placeholder="John Doe"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full pl-10 pr-3.5 py-2.5 bg-[#f7f7f5] dark:bg-[#1a1726] border border-[#e9e9e7] dark:border-[#372e50] rounded-xl text-xs outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all font-medium"
+                  className="w-full pl-10 pr-3.5 py-2.5 bg-[#f7f7f5] dark:bg-[#1a1726] border border-[#e9e9e7] dark:border-[#372e50] rounded-xl text-xs outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/30 transition-all font-medium"
                 />
               </div>
             </div>
@@ -93,7 +93,7 @@ export const AuthModal: React.FC = () => {
                 placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-3.5 py-2.5 bg-[#f7f7f5] dark:bg-[#1a1726] border border-[#e9e9e7] dark:border-[#372e50] rounded-xl text-xs outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all font-medium"
+                className="w-full pl-10 pr-3.5 py-2.5 bg-[#f7f7f5] dark:bg-[#1a1726] border border-[#e9e9e7] dark:border-[#372e50] rounded-xl text-xs outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/30 transition-all font-medium"
               />
             </div>
           </div>
@@ -110,7 +110,7 @@ export const AuthModal: React.FC = () => {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-3.5 py-2.5 bg-[#f7f7f5] dark:bg-[#1a1726] border border-[#e9e9e7] dark:border-[#372e50] rounded-xl text-xs outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/30 transition-all font-medium"
+                className="w-full pl-10 pr-3.5 py-2.5 bg-[#f7f7f5] dark:bg-[#1a1726] border border-[#e9e9e7] dark:border-[#372e50] rounded-xl text-xs outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/30 transition-all font-medium"
               />
             </div>
           </div>
@@ -118,7 +118,7 @@ export const AuthModal: React.FC = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3 bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-700 hover:from-purple-700 hover:to-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-md hover:scale-[1.02] flex items-center justify-center space-x-2"
+            className="w-full py-3 bg-gradient-to-r from-red-600 via-red-500 to-amber-500 hover:from-red-700 hover:to-amber-600 text-white rounded-xl text-xs font-bold transition-all shadow-md hover:scale-[1.02] flex items-center justify-center space-x-2"
           >
             {isLoading ? (
               <span>Processing...</span>

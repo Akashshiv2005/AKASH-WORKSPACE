@@ -221,9 +221,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
         className="fixed inset-0 bg-black/20 z-40 md:hidden"
         onClick={toggleSidebar}
       />
-      <aside className="fixed left-0 md:relative z-50 w-60 h-screen bg-[#120a0d]/95 backdrop-blur-xl border-r border-amber-500/30 text-white flex flex-col shrink-0 select-none transition-all animate-slide-in-left">
+      <aside className="fixed left-0 md:relative z-50 w-60 h-screen bg-[#faf9f6] backdrop-blur-xl border-r border-zinc-200 text-zinc-900 flex flex-col shrink-0 select-none transition-all animate-slide-in-left">
         {/* Workspace Switcher Header */}
-        <div className="p-3 border-b border-amber-500/30 relative">
+        <div className="p-3 border-b border-zinc-200 relative">
           <div
             onClick={() => setIsWorkspaceMenuOpen(!isWorkspaceMenuOpen)}
             className="flex items-center justify-between p-2 rounded-xl hover:bg-[#f2ebe1] dark:hover:bg-zinc-900/80 cursor-pointer transition-all border border-transparent hover:border-[#e7dfd4] dark:hover:border-red-900/40"
@@ -258,8 +258,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
 
           {/* Workspace Dropdown */}
           {isWorkspaceMenuOpen && (
-            <div className="absolute top-16 left-3 right-3 bg-[#131b2e] border border-indigo-500/30 rounded-xl shadow-2xl py-2 z-50 text-xs animate-fade-in-up">
-              <div className="px-3 py-1 text-[10px] uppercase font-bold text-amber-400 tracking-wider">
+            <div className="absolute top-16 left-3 right-3 bg-white border border-zinc-200 rounded-xl shadow-2xl py-2 z-50 text-xs animate-fade-in-up text-zinc-900">
+              <div className="px-3 py-1 text-[10px] uppercase font-bold text-amber-700 tracking-wider">
                 Workspaces
               </div>
               {workspaces.map((ws) => (
@@ -269,7 +269,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
                     setActiveWorkspace(ws);
                     setIsWorkspaceMenuOpen(false);
                   }}
-                  className={`w-full text-left px-3 py-2 flex items-center space-x-2 hover:bg-indigo-900/40 ${ws.id === activeWorkspace?.id ? 'font-semibold text-amber-400 bg-indigo-950/80' : 'text-slate-200'
+                  className={`w-full text-left px-3 py-2 flex items-center space-x-2 hover:bg-amber-100/60 ${ws.id === activeWorkspace?.id ? 'font-semibold text-amber-700 bg-amber-50' : 'text-zinc-700'
                     }`}
                 >
                   <span>{ws.icon || '💼'}</span>
@@ -277,7 +277,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
                 </button>
               ))}
 
-              <div className="border-t border-indigo-500/20 my-1" />
+              <div className="border-t border-zinc-200 my-1" />
 
               {isCreatingWs ? (
                 <form onSubmit={handleCreateWsSubmit} className="p-2 space-y-2">
@@ -286,20 +286,20 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
                     placeholder="Workspace name..."
                     value={newWsName}
                     onChange={(e) => setNewWsName(e.target.value)}
-                    className="w-full px-2 py-1 bg-slate-900 border border-indigo-500/30 rounded text-xs outline-none focus:border-amber-400 text-slate-100 placeholder:text-slate-500"
+                    className="w-full px-2 py-1 bg-zinc-50 border border-zinc-300 rounded text-xs outline-none focus:border-amber-500 text-zinc-900 placeholder:text-zinc-400"
                     autoFocus
                   />
                   <div className="flex justify-end space-x-1">
                     <button
                       type="button"
                       onClick={() => setIsCreatingWs(false)}
-                      className="px-2 py-0.5 text-xs text-slate-400 hover:text-white"
+                      className="px-2 py-0.5 text-xs text-zinc-500 hover:text-zinc-900"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
-                      className="px-2 py-0.5 text-xs bg-amber-500 text-slate-950 font-bold rounded"
+                      className="px-2 py-0.5 text-xs bg-amber-500 text-zinc-950 font-bold rounded"
                     >
                       Create
                     </button>
@@ -308,7 +308,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
               ) : (
                 <button
                   onClick={() => setIsCreatingWs(true)}
-                  className="w-full text-left px-3 py-1.5 flex items-center space-x-2 hover:bg-indigo-900/40 text-amber-400 font-medium"
+                  className="w-full text-left px-3 py-1.5 flex items-center space-x-2 hover:bg-amber-100/60 text-amber-700 font-medium"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   <span>+ New Workspace</span>
@@ -332,22 +332,22 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
 
           <button
             onClick={() => setSearching(true)}
-            className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-red-950/60 text-xs text-slate-200 hover:text-white transition-all hover:scale-[1.01]"
+            className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-900 transition-all hover:scale-[1.01]"
           >
             <div className="flex items-center space-x-2">
-              <Search className="w-3.5 h-3.5 text-amber-400" />
+              <Search className="w-3.5 h-3.5 text-amber-600" />
               <span>Search Workspace</span>
             </div>
-            <kbd className="px-1.5 py-0.5 bg-indigo-950/60 border border-indigo-500/30 text-[10px] font-mono rounded text-amber-400">
+            <kbd className="px-1.5 py-0.5 bg-amber-100 border border-amber-300 text-[10px] font-mono rounded text-amber-800">
               Ctrl K
             </kbd>
           </button>
 
           <button
             onClick={() => setAuthModalOpen(true, 'login')}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-red-950/60 text-xs text-slate-200 hover:text-white transition-all hover:scale-[1.01]"
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-900 transition-all hover:scale-[1.01]"
           >
-            <Settings className="w-3.5 h-3.5 text-amber-400" />
+            <Settings className="w-3.5 h-3.5 text-amber-600" />
             <span>Settings & Auth</span>
           </button>
 
@@ -358,7 +358,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
           {/* Habit Tracker Template Pill */}
           <button
             onClick={() => wrapCreate(handleCreateHabitTracker)}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-red-950/60 text-xs text-slate-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-slate-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
           >
             <Flame className="w-3.5 h-3.5 text-amber-400" />
             <span>Habit Tracker</span>
@@ -367,7 +367,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
           {/* To-Do Planner Template Pill */}
           <button
             onClick={() => wrapCreate(handleCreateTodoPlanner)}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-red-950/60 text-xs text-slate-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-slate-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
           >
             <CheckSquare className="w-3.5 h-3.5 text-amber-400" />
             <span>To-Do Planner</span>
@@ -376,7 +376,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
           {/* Pomodoro Focus Timer Pill */}
           <button
             onClick={() => wrapCreate(handleCreatePomodoro)}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-red-950/60 text-xs text-slate-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-slate-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
           >
             <Zap className="w-3.5 h-3.5 text-amber-400" />
             <span>Arc Focus Timer</span>
@@ -385,7 +385,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
           {/* Daily Journal Pill */}
           <button
             onClick={() => wrapCreate(handleCreateJournal)}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-red-950/60 text-xs text-slate-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-slate-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
           >
             <BookOpen className="w-3.5 h-3.5 text-amber-400" />
             <span>Daily Journal</span>
@@ -394,7 +394,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
           {/* Expense Tracker Pill */}
           <button
             onClick={() => wrapCreate(handleCreateExpenseTracker)}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-red-950/60 text-xs text-slate-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-slate-200 hover:text-white font-medium transition-all hover:scale-[1.01]"
           >
             <span className="text-sm">💰</span>
             <span>Expense Tracker</span>
@@ -410,15 +410,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
           </button>
         </div>
 
-        {/* Private Pages List */}
-        <div className="flex-1 overflow-y-auto mt-3 px-2 select-none">
-          <div className="flex items-center justify-between px-2 py-1">
-            <span className="text-[10px] font-black uppercase text-slate-400 hover:text-amber-400 tracking-wider transition-colors duration-300">
-              PRIVATE PAGES
-            </span>
+        {/* Page Tree Section */}
+        <div className="flex-1 overflow-y-auto px-2 py-2 select-none custom-scrollbar">
+          <div className="flex items-center justify-between px-2 py-1 text-[10px] font-bold text-zinc-500 uppercase tracking-wider">
+            <span>Private Pages</span>
             <button
               onClick={() => wrapCreate(handleCreateRootPage)}
-              className="p-1 rounded hover:bg-indigo-950/60 text-slate-400 hover:text-white"
+              className="p-1 rounded hover:bg-zinc-200 text-zinc-500 hover:text-zinc-900"
               title="Create root page"
             >
               <Plus className="w-3 h-3" />
@@ -431,48 +429,48 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
         </div>
 
         {/* Footer: User Profile & Trash Bin */}
-        <div className="p-2 border-t border-indigo-500/20 space-y-1 select-none">
-          <div className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-indigo-950/50 border border-indigo-500/25">
+        <div className="p-2 border-t border-zinc-200 space-y-1 select-none">
+          <div className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-amber-50 border border-amber-200">
             <div className="flex items-center space-x-2 min-w-0">
-              <div className="w-6 h-6 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 flex items-center justify-center text-[10px] font-black text-slate-950 shrink-0">
+              <div className="w-6 h-6 rounded-full bg-gradient-to-r from-red-600 to-amber-500 flex items-center justify-center text-[10px] font-black text-white shrink-0">
                 A
               </div>
-              <span className="text-xs font-bold text-slate-100 truncate">
+              <span className="text-xs font-bold text-zinc-900 truncate">
                 {user?.full_name || 'Akash Shiv'}
               </span>
             </div>
-            <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+            <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping" />
           </div>
 
           <button
             onClick={() => setIsTrashOpen(!isTrashOpen)}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-red-950/60 text-xs text-slate-400 hover:text-white transition-colors"
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-600 hover:text-zinc-900 transition-colors"
           >
-            <Trash2 className="w-3.5 h-3.5 text-rose-400" />
+            <Trash2 className="w-3.5 h-3.5 text-rose-500" />
             <span>Trash Bin ({archivedPages.length})</span>
           </button>
 
           {/* Trash Modal */}
           {isTrashOpen && (
-            <div className="mt-2 p-2 bg-[#131b2e] border border-indigo-500/30 rounded-xl shadow-xl text-xs space-y-1 animate-fade-in-up">
-              <div className="font-bold text-slate-100 px-1">Trash Bin</div>
+            <div className="mt-2 p-2 bg-white border border-zinc-200 rounded-xl shadow-xl text-xs space-y-1 animate-fade-in-up text-zinc-900">
+              <div className="font-bold text-zinc-900 px-1">Trash Bin</div>
               {archivedPages.length === 0 ? (
-                <p className="text-slate-400 px-1 py-2 text-[11px]">No items in trash.</p>
+                <p className="text-zinc-500 px-1 py-2 text-[11px]">No items in trash.</p>
               ) : (
                 archivedPages.map((p) => (
-                  <div key={p.id} className="flex items-center justify-between p-1 hover:bg-indigo-900/40 rounded">
-                    <span className="truncate max-w-[110px] text-slate-200">{p.title || 'Untitled'}</span>
+                  <div key={p.id} className="flex items-center justify-between p-1 hover:bg-amber-50 rounded">
+                    <span className="truncate max-w-[110px] text-zinc-800">{p.title || 'Untitled'}</span>
                     <div className="flex items-center space-x-1">
                       <button
                         onClick={() => restorePage(p.id)}
-                        className="p-1 text-emerald-400 hover:bg-emerald-950/60 rounded"
+                        className="p-1 text-emerald-600 hover:bg-emerald-50 rounded"
                         title="Restore"
                       >
                         <RotateCcw className="w-3 h-3" />
                       </button>
                       <button
                         onClick={() => deletePermanently(p.id)}
-                        className="p-1 text-rose-400 hover:bg-rose-950/60 rounded"
+                        className="p-1 text-rose-600 hover:bg-rose-50 rounded"
                         title="Delete permanently"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -488,4 +486,3 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
     </>
   );
 };
-

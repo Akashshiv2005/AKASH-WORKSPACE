@@ -53,26 +53,26 @@ export const PomodoroTimer: React.FC = () => {
 
   return (
     <div className="my-6 select-none animate-fade-in-up">
-      <div className="rounded-3xl border border-[#00f0ff]/30 bg-[#101424]/90 backdrop-blur-xl p-8 shadow-2xl space-y-6 text-center stark-hud-card">
+      <div className="rounded-3xl border border-amber-300 bg-white p-8 shadow-md space-y-6 text-center">
         {/* Mode Switcher Pills */}
-        <div className="inline-flex p-1.5 rounded-2xl bg-[#0a0c16] border border-[#00f0ff]/30 space-x-2">
+        <div className="inline-flex p-1.5 rounded-2xl bg-amber-50 border border-amber-200 space-x-2">
           <button
             onClick={() => switchMode('focus')}
             className={`flex items-center space-x-2 px-5 py-2 rounded-xl text-xs font-bold transition-all ${
               mode === 'focus'
-                ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md scale-105 arc-reactor-glow'
-                : 'text-[#91a0c0] hover:text-white'
+                ? 'bg-gradient-to-r from-red-600 via-red-500 to-amber-500 text-white shadow-md scale-105'
+                : 'text-zinc-600 hover:text-zinc-900'
             }`}
           >
-            <Zap className="w-4 h-4 text-cyan-300" />
+            <Zap className="w-4 h-4 text-amber-300" />
             <span>25m Arc Focus</span>
           </button>
           <button
             onClick={() => switchMode('break')}
             className={`flex items-center space-x-2 px-5 py-2 rounded-xl text-xs font-bold transition-all ${
               mode === 'break'
-                ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md scale-105'
-                : 'text-[#91a0c0] hover:text-white'
+                ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md scale-105'
+                : 'text-zinc-600 hover:text-zinc-900'
             }`}
           >
             <Coffee className="w-4 h-4" />
@@ -80,14 +80,14 @@ export const PomodoroTimer: React.FC = () => {
           </button>
         </div>
 
-        {/* Timer Countdown Display (Arc Reactor Ring) */}
+        {/* Timer Countdown Display */}
         <div className="relative inline-flex items-center justify-center">
-          <div className="w-60 h-60 rounded-full border-8 border-[#00f0ff]/30 flex flex-col items-center justify-center relative shadow-2xl arc-reactor-glow">
-            <div className="text-5xl font-black tracking-tight text-[#00f0ff] font-mono stark-text-cyan animate-count-pulse">
+          <div className="w-60 h-60 rounded-full border-8 border-amber-400 bg-amber-50/50 flex flex-col items-center justify-center relative shadow-lg">
+            <div className="text-5xl font-black tracking-tight text-red-600 font-mono animate-count-pulse">
               {formattedTime}
             </div>
-            <span className="text-xs font-black uppercase tracking-widest text-amber-400 mt-2 flex items-center space-x-1 animate-text-reveal">
-              <Shield className="w-3.5 h-3.5 text-cyan-400 inline" />
+            <span className="text-xs font-black uppercase tracking-widest text-amber-700 mt-2 flex items-center space-x-1">
+              <Shield className="w-3.5 h-3.5 text-amber-600 inline" />
               <span>{mode === 'focus' ? '🎯 Arc Focus Online' : '☕ Recharge Mode'}</span>
             </span>
           </div>
@@ -95,13 +95,13 @@ export const PomodoroTimer: React.FC = () => {
 
         {/* Progress Bar */}
         <div className="max-w-md mx-auto space-y-1">
-          <div className="w-full bg-[#182038] h-3 rounded-full overflow-hidden border border-[#00f0ff]/20">
+          <div className="w-full bg-zinc-100 h-3 rounded-full overflow-hidden border border-zinc-200">
             <div
               style={{ width: `${progressPct}%` }}
-              className="h-full bg-gradient-to-r from-cyan-400 via-blue-500 to-red-500 transition-all duration-500 shadow-md"
+              className="h-full bg-gradient-to-r from-red-600 via-amber-500 to-amber-400 transition-all duration-500 shadow-sm"
             />
           </div>
-          <div className="flex justify-between text-[11px] font-semibold text-[#91a0c0]">
+          <div className="flex justify-between text-[11px] font-semibold text-zinc-500">
             <span>Elapsed: {progressPct}%</span>
             <span>Target: {mode === 'focus' ? '25:00' : '05:00'}</span>
           </div>
@@ -111,10 +111,10 @@ export const PomodoroTimer: React.FC = () => {
         <div className="flex items-center justify-center space-x-4 pt-2">
           <button
             onClick={toggleTimer}
-            className={`px-8 py-3.5 rounded-2xl text-sm font-black text-white shadow-2xl transition-all hover:scale-105 flex items-center space-x-2 ${
+            className={`px-8 py-3.5 rounded-2xl text-sm font-black text-white shadow-lg transition-all hover:scale-105 flex items-center space-x-2 ${
               isRunning
-                ? 'bg-gradient-to-r from-red-600 to-rose-600'
-                : 'bg-gradient-to-r from-cyan-500 to-blue-600'
+                ? 'bg-gradient-to-r from-zinc-700 to-zinc-900'
+                : 'bg-gradient-to-r from-red-600 via-red-500 to-amber-500'
             }`}
           >
             {isRunning ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 fill-white" />}
@@ -123,7 +123,7 @@ export const PomodoroTimer: React.FC = () => {
 
           <button
             onClick={resetTimer}
-            className="p-3.5 rounded-2xl bg-[#182038] hover:bg-[#202a4a] text-[#00f0ff] transition-all hover:scale-105 border border-[#00f0ff]/30"
+            className="p-3.5 rounded-2xl bg-zinc-100 hover:bg-amber-100 text-amber-700 transition-all hover:scale-105 border border-zinc-200"
             title="Reset Timer"
           >
             <RotateCcw className="w-5 h-5" />
@@ -131,13 +131,13 @@ export const PomodoroTimer: React.FC = () => {
         </div>
 
         {/* Stats Footer */}
-        <div className="inline-flex items-center space-x-4 pt-4 border-t border-[#00f0ff]/20 text-xs font-bold text-[#91a0c0]">
+        <div className="inline-flex items-center space-x-4 pt-4 border-t border-zinc-200 text-xs font-bold text-zinc-600">
           <span className="flex items-center space-x-1">
-            <Flame className="w-4 h-4 text-amber-400 fill-amber-400" />
+            <Flame className="w-4 h-4 text-amber-500 fill-amber-500" />
             <span>{sessionsCount} Focus Sessions Today</span>
           </span>
           <span>•</span>
-          <span className="flex items-center space-x-1 text-[#00f0ff]">
+          <span className="flex items-center space-x-1 text-red-600">
             <Award className="w-4 h-4" />
             <span>{firstName}'s Productivity Level: Maximum</span>
           </span>

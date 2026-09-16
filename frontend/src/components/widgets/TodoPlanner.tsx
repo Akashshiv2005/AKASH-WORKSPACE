@@ -59,28 +59,28 @@ export const TodoPlanner: React.FC = () => {
   const getPriorityBadge = (priority: 'High' | 'Medium' | 'Low') => {
     switch (priority) {
       case 'High':
-        return 'bg-rose-950/70 text-rose-300 border-rose-500/40';
+        return 'bg-red-50 text-red-600 border border-red-200';
       case 'Medium':
-        return 'bg-amber-950/70 text-amber-300 border-amber-500/40';
+        return 'bg-amber-50 text-amber-700 border border-amber-200';
       case 'Low':
-        return 'bg-emerald-950/70 text-emerald-300 border-emerald-500/40';
+        return 'bg-emerald-50 text-emerald-700 border border-emerald-200';
     }
   };
 
   return (
     <div className="my-6 space-y-6 select-none animate-fade-in-up font-['Sora']">
       {/* Header Bar with Dynamic Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl border border-indigo-500/25 bg-[#131b2e]/90 backdrop-blur-xl shadow-lg">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl border border-zinc-200 bg-white shadow-xs">
         <div className="flex items-center space-x-3">
-          <div className="p-2.5 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 shadow-md">
-            <Layout className="w-5 h-5 text-slate-950" />
+          <div className="p-2.5 rounded-xl bg-gradient-to-br from-red-600 to-amber-500 text-white shadow-xs">
+            <Layout className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h3 className="text-base font-black text-white tracking-wide heading-animated cursor-default">
+            <h3 className="text-base font-black text-zinc-900 tracking-wide cursor-default">
               Task Board
             </h3>
-            <p className="text-xs text-slate-400 animate-text-reveal">
-              <span className="font-bold text-amber-400">{completedTasks.length}</span> of {tasks.length} tasks completed
+            <p className="text-xs text-zinc-500 animate-text-reveal">
+              <span className="font-bold text-red-600">{completedTasks.length}</span> of {tasks.length} tasks completed
             </p>
           </div>
         </div>
@@ -93,9 +93,9 @@ export const TodoPlanner: React.FC = () => {
               setIsTrashOpen(false);
               setIsMenuOpen(false);
             }}
-            className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 text-xs font-black shadow-md transition-all hover:scale-105 border border-amber-400/40"
+            className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-red-600 via-red-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white text-xs font-black shadow-xs transition-all hover:scale-105 border border-amber-400/40"
           >
-            <Plus className="w-4 h-4 text-slate-950" />
+            <Plus className="w-4 h-4 text-white" />
             <span>New Task</span>
           </button>
 
@@ -105,8 +105,8 @@ export const TodoPlanner: React.FC = () => {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className={`p-1.5 px-2.5 rounded-xl border text-xs font-semibold transition-all flex items-center justify-center ${
                 isMenuOpen
-                  ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-sm'
-                  : 'border-indigo-500/30 hover:bg-indigo-950/60 text-slate-300'
+                  ? 'bg-amber-500 text-white border-amber-400 shadow-xs'
+                  : 'border-zinc-200 hover:bg-amber-50 text-zinc-600'
               }`}
               title="More actions"
             >
@@ -119,7 +119,7 @@ export const TodoPlanner: React.FC = () => {
                   className="fixed inset-0 z-20"
                   onClick={() => setIsMenuOpen(false)}
                 />
-                <div className="absolute right-0 top-10 w-56 bg-[#131b2e] border border-indigo-500/30 rounded-2xl shadow-2xl p-1.5 z-30 animate-fade-in-up space-y-1">
+                <div className="absolute right-0 top-10 w-56 bg-white border border-zinc-200 rounded-2xl shadow-xl p-1.5 z-30 animate-fade-in-up space-y-1">
                   <button
                     onClick={() => {
                       setIsTrashOpen(!isTrashOpen);
@@ -128,24 +128,24 @@ export const TodoPlanner: React.FC = () => {
                     }}
                     className={`w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold transition-colors text-left ${
                       isTrashOpen
-                        ? 'bg-indigo-950/80 text-amber-400'
-                        : 'text-slate-200 hover:bg-indigo-950/60 hover:text-amber-400'
+                        ? 'bg-amber-50 text-red-600'
+                        : 'text-zinc-800 hover:bg-amber-50 hover:text-red-600'
                     }`}
                   >
-                    <Trash2 className="w-3.5 h-3.5 text-slate-400" />
+                    <Trash2 className="w-3.5 h-3.5 text-zinc-400" />
                     <span>{isTrashOpen ? 'Hide Trash Bin' : `View Trash Bin (${archivedTasks.length})`}</span>
                   </button>
 
-                  <div className="h-[1px] bg-indigo-500/20 my-1" />
+                  <div className="h-[1px] bg-zinc-200 my-1" />
 
                   <button
                     onClick={() => {
                       resetBoard(workspaceId);
                       setIsMenuOpen(false);
                     }}
-                    className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold text-slate-200 hover:bg-indigo-950/60 hover:text-amber-400 transition-colors text-left"
+                    className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold text-zinc-800 hover:bg-amber-50 hover:text-red-600 transition-colors text-left"
                   >
-                    <RotateCcw className="w-3.5 h-3.5 text-amber-400" />
+                    <RotateCcw className="w-3.5 h-3.5 text-amber-600" />
                     <span>Reset to Default Tasks</span>
                   </button>
 
@@ -154,13 +154,13 @@ export const TodoPlanner: React.FC = () => {
                       setIsMenuOpen(false);
                       useNotificationStore.getState().setModalOpen(true);
                     }}
-                    className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold text-slate-200 hover:bg-indigo-950/60 hover:text-amber-400 transition-colors text-left"
+                    className="w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold text-zinc-800 hover:bg-amber-50 hover:text-red-600 transition-colors text-left"
                   >
-                    <Mail className="w-3.5 h-3.5 text-amber-400" />
+                    <Mail className="w-3.5 h-3.5 text-amber-600" />
                     <span>Email Daily Reminders</span>
                   </button>
 
-                  <div className="h-[1px] bg-indigo-500/20 my-1" />
+                  <div className="h-[1px] bg-zinc-200 my-1" />
 
                   <button
                     onClick={() => {
@@ -173,11 +173,11 @@ export const TodoPlanner: React.FC = () => {
                     disabled={tasks.length === 0}
                     className={`w-full flex items-center space-x-2.5 px-3 py-2 rounded-xl text-xs font-bold transition-colors text-left ${
                       tasks.length === 0
-                        ? 'text-slate-600 cursor-not-allowed'
-                        : 'text-rose-400 hover:bg-rose-950/60'
+                        ? 'text-zinc-300 cursor-not-allowed'
+                        : 'text-red-600 hover:bg-red-50'
                     }`}
                   >
-                    <Trash2 className="w-3.5 h-3.5 text-rose-400" />
+                    <Trash2 className="w-3.5 h-3.5 text-red-600" />
                     <span>Clear All to Trash</span>
                   </button>
                 </div>
@@ -189,28 +189,28 @@ export const TodoPlanner: React.FC = () => {
 
       {/* Recycle Bin Inline View */}
       {isTrashOpen && (
-        <div className="p-4 bg-[#131b2e]/90 border border-indigo-500/25 rounded-2xl animate-fade-in-up">
-          <h4 className="text-xs font-bold text-slate-100 mb-3">Recycle Bin (Tasks Saved in Trash)</h4>
+        <div className="p-4 bg-amber-50/50 border border-zinc-200 rounded-2xl animate-fade-in-up">
+          <h4 className="text-xs font-bold text-zinc-900 mb-3">Recycle Bin (Tasks Saved in Trash)</h4>
           {archivedTasks.length === 0 ? (
-            <p className="text-xs text-slate-400">Trash Bin is empty. No archived tasks.</p>
+            <p className="text-xs text-zinc-400">Trash Bin is empty. No archived tasks.</p>
           ) : (
             <div className="space-y-2">
               {archivedTasks.map((t) => (
-                <div key={t.id} className="flex items-center justify-between p-2.5 bg-slate-900/80 rounded-xl border border-indigo-500/20 shadow-sm">
+                <div key={t.id} className="flex items-center justify-between p-2.5 bg-white rounded-xl border border-zinc-200 shadow-xs">
                   <div className="flex items-center space-x-3">
-                    <span className="text-xs font-semibold text-slate-200">{t.title}</span>
+                    <span className="text-xs font-semibold text-zinc-800">{t.title}</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={() => restoreTask(workspaceId, t.id)}
-                      className="flex items-center space-x-1 px-2 py-1 text-[10px] font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-500/30 rounded-lg hover:bg-emerald-900/60 transition-colors"
+                      className="flex items-center space-x-1 px-2 py-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 rounded-lg hover:bg-emerald-100 transition-colors"
                     >
                       <RotateCcw className="w-3 h-3" />
                       <span>Restore</span>
                     </button>
                     <button
                       onClick={() => permanentlyDeleteTask(workspaceId, t.id)}
-                      className="p-1 text-rose-400 bg-rose-950/60 border border-rose-500/30 rounded-lg hover:bg-rose-900/60 transition-colors"
+                      className="p-1 text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 transition-colors"
                       title="Delete permanently"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -225,13 +225,13 @@ export const TodoPlanner: React.FC = () => {
 
       {/* Add Task Inline Form */}
       {isAdding && (
-        <form onSubmit={handleAddTask} className="p-4 rounded-2xl bg-[#1c0f13]/90 border border-amber-500/30 text-white shadow-lg space-y-3 animate-fade-in-up">
+        <form onSubmit={handleAddTask} className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-xs space-y-3 animate-fade-in-up">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-amber-400">Add New Task to Board</span>
+            <span className="text-xs font-bold text-red-600">Add New Task to Board</span>
             <button
               type="button"
               onClick={() => setIsAdding(false)}
-              className="text-slate-400 hover:text-white text-xs font-bold"
+              className="text-zinc-400 hover:text-zinc-900 text-xs font-bold"
             >
               ✕
             </button>
@@ -241,12 +241,12 @@ export const TodoPlanner: React.FC = () => {
             placeholder="What needs to be done? (e.g., Update Landing Page copy)..."
             value={newTaskTitle}
             onChange={(e) => setNewTaskTitle(e.target.value)}
-            className="w-full px-3 py-2 bg-slate-900/80 border border-indigo-500/30 rounded-xl text-xs text-slate-100 outline-none focus:border-amber-400 transition-colors placeholder:text-slate-500"
+            className="w-full px-3 py-2 bg-white border border-zinc-200 rounded-xl text-xs text-zinc-900 outline-none focus:border-red-600 transition-colors placeholder:text-zinc-400"
             autoFocus
           />
           <div className="flex items-center justify-between pt-1">
             <div className="flex items-center space-x-2 text-xs">
-              <span className="text-slate-400 font-semibold">Priority:</span>
+              <span className="text-zinc-500 font-semibold">Priority:</span>
               {(['Low', 'Medium', 'High'] as const).map((p) => (
                 <button
                   key={p}
@@ -254,8 +254,8 @@ export const TodoPlanner: React.FC = () => {
                   onClick={() => setNewTaskPriority(p)}
                   className={`px-2 py-1 rounded-lg text-xs font-bold border transition-all ${
                     newTaskPriority === p
-                      ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-sm'
-                      : 'bg-slate-900/80 text-slate-300 border-indigo-500/20 hover:bg-indigo-950/60'
+                      ? 'bg-red-600 text-white border-red-600 shadow-xs'
+                      : 'bg-white text-zinc-700 border-zinc-200 hover:bg-amber-50'
                   }`}
                 >
                   {p}
@@ -264,7 +264,7 @@ export const TodoPlanner: React.FC = () => {
             </div>
             <button
               type="submit"
-              className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 text-xs font-bold hover:scale-105 transition-all shadow-sm"
+              className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-red-600 to-amber-500 text-white text-xs font-bold hover:scale-105 transition-all shadow-xs"
             >
               Add Task
             </button>
@@ -459,7 +459,7 @@ export const TodoPlanner: React.FC = () => {
       </div>
 
       {/* Board Footer */}
-      <div className="p-3.5 bg-[#131b2e]/90 border border-indigo-500/25 rounded-2xl flex items-center justify-between shadow-lg text-[11px] text-slate-400 font-medium">
+      <div className="p-3.5 bg-white border border-zinc-200 rounded-2xl flex items-center justify-between shadow-xs text-[11px] text-zinc-600 font-medium">
         <div className="flex items-center space-x-1.5">
           <Sparkles className="w-3.5 h-3.5 text-amber-400" />
           <span>Tasks automatically synchronize with the database.</span>

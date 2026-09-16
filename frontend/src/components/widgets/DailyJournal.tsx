@@ -6,7 +6,7 @@ import { useAuthStore } from '../../store/useAuthStore';
 const MOODS = [
   { emoji: '🚀', label: 'Motivated', color: 'bg-purple-500/10 border-purple-500/30 text-purple-600' },
   { emoji: '⚡', label: 'Energetic', color: 'bg-amber-500/10 border-amber-500/30 text-amber-600' },
-  { emoji: '🎯', label: 'Focused', color: 'bg-blue-500/10 border-blue-500/30 text-blue-600' },
+  { emoji: '🎯', label: 'Focused', color: 'bg-red-500/10 border-red-500/30 text-red-600' },
   { emoji: '🧘', label: 'Calm', color: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600' },
   { emoji: '😊', label: 'Happy', color: 'bg-rose-500/10 border-rose-500/30 text-rose-600' },
 ];
