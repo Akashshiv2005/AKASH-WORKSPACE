@@ -38,14 +38,28 @@ export const GeminiAssistantModal: React.FC<GeminiAssistantModalProps> = ({
   const { habits, addHabit, getBestStreak, getOverallPercentage, getTotalCheckmarks } = useHabitStore();
   const { tasks, addTask } = useTaskStore();
   const { pages } = usePageStore();
+  const [availableVoices, setAvailableVoices] = useState<SpeechSynthesisVoice[]>([]);
 
   useEffect(() => {
+    if (!('speechSynthesis' in window)) return;
+
+    const loadVoices = () => {
+      const vList = window.speechSynthesis.getVoices();
+      if (vList.length > 0) {
+        setAvailableVoices(vList);
+      }
+    };
+
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+
     return () => {
       if (recognitionRef.current) {
         recognitionRef.current.stop();
       }
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
+        window.speechSynthesis.onvoiceschanged = null;
       }
     };
   }, []);
@@ -61,29 +75,57 @@ export const GeminiAssistantModal: React.FC<GeminiAssistantModalProps> = ({
       const utterance = new SpeechSynthesisUtterance(cleanText);
 
       // Filter available voices for male voice profiles across Android, iOS & Desktop browsers
-      const voices = window.speechSynthesis.getVoices();
-      const maleVoice = voices.find((v) => {
-        const name = v.name.toLowerCase();
-        return (
-          name.includes('male') ||
-          name.includes('david') ||
-          name.includes('mark') ||
-          name.includes('george') ||
-          name.includes('daniel') ||
-          name.includes('alex') ||
-          name.includes('guy') ||
-          name.includes('brian') ||
-          name.includes('wavenet-d') ||
-          name.includes('standard-b')
-        );
-      }) || voices.find((v) => v.lang.startsWith('en'));
+      const vList = availableVoices.length > 0 ? availableVoices : window.speechSynthesis.getVoices();
+      
+      const maleVoice =
+        vList.find((v) => {
+          const name = v.name.toLowerCase();
+          return (
+            name.includes('male') ||
+            name.includes('david') ||
+            name.includes('mark') ||
+            name.includes('george') ||
+            name.includes('daniel') ||
+            name.includes('alex') ||
+            name.includes('guy') ||
+            name.includes('brian') ||
+            name.includes('arthur') ||
+            name.includes('aaron') ||
+            name.includes('rishi') ||
+            name.includes('oliver') ||
+            name.includes('lee') ||
+            name.includes('google english male') ||
+            name.includes('google uk english male') ||
+            name.includes('google us english male') ||
+            name.includes('en-us-x-sfg#male') ||
+            name.includes('en-us-x-tpf') ||
+            name.includes('en-us-x-iom') ||
+            name.includes('wavenet-d') ||
+            name.includes('standard-b')
+          );
+        }) ||
+        vList.find((v) => {
+          const name = v.name.toLowerCase();
+          return (
+            !name.includes('female') &&
+            !name.includes('zira') &&
+            !name.includes('hazel') &&
+            !name.includes('samantha') &&
+            !name.includes('victoria') &&
+            !name.includes('karen') &&
+            !name.includes('moira') &&
+            !name.includes('fiona') &&
+            !name.includes('siri')
+          );
+        }) ||
+        vList.find((v) => v.lang.startsWith('en'));
 
       if (maleVoice) {
         utterance.voice = maleVoice;
       }
 
-      utterance.rate = 1.0;
-      utterance.pitch = 0.85; // Deep male executive tone for JARVIS on mobile and PC
+      utterance.rate = 0.95;
+      utterance.pitch = 0.65; // Deep male executive tone for JARVIS on mobile and PC
       window.speechSynthesis.speak(utterance);
     } catch {
       // ignore speech errors
