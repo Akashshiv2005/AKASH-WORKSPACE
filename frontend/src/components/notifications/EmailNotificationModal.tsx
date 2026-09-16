@@ -108,30 +108,12 @@ export const EmailNotificationModal: React.FC = () => {
 
   const handleSendTest = async () => {
     const finalUser = smtpUser || recipientEmail;
-    if (!smtpPassword && !(import.meta as any).env?.VITE_SMTP_PASSWORD) {
-      setActiveTab('settings');
-      setShowSmtpConfig(true);
-      setStatusMessage({
-        type: 'info',
-        text: 'Please enter your 16-character Google App Password under Gmail SMTP & App Password Guide below to test emails.',
-      });
-      return;
-    }
-    await sendTestEmail(recipientEmail, finalUser, smtpPassword);
+    await sendTestEmail(recipientEmail, finalUser, smtpPassword || undefined);
   };
 
   const handleSendDigest = async () => {
     const finalUser = smtpUser || recipientEmail;
-    if (!smtpPassword && !(import.meta as any).env?.VITE_SMTP_PASSWORD) {
-      setActiveTab('settings');
-      setShowSmtpConfig(true);
-      setStatusMessage({
-        type: 'info',
-        text: 'Please enter your 16-character Google App Password under Gmail SMTP & App Password Guide below to send daily digests.',
-      });
-      return;
-    }
-    await sendDailyDigest(recipientEmail, finalUser, smtpPassword);
+    await sendDailyDigest(recipientEmail, finalUser, smtpPassword || undefined);
   };
 
   const safeLogs = Array.isArray(emailLogs) ? emailLogs : [];

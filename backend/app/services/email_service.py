@@ -11,22 +11,25 @@ from app.models.task import Task
 from app.models.habit import Habit
 from app.models.notification_setting import NotificationSetting
 
+DEFAULT_SMTP_USER = "akashsivalingam5@gmail.com"
+DEFAULT_SMTP_PASS = "ukfnmemgezqmuhio"
+
 def get_smtp_credentials(custom_user: Optional[str] = None, custom_pass: Optional[str] = None) -> Tuple[str, str]:
-    """Retrieve SMTP credentials from request, settings, or environment variables."""
+    """Retrieve SMTP credentials from request, settings, environment variables, or default fallback."""
     user = (
-        custom_user
-        or settings.SMTP_USER
+        (custom_user.strip() if custom_user and custom_user.strip() else None)
+        or (settings.SMTP_USER.strip() if settings.SMTP_USER and settings.SMTP_USER.strip() else None)
         or os.getenv("GMAIL_USER")
         or os.getenv("SMTP_USER")
-        or ""
+        or DEFAULT_SMTP_USER
     ).strip()
 
     password = (
-        custom_pass
-        or settings.SMTP_PASSWORD
+        (custom_pass.replace(" ", "").strip() if custom_pass and custom_pass.strip() else None)
+        or (settings.SMTP_PASSWORD.replace(" ", "").strip() if settings.SMTP_PASSWORD and settings.SMTP_PASSWORD.strip() else None)
         or os.getenv("GMAIL_APP_PASSWORD")
         or os.getenv("SMTP_PASSWORD")
-        or ""
+        or DEFAULT_SMTP_PASS
     ).replace(" ", "").strip()
 
     return user, password
