@@ -58,18 +58,31 @@ export const IronManBackground: React.FC<IronManBackgroundProps> = ({
 
     const cw = canvas.width;
     const ch = canvas.height;
+    if (cw === 0 || ch === 0) return;
+
     const imgRatio = img.naturalWidth / img.naturalHeight;
     const canvasRatio = cw / ch;
 
     let drawW: number;
     let drawH: number;
 
-    if (canvasRatio > imgRatio) {
-      drawW = cw;
-      drawH = cw / imgRatio;
-    } else {
+    const isMobile = window.innerWidth <= 768;
+
+    if (isMobile) {
       drawH = ch;
       drawW = ch * imgRatio;
+      if (drawW > cw * 1.1) {
+        drawW = cw * 1.1;
+        drawH = drawW / imgRatio;
+      }
+    } else {
+      if (canvasRatio > imgRatio) {
+        drawW = cw;
+        drawH = cw / imgRatio;
+      } else {
+        drawH = ch;
+        drawW = ch * imgRatio;
+      }
     }
 
     const drawX = (cw - drawW) / 2;
@@ -82,7 +95,7 @@ export const IronManBackground: React.FC<IronManBackgroundProps> = ({
   const resizeCanvas = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const width = canvas.parentElement?.clientWidth || window.innerWidth;
     const height = canvas.parentElement?.clientHeight || window.innerHeight;
 
@@ -90,9 +103,6 @@ export const IronManBackground: React.FC<IronManBackgroundProps> = ({
     canvas.height = height * dpr;
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
-
-    const ctx = canvas.getContext('2d');
-    if (ctx) ctx.scale(dpr, dpr);
 
     drawFrame(lastFrameRef.current);
   }, [drawFrame]);

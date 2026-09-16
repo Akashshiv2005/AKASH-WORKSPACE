@@ -154,23 +154,31 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
 
     const cw = canvas.width;
     const ch = canvas.height;
+    if (cw === 0 || ch === 0) return;
+
     const imgRatio = img.naturalWidth / img.naturalHeight;
     const canvasRatio = cw / ch;
 
     let drawW: number;
     let drawH: number;
 
-    if (canvasRatio > imgRatio) {
-      drawW = cw;
-      drawH = cw / imgRatio;
-    } else {
+    const isMobile = window.innerWidth <= 768;
+
+    if (isMobile) {
       drawH = ch;
       drawW = ch * imgRatio;
-    }
-
-    if (window.innerWidth <= 768) {
-      drawW *= 1.25;
-      drawH *= 1.25;
+      if (drawW > cw * 1.1) {
+        drawW = cw * 1.1;
+        drawH = drawW / imgRatio;
+      }
+    } else {
+      if (canvasRatio > imgRatio) {
+        drawW = cw;
+        drawH = cw / imgRatio;
+      } else {
+        drawH = ch;
+        drawW = ch * imgRatio;
+      }
     }
 
     const drawX = (cw - drawW) / 2;
@@ -191,23 +199,31 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
 
     const cw = canvas.width;
     const ch = canvas.height;
+    if (cw === 0 || ch === 0) return;
+
     const imgRatio = img.naturalWidth / img.naturalHeight;
     const canvasRatio = cw / ch;
 
     let drawW: number;
     let drawH: number;
 
-    if (canvasRatio > imgRatio) {
-      drawW = cw;
-      drawH = cw / imgRatio;
-    } else {
+    const isMobile = window.innerWidth <= 768;
+
+    if (isMobile) {
       drawH = ch;
       drawW = ch * imgRatio;
-    }
-
-    if (window.innerWidth <= 768) {
-      drawW *= 1.25;
-      drawH *= 1.25;
+      if (drawW > cw * 1.1) {
+        drawW = cw * 1.1;
+        drawH = drawW / imgRatio;
+      }
+    } else {
+      if (canvasRatio > imgRatio) {
+        drawW = cw;
+        drawH = cw / imgRatio;
+      } else {
+        drawH = ch;
+        drawW = ch * imgRatio;
+      }
     }
 
     const drawX = (cw - drawW) / 2;
@@ -218,7 +234,7 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
   }, []);
 
   const resizeCanvases = useCallback(() => {
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const width = window.innerWidth;
     const height = window.innerHeight;
 
@@ -228,8 +244,6 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
       c1.height = height * dpr;
       c1.style.width = `${width}px`;
       c1.style.height = `${height}px`;
-      const ctx1 = c1.getContext('2d');
-      if (ctx1) ctx1.scale(dpr, dpr);
       drawFrame1(lastFrame1Ref.current);
     }
 
@@ -239,8 +253,6 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
       c2.height = height * dpr;
       c2.style.width = `${width}px`;
       c2.style.height = `${height}px`;
-      const ctx2 = c2.getContext('2d');
-      if (ctx2) ctx2.scale(dpr, dpr);
       drawFrame2(lastFrame2Ref.current);
     }
   }, [drawFrame1, drawFrame2]);
@@ -315,15 +327,19 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
     const handleScroll = () => updateScrollProgress();
 
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('touchmove', handleScroll, { passive: true });
     if (container) {
       container.addEventListener('scroll', handleScroll, { passive: true });
+      container.addEventListener('touchmove', handleScroll, { passive: true });
     }
     updateScrollProgress();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('touchmove', handleScroll);
       if (container) {
         container.removeEventListener('scroll', handleScroll);
+        container.removeEventListener('touchmove', handleScroll);
       }
     };
   }, [updateScrollProgress]);
@@ -428,14 +444,14 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
             return (
               <div
                 key={d.id}
-                className={`absolute right-8 top-1/3 z-30 max-w-md p-6 rounded-2xl bg-[#0c0c0e]/95 backdrop-blur-xl border border-red-900/40 text-white shadow-2xl shadow-red-950/50 transition-all duration-500 ${
+                className={`absolute left-4 right-4 sm:left-auto sm:right-8 top-28 sm:top-1/3 z-30 max-w-sm sm:max-w-md p-4 sm:p-6 rounded-2xl bg-[#0c0c0e]/95 backdrop-blur-xl border border-red-900/40 text-white shadow-2xl shadow-red-950/50 transition-all duration-500 ${
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'
                 }`}
               >
-                <blockquote className="text-lg font-bold italic leading-relaxed text-zinc-100">
+                <blockquote className="text-sm sm:text-lg font-bold italic leading-relaxed text-zinc-100">
                   "{d.quote}"
                 </blockquote>
-                <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-3">
+                <div className="mt-3 sm:mt-4 flex items-center justify-between border-t border-white/10 pt-2.5 sm:pt-3">
                   <span className="text-xs font-semibold text-zinc-300">{d.speaker}</span>
                   <span className="font-mono text-[10px] text-amber-400 uppercase tracking-widest">
                     {d.film}
@@ -473,7 +489,7 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
             return (
               <div
                 key={d.id}
-                className={`absolute left-8 top-1/3 z-30 max-w-md p-6 rounded-2xl bg-[#141416]/90 backdrop-blur-xl border border-amber-500/30 text-white shadow-2xl transition-all duration-500 ${
+                className={`absolute left-4 right-4 sm:right-auto sm:left-8 top-28 sm:top-1/3 z-30 max-w-sm sm:max-w-md p-4 sm:p-6 rounded-2xl bg-[#141416]/90 backdrop-blur-xl border border-amber-500/30 text-white shadow-2xl transition-all duration-500 ${
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'
                 }`}
               >
