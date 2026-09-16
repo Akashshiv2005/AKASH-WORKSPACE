@@ -10,6 +10,7 @@ import { BlockEditor } from './components/editor/BlockEditor';
 import { FloatingAiOrb } from './components/widgets/FloatingAiOrb';
 import { ServerHealthBanner } from './components/common/ServerHealthBanner';
 import { IronManBackground } from './components/common/IronManBackground';
+import { IronManLandingPage } from './components/ironman/IronManLandingPage';
 import { usePageStore } from './store/usePageStore';
 import { useWorkspaceStore } from './store/useWorkspaceStore';
 import { useAuthStore } from './store/useAuthStore';
@@ -18,6 +19,7 @@ import { useHabitStore } from './store/useHabitStore';
 import { useExpenseStore } from './store/useExpenseStore';
 
 export const App: React.FC = () => {
+  const [viewMode, setViewMode] = useState<'landing' | 'workspace'>('landing');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
   const mainRef = useRef<HTMLElement | null>(null);
@@ -60,6 +62,12 @@ export const App: React.FC = () => {
 
   const activePage = pages.find((p) => p.id === activePageId);
 
+  if (viewMode === 'landing') {
+    return (
+      <IronManLandingPage onEnterWorkspace={() => setViewMode('workspace')} />
+    );
+  }
+
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-[#fdfbf7] dark:bg-[#121212] text-[#1c1917] dark:text-[#f3f4f6] relative">
       {/* Iron Man Scroll Suit Canvas Background */}
@@ -72,6 +80,7 @@ export const App: React.FC = () => {
           setIsSidebarOpen(!isSidebarOpen);
           if (!isSidebarOpen && window.innerWidth <= 768) setIsRightSidebarOpen(false);
         }}
+        onBackToLanding={() => setViewMode('landing')}
       />
 
       {/* Center Layout Area */}
@@ -93,6 +102,7 @@ export const App: React.FC = () => {
           }}
           darkMode={darkMode}
           setDarkMode={setDarkMode}
+          onBackToLanding={() => setViewMode('landing')}
         />
 
         {/* Main Editor Page View */}

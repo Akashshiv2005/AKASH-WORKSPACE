@@ -29,6 +29,7 @@ interface HeaderBarProps {
   toggleRightSidebar?: () => void;
   darkMode: boolean;
   setDarkMode: (val: boolean) => void;
+  onBackToLanding?: () => void;
 }
 
 export const HeaderBar: React.FC<HeaderBarProps> = ({
@@ -38,6 +39,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
   toggleRightSidebar,
   darkMode,
   setDarkMode,
+  onBackToLanding,
 }) => {
   const { pages, activePageId, toggleFavorite, archivePage, duplicatePage } = usePageStore();
   const { activeWorkspace } = useWorkspaceStore();
@@ -90,11 +92,20 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
             </button>
           )}
 
+          {/* Iron Man Landing Page Back Trigger */}
+          {onBackToLanding && (
+            <button
+              onClick={onBackToLanding}
+              className="flex items-center space-x-1 px-2.5 py-1 rounded-xl bg-black text-white hover:bg-zinc-800 text-[11px] font-black tracking-wider transition-all hover:scale-105 shadow-xs border border-amber-500/30"
+              title="Return to Iron Man Home Landing Page"
+            >
+              <Shield className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+              <span className="hidden md:inline">IRON MAN HOME</span>
+            </button>
+          )}
+
           {/* Workspace Shield Logo */}
           <div className="hidden sm:flex items-center space-x-2 shrink-0">
-            <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[#dc2626] via-[#f59e0b] to-[#b91c1c] text-white flex items-center justify-center shadow-xs gold-red-pulse">
-              <Shield className="w-3.5 h-3.5 text-white" />
-            </div>
             <span className="text-xs font-black text-gradient-flow text-glow hover-text-shimmer truncate max-w-[140px] md:max-w-none">
               {activeWorkspace?.name || "Akash Shiv's Workspace"}
             </span>

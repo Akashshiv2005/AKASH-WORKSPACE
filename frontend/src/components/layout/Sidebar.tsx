@@ -23,9 +23,10 @@ import {
 interface SidebarProps {
   isOpen: boolean;
   toggleSidebar: () => void;
+  onBackToLanding?: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackToLanding }) => {
   const {
     pages,
     archivedPages,
@@ -324,6 +325,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
 
       {/* Main Navigation Links */}
       <div className="p-2 space-y-1">
+        {onBackToLanding && (
+          <button
+            onClick={() => wrapCreate(onBackToLanding)}
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg bg-[#0a0a0b] text-white hover:bg-zinc-800 text-xs font-bold transition-all hover:scale-[1.01] border border-amber-500/30 shadow-xs mb-1"
+          >
+            <Shield className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+            <span>Iron Man Home</span>
+          </button>
+        )}
+
         <button
           onClick={() => setSearching(true)}
           className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-[#f2ebe1] text-xs text-[#44403c] transition-all hover:scale-[1.01]"
