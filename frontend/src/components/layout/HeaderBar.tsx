@@ -79,13 +79,13 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
 
   return (
     <>
-      <header className="h-14 border-b border-indigo-500/25 bg-[#0f172a]/95 backdrop-blur-xl px-4 flex items-center justify-between text-slate-100 select-none z-10 transition-colors shrink-0">
+      <header className="h-14 border-b border-amber-500/30 bg-[#120a0d]/95 backdrop-blur-xl px-4 flex items-center justify-between text-white select-none z-10 transition-colors shrink-0">
         {/* Left Section: Workspace & Breadcrumbs */}
         <div className="flex items-center space-x-3 min-w-0">
           {!isSidebarOpen && (
             <button
               onClick={toggleSidebar}
-              className="p-1.5 rounded-lg hover:bg-indigo-950/60 text-amber-400 transition-colors"
+              className="p-1.5 rounded-lg hover:bg-red-950/60 text-amber-400 transition-colors"
               title="Open Left Sidebar"
             >
               <PanelLeft className="w-4 h-4 text-amber-400" />
@@ -194,24 +194,24 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
             <span className="hidden sm:inline font-medium">{copied ? 'Copied!' : 'Share'}</span>
           </button>
 
-          {/* Page Options Menu */}
+          {/* Workspace Options Menu */}
           {activePage && (
             <div className="relative hidden sm:block">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="p-1.5 rounded-lg hover:bg-[#f2ebe1] text-[#78716c] transition-colors"
+                className="p-1.5 rounded-lg hover:bg-indigo-950/60 text-slate-300 transition-colors"
               >
                 <MoreHorizontal className="w-4 h-4" />
               </button>
 
               {isMenuOpen && (
-                <div className="absolute right-0 mt-1 w-48 rounded-xl bg-white border border-[#f0e8dc] shadow-xl py-1 text-xs text-[#1c1917] z-50 animate-fade-in-up">
+                <div className="absolute right-0 mt-1 w-48 rounded-xl bg-[#131b2e] border border-indigo-500/30 shadow-2xl py-1 text-xs text-slate-100 z-50 animate-fade-in-up">
                   <button
                     onClick={() => {
                       duplicatePage(activePage.id);
                       setIsMenuOpen(false);
                     }}
-                    className="w-full text-left px-3 py-1.5 hover:bg-[#f9f6f0] flex items-center space-x-2 font-medium text-[#ff7a00]"
+                    className="w-full text-left px-3 py-1.5 hover:bg-indigo-900/40 flex items-center space-x-2 font-medium text-amber-400"
                   >
                     <Copy className="w-3.5 h-3.5" />
                     <span>Duplicate Page</span>
@@ -228,7 +228,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
                       downloadAnchor.remove();
                       setIsMenuOpen(false);
                     }}
-                    className="w-full text-left px-3 py-1.5 hover:bg-[#f9f6f0] flex items-center space-x-2 font-medium text-emerald-600"
+                    className="w-full text-left px-3 py-1.5 hover:bg-indigo-900/40 flex items-center space-x-2 font-medium text-emerald-400"
                   >
                     <Share2 className="w-3.5 h-3.5" />
                     <span>Export Workspace JSON</span>
@@ -239,7 +239,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
                       archivePage(activePage.id);
                       setIsMenuOpen(false);
                     }}
-                    className="w-full text-left px-3 py-1.5 hover:bg-[#f9f6f0] text-red-500 flex items-center space-x-2 font-medium"
+                    className="w-full text-left px-3 py-1.5 hover:bg-indigo-900/40 text-rose-400 flex items-center space-x-2 font-medium"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                     <span>Move to Trash</span>
@@ -249,22 +249,22 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
             </div>
           )}
 
-          <div className="w-[1px] h-4 bg-[#f0e8dc] mx-1" />
+          <div className="w-[1px] h-4 bg-indigo-500/30 mx-1" />
 
           {/* User Auth Profile Trigger */}
           {isAuthenticated ? (
             <div className="flex items-center space-x-2 pl-1">
-              <div className="w-7 h-7 rounded-full bg-gradient-to-r from-[#ff7a00] to-[#ff9500] text-white flex items-center justify-center text-xs font-black shadow-xs">
+              <div className="w-7 h-7 rounded-full bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 flex items-center justify-center text-xs font-black shadow-sm">
                 {user?.full_name?.charAt(0).toUpperCase() || 'A'}
               </div>
-              <span className="text-xs font-bold text-[#1c1917] hidden md:inline">
+              <span className="text-xs font-bold text-slate-100 hidden md:inline">
                 {user?.full_name || 'Akash Shiv'}
               </span>
             </div>
           ) : (
             <button
               onClick={() => setAuthModalOpen(true, 'login')}
-              className="flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-[#ff7a00] hover:bg-[#e66e00] text-white text-xs font-bold transition-all hover:scale-105 shadow-sm"
+              className="flex items-center space-x-1.5 px-3 py-1 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold transition-all hover:scale-105 shadow-sm"
             >
               <User className="w-3.5 h-3.5" />
               <span>Sign In</span>
@@ -281,3 +281,4 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
     </>
   );
 };
+

@@ -68,7 +68,7 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#0b0f19] text-slate-100 relative font-['Sora'] select-none">
+    <div className="flex h-screen w-screen overflow-hidden bg-[#0a0708] text-white relative font-['Sora'] select-none">
       {/* Left Sidebar */}
       <Sidebar
         isOpen={isSidebarOpen}

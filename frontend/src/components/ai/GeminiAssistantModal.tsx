@@ -99,9 +99,9 @@ export const GeminiAssistantModal: React.FC<GeminiAssistantModalProps> = ({
     }
 
     // Queries about Today Tasks / To Do ("what is to day to do", "what are my tasks", "todo list")
-    if (lower.includes('to do') || lower.includes('todo') || lower.includes('task') || lower.includes('kanban') || lower.includes('work')) {
+    if (lower.includes('to do') || lower.includes('todo') || lower.includes('task') || lower.includes('work')) {
       const taskList = tasks.map((t) => `• [${t.priority}] ${t.title} (${t.status})`).join('\n');
-      return `🎯 Here is your Kanban Task Board summary for today, Akash:\n\n${taskList || '• No tasks currently on your board.'}\n\nYou can tell me anytime: "Create task [task title] with High Priority"!`;
+      return `🎯 Here is your Task Board summary for today, Akash:\n\n${taskList || '• No tasks currently on your board.'}\n\nYou can tell me anytime: "Create task [task title] with High Priority"!`;
     }
 
     // Queries about Habits
@@ -145,7 +145,7 @@ You are JARVIS, an advanced, highly intelligent executive AI assistant (like Cha
 Full Workspace Context:
 - Akash's Active Habits: ${activeHabitsSummary || 'None'}
 - Streak: ${getBestStreak()} Days (Weekly Progress: ${getOverallPercentage()}%, Checked: ${getTotalCheckmarks()})
-- Akash's Kanban Tasks: ${activeTasksSummary || 'None'}
+- Akash's Tasks: ${activeTasksSummary || 'None'}
 - Akash's Workspace Pages: ${pageTitles || 'None'}
 
 User Message: "${userMsgText}"

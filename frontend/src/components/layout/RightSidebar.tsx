@@ -100,18 +100,18 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         className="fixed inset-0 bg-black/20 z-40 md:hidden" 
         onClick={toggleRightSidebar}
       />
-      <aside className="fixed right-0 md:relative z-50 w-64 h-screen bg-[#0d1322]/95 backdrop-blur-xl border-l border-indigo-500/25 flex flex-col shrink-0 select-none transition-all animate-slide-in-right font-['Sora'] text-slate-100">
+      <aside className="fixed right-0 md:relative z-50 w-64 h-screen bg-[#120a0d]/95 backdrop-blur-xl border-l border-amber-500/30 flex flex-col shrink-0 select-none transition-all animate-slide-in-right font-['Sora'] text-white">
       {/* Header Bar */}
-      <div className="p-3 border-b border-indigo-500/25 bg-[#121a2c] flex items-center justify-between">
+      <div className="p-3 border-b border-amber-500/30 bg-[#1a0e12] flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <div className="p-1.5 rounded-lg bg-indigo-950/60 border border-amber-400/40 text-amber-400 shadow-xs">
+          <div className="p-1.5 rounded-lg bg-red-950/70 border border-amber-400/40 text-amber-400 shadow-xs">
             <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
           </div>
           <span className="text-xs font-black tracking-wide text-amber-400 uppercase animate-text-float">
             {widgetType === 'habit_tracker'
               ? 'HABIT INSPECTOR'
               : widgetType === 'todo_planner'
-              ? 'KANBAN INSPECTOR'
+              ? 'TASK INSPECTOR'
               : widgetType === 'pomodoro'
               ? 'FOCUS DOCK'
               : widgetType === 'journal'
@@ -121,7 +121,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         </div>
         <button
           onClick={toggleRightSidebar}
-          className="p-1 rounded-lg hover:bg-zinc-800 text-zinc-400 hover:text-white"
+          className="p-1 rounded-lg hover:bg-red-900/40 text-slate-300 hover:text-white"
           title="Close Dock"
         >
           <PanelRightClose className="w-4 h-4" />
@@ -129,66 +129,66 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
       </div>
 
       {/* Main Dynamic Content Area */}
-      <div className="flex-1 overflow-y-auto p-3 space-y-4 text-xs">
+      <div className="flex-1 overflow-y-auto p-3 space-y-4 text-xs select-none">
         {/* DYNAMIC OPTION 1: HABIT TRACKER ACTIVE */}
         {widgetType === 'habit_tracker' && (
           <div className="space-y-3 animate-fade-in-up">
-            {/* Active Streak Card (Dynamically Reacts) */}
-            <div className="p-4 rounded-2xl bg-white dark:bg-[#121216]/90 border border-[#f2e8da] dark:border-red-900/30 shadow-xs space-y-2 text-center animate-float">
-              <div className="flex items-center justify-center space-x-1.5 text-[#ff7a00] font-bold">
-                <Flame className="w-4 h-4 fill-[#ff7a00] text-[#ff7a00] animate-bounce" />
-                <span className="uppercase text-[10px] tracking-wider text-[#a8a29e] dark:text-zinc-400 font-black">ACTIVE STREAK</span>
+            {/* Active Streak Card */}
+            <div className="p-4 rounded-2xl bg-[#1c0f13]/90 border border-amber-500/30 text-white shadow-lg space-y-2 text-center animate-float">
+              <div className="flex items-center justify-center space-x-1.5 text-amber-400 font-bold">
+                <Flame className="w-4 h-4 fill-amber-400 text-amber-400 animate-bounce" />
+                <span className="uppercase text-[10px] tracking-wider text-slate-400 font-black">ACTIVE STREAK</span>
               </div>
-              <div className="text-3xl font-black text-[#ff7a00] shimmer-text-orange">
+              <div className="text-3xl font-black text-amber-400 shimmer-text-orange">
                 {bestStreak} {bestStreak === 1 ? 'Day' : 'Days'} Active
               </div>
-              <p className="text-[11px] text-[#78716c] dark:text-zinc-400">
+              <p className="text-[11px] text-slate-400">
                 {habits.length} daily habits configured
               </p>
             </div>
 
-            {/* Weekly Completion Progress (Dynamically Reacts) */}
-            <div className="p-4 rounded-2xl bg-white dark:bg-[#121216]/90 border border-[#f2e8da] dark:border-red-900/30 shadow-xs space-y-2.5">
-              <div className="flex items-center justify-between text-xs font-bold text-[#1c1917] dark:text-zinc-100">
+            {/* Weekly Completion Progress */}
+            <div className="p-4 rounded-2xl bg-[#1c0f13]/90 border border-amber-500/30 text-white shadow-lg space-y-2.5">
+              <div className="flex items-center justify-between text-xs font-bold text-slate-100">
                 <span className="flex items-center space-x-1.5">
-                  <TrendingUp className="w-3.5 h-3.5 text-[#ff7a00]" />
-                  <span className="uppercase text-[10px] tracking-wider text-[#a8a29e] dark:text-zinc-400 font-black">WEEKLY GOAL</span>
+                  <TrendingUp className="w-3.5 h-3.5 text-amber-400" />
+                  <span className="uppercase text-[10px] tracking-wider text-slate-400 font-black">WEEKLY GOAL</span>
                 </span>
-                <span className="text-[#1c1917] dark:text-zinc-100 font-black text-sm">{overallPercentage}%</span>
+                <span className="text-amber-400 font-black text-sm">{overallPercentage}%</span>
               </div>
-              <div className="w-full bg-[#f0e8dc] dark:bg-zinc-800 h-2.5 rounded-full overflow-hidden">
-                <div style={{ width: `${overallPercentage}%` }} className="h-full bg-gradient-to-r from-[#ff7a00] to-[#ffaa00] transition-all duration-500" />
+              <div className="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden border border-indigo-500/20">
+                <div style={{ width: `${overallPercentage}%` }} className="h-full bg-gradient-to-r from-amber-500 to-amber-400 transition-all duration-500" />
               </div>
-              <p className="text-[10px] text-[#78716c] dark:text-zinc-400 text-right font-medium">
+              <p className="text-[10px] text-slate-400 text-right font-medium">
                 {totalCheckmarks} of {maxCheckmarks} checked
               </p>
             </div>
 
             {/* JARVIS Habit Advice */}
-            <div className="p-4 rounded-2xl bg-[#fffcf7] dark:bg-[#16141a]/90 border border-[#ffe9d1] dark:border-amber-500/30 shadow-xs space-y-1.5">
-              <div className="flex items-center space-x-1.5 text-[#ff7a00] font-bold text-[11px]">
-                <Target className="w-3.5 h-3.5 text-[#ff7a00]" />
+            <div className="p-4 rounded-2xl bg-[#131b2e]/90 border border-amber-500/30 shadow-lg space-y-1.5">
+              <div className="flex items-center space-x-1.5 text-amber-400 font-bold text-[11px]">
+                <Target className="w-3.5 h-3.5 text-amber-400" />
                 <span className="animate-text-float uppercase text-[10px] tracking-wider font-black">JARVIS HABIT ADVICE</span>
               </div>
-              <p className="text-[11px] text-[#44403c] dark:text-zinc-300 leading-relaxed font-medium">
+              <p className="text-[11px] text-slate-300 leading-relaxed font-medium">
                 Consistency beats intensity every single time, {userFirstName}. Keep your streak alive!
               </p>
             </div>
 
             {/* JARVIS Assistant Teaser */}
             {showAssistantBox && (
-              <div className="p-4 rounded-2xl bg-white dark:bg-[#121216]/90 border border-[#f2e8da] dark:border-red-900/30 shadow-xs space-y-2 relative animate-fade-in-up">
+              <div className="p-4 rounded-2xl bg-[#1c0f13]/90 border border-amber-500/30 text-white shadow-lg space-y-2 relative animate-fade-in-up">
                 <button
                   onClick={() => setShowAssistantBox(false)}
-                  className="absolute right-3 top-3 text-[#a8a29e] hover:text-[#1c1917] dark:hover:text-white"
+                  className="absolute right-3 top-3 text-slate-400 hover:text-white"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
-                <div className="flex items-center space-x-1.5 text-[#ff7a00] font-bold text-[11px]">
-                  <Shield className="w-3.5 h-3.5 text-[#ff7a00]" />
+                <div className="flex items-center space-x-1.5 text-amber-400 font-bold text-[11px]">
+                  <Shield className="w-3.5 h-3.5 text-amber-400" />
                   <span className="uppercase text-[10px] tracking-wider font-black">JARVIS ASSISTANT</span>
                 </div>
-                <p className="text-[11px] text-[#57534e] dark:text-zinc-300">
+                <p className="text-[11px] text-slate-300">
                   Need habit advice or task assistance, {userFirstName}?
                 </p>
               </div>
@@ -199,47 +199,47 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         {/* DYNAMIC OPTION 2: TASK PLANNER & KANBAN ACTIVE */}
         {widgetType === 'todo_planner' && (
           <div className="space-y-3 animate-fade-in-up">
-            {/* Priority Operations Breakdown (Dynamically Reacts) */}
-            <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] shadow-xs space-y-3">
-              <div className="flex items-center space-x-1.5 text-[#ff7a00] font-bold text-[11px]">
-                <Target className="w-3.5 h-3.5 text-[#ff7a00]" />
+            {/* Priority Operations Breakdown */}
+            <div className="p-4 rounded-2xl bg-[#1c0f13]/90 border border-amber-500/30 text-white shadow-lg space-y-3">
+              <div className="flex items-center space-x-1.5 text-amber-400 font-bold text-[11px]">
+                <Target className="w-3.5 h-3.5 text-amber-400" />
                 <span className="uppercase tracking-wider animate-text-float font-black">OPERATIONS BREAKDOWN</span>
               </div>
 
               <div className="space-y-2">
-                <div className="flex items-center justify-between p-2 rounded-xl bg-red-50 border border-red-200">
-                  <span className="text-red-600 font-bold text-xs">High Priority</span>
-                  <span className="px-2 py-0.5 rounded-full bg-red-600 text-white font-black text-xs">{highPriorityTasks} Tasks</span>
+                <div className="flex items-center justify-between p-2 rounded-xl bg-rose-950/50 border border-rose-500/30">
+                  <span className="text-rose-300 font-bold text-xs">High Priority</span>
+                  <span className="px-2 py-0.5 rounded-full bg-rose-600 text-white font-black text-xs">{highPriorityTasks} Tasks</span>
                 </div>
-                <div className="flex items-center justify-between p-2 rounded-xl bg-amber-50 border border-amber-200">
-                  <span className="text-amber-700 font-bold text-xs">Medium Priority</span>
-                  <span className="px-2 py-0.5 rounded-full bg-amber-500 text-white font-black text-xs">{mediumPriorityTasks} Tasks</span>
+                <div className="flex items-center justify-between p-2 rounded-xl bg-amber-950/50 border border-amber-500/30">
+                  <span className="text-amber-300 font-bold text-xs">Medium Priority</span>
+                  <span className="px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 font-black text-xs">{mediumPriorityTasks} Tasks</span>
                 </div>
-                <div className="flex items-center justify-between p-2 rounded-xl bg-emerald-50 border border-emerald-200">
-                  <span className="text-emerald-700 font-bold text-xs">Low Priority</span>
+                <div className="flex items-center justify-between p-2 rounded-xl bg-emerald-950/50 border border-emerald-500/30">
+                  <span className="text-emerald-300 font-bold text-xs">Low Priority</span>
                   <span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white font-black text-xs">{lowPriorityTasks} Tasks</span>
                 </div>
               </div>
             </div>
 
-            {/* Column Pipeline Ratios (Dynamically Reacts) */}
-            <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] shadow-xs space-y-2">
-              <div className="flex items-center space-x-1.5 text-[#ff7a00] font-bold text-[11px]">
-                <ListTodo className="w-3.5 h-3.5 text-[#ff7a00]" />
+            {/* Column Pipeline Ratios */}
+            <div className="p-4 rounded-2xl bg-[#1c0f13]/90 border border-amber-500/30 text-white shadow-lg space-y-2">
+              <div className="flex items-center space-x-1.5 text-amber-400 font-bold text-[11px]">
+                <ListTodo className="w-3.5 h-3.5 text-amber-400" />
                 <span className="uppercase tracking-wider font-black">PIPELINE STATUS</span>
               </div>
               <div className="grid grid-cols-3 gap-2 text-center pt-1">
-                <div className="p-2 rounded-xl bg-red-50 border border-red-200">
-                  <div className="font-black text-red-600 text-sm">{todoCount}</div>
-                  <div className="text-[10px] text-[#78716c]">To Do</div>
+                <div className="p-2 rounded-xl bg-rose-950/40 border border-rose-500/25">
+                  <div className="font-black text-rose-400 text-sm">{todoCount}</div>
+                  <div className="text-[10px] text-slate-400">To Do</div>
                 </div>
-                <div className="p-2 rounded-xl bg-amber-50 border border-amber-200">
-                  <div className="font-black text-amber-600 text-sm">{inProgressCount}</div>
-                  <div className="text-[10px] text-[#78716c]">In Progress</div>
+                <div className="p-2 rounded-xl bg-amber-950/40 border border-amber-500/25">
+                  <div className="font-black text-amber-400 text-sm">{inProgressCount}</div>
+                  <div className="text-[10px] text-slate-400">In Progress</div>
                 </div>
-                <div className="p-2 rounded-xl bg-emerald-50 border border-emerald-200">
-                  <div className="font-black text-emerald-600 text-sm">{completedCount}</div>
-                  <div className="text-[10px] text-[#78716c]">Done</div>
+                <div className="p-2 rounded-xl bg-emerald-950/40 border border-emerald-500/25">
+                  <div className="font-black text-emerald-400 text-sm">{completedCount}</div>
+                  <div className="text-[10px] text-slate-400">Done</div>
                 </div>
               </div>
             </div>
@@ -250,29 +250,29 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         {widgetType === 'pomodoro' && (
           <div className="space-y-3 animate-fade-in-up">
             {/* Full Focus Timer Widget */}
-            <div className="p-4 rounded-2xl bg-white border border-[#ffe0c2] shadow-xs space-y-3 text-center animate-float orange-pulse">
-              <div className="flex items-center justify-between text-[11px] font-bold text-[#ff7a00]">
+            <div className="p-4 rounded-2xl bg-[#131b2e]/90 border border-amber-500/30 shadow-lg space-y-3 text-center animate-float orange-pulse">
+              <div className="flex items-center justify-between text-[11px] font-bold text-amber-400">
                 <span className="flex items-center space-x-1">
-                  <Zap className="w-3.5 h-3.5 text-[#ff7a00]" />
+                  <Zap className="w-3.5 h-3.5 text-amber-400" />
                   <span className="animate-text-float uppercase tracking-wider font-black">Focus Station</span>
                 </span>
-                <span className="px-2 py-0.5 rounded-full bg-[#fff3e5] text-[#ff7a00] font-bold">
+                <span className="px-2 py-0.5 rounded-full bg-amber-950/60 text-amber-400 border border-amber-500/30 font-bold">
                   {sessionsCount} Done
                 </span>
               </div>
 
-              <div className="text-3xl font-black font-mono text-[#ff7a00] shimmer-text-orange">
+              <div className="text-3xl font-black font-mono text-amber-400 shimmer-text-orange">
                 {formattedTime}
               </div>
 
               <div className="flex items-center justify-center space-x-2 pt-1">
                 <button
                   onClick={() => setIsRunning(!isRunning)}
-                  className={`px-4 py-1.5 rounded-xl text-xs font-bold text-white shadow-sm flex items-center space-x-1.5 transition-all hover:scale-105 ${
-                    isRunning ? 'bg-amber-600' : 'bg-gradient-to-r from-[#ff7a00] to-[#ff9500]'
+                  className={`px-4 py-1.5 rounded-xl text-xs font-bold text-slate-950 shadow-md flex items-center space-x-1.5 transition-all hover:scale-105 ${
+                    isRunning ? 'bg-amber-600 text-white' : 'bg-gradient-to-r from-amber-400 to-amber-500'
                   }`}
                 >
-                  {isRunning ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-white" />}
+                  {isRunning ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-slate-950" />}
                   <span>{isRunning ? 'Pause' : 'Start'}</span>
                 </button>
                 <button
@@ -280,7 +280,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
                     setIsRunning(false);
                     setTimeLeft(25 * 60);
                   }}
-                  className="p-1.5 rounded-xl bg-[#f2ebe1] text-[#78716c] hover:text-[#1c1917]"
+                  className="p-1.5 rounded-xl bg-slate-800 text-slate-300 hover:text-white border border-indigo-500/20"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                 </button>
@@ -288,16 +288,16 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
             </div>
 
             {/* Audio Presets */}
-            <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] shadow-xs space-y-2">
-              <div className="flex items-center space-x-1.5 text-[#ff7a00] font-bold text-[11px]">
-                <Volume2 className="w-3.5 h-3.5 text-[#ff7a00]" />
+            <div className="p-4 rounded-2xl bg-[#1c0f13]/90 border border-amber-500/30 text-white shadow-lg space-y-2">
+              <div className="flex items-center space-x-1.5 text-amber-400 font-bold text-[11px]">
+                <Volume2 className="w-3.5 h-3.5 text-amber-400" />
                 <span className="uppercase tracking-wider font-black">Ambient Focus Audio</span>
               </div>
               <div className="space-y-1.5">
-                <button className="w-full text-left p-2 rounded-xl bg-[#f9f6f0] hover:bg-[#fff3e5] border border-[#f0e8dc] text-[#44403c] font-medium text-[11px]">
+                <button className="w-full text-left p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-indigo-500/20 text-slate-200 font-medium text-[11px]">
                   🎧 Deep Concentration (432Hz)
                 </button>
-                <button className="w-full text-left p-2 rounded-xl bg-[#f9f6f0] hover:bg-[#fff3e5] border border-[#f0e8dc] text-[#44403c] font-medium text-[11px]">
+                <button className="w-full text-left p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-indigo-500/20 text-slate-200 font-medium text-[11px]">
                   🌧️ High Altitude Rain & Focus
                 </button>
               </div>
@@ -319,30 +319,30 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
           return (
             <div className="space-y-3 animate-fade-in-up">
               {/* Today's Mood Status */}
-              <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] shadow-xs space-y-2 text-center animate-float">
-                <div className="flex items-center justify-center space-x-1 text-[#ff7a00] font-bold text-[11px]">
-                  <Smile className="w-3.5 h-3.5 text-[#ff7a00]" />
+              <div className="p-4 rounded-2xl bg-[#1c0f13]/90 border border-amber-500/30 text-white shadow-lg space-y-2 text-center animate-float">
+                <div className="flex items-center justify-center space-x-1 text-amber-400 font-bold text-[11px]">
+                  <Smile className="w-3.5 h-3.5 text-amber-400" />
                   <span className="uppercase tracking-wider font-black">Logged Mood</span>
                 </div>
-                <div className="text-3xl font-black text-[#ff7a00]">
+                <div className="text-3xl font-black text-amber-400">
                   {selectedMood || '🚀'} {moodName}
                 </div>
-                <p className="text-[11px] text-[#78716c]">{userFirstName}'s mood logged today</p>
+                <p className="text-[11px] text-slate-400">{userFirstName}'s mood logged today</p>
               </div>
 
               {/* Gratitude Counter */}
-              <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] shadow-xs space-y-2">
-                <div className="flex items-center justify-between text-xs font-bold text-[#1c1917]">
+              <div className="p-4 rounded-2xl bg-[#1c0f13]/90 border border-amber-500/30 text-white shadow-lg space-y-2">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-100">
                   <span className="flex items-center space-x-1.5">
-                    <BookOpen className="w-3.5 h-3.5 text-[#ff7a00]" />
-                    <span className="uppercase tracking-wider text-[10px] text-[#a8a29e] font-black">Gratitude Logs</span>
+                    <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+                    <span className="uppercase tracking-wider text-[10px] text-slate-400 font-black">Gratitude Logs</span>
                   </span>
-                  <span className="text-[#ff7a00] font-black">{gratitudeItems.length} / 3</span>
+                  <span className="text-amber-400 font-black">{gratitudeItems.length} / 3</span>
                 </div>
-                <div className="space-y-1 text-[11px] text-[#44403c]">
-                  {gratitude1 ? <p className="truncate">✓ 1. {gratitude1}</p> : <p className="text-[#a8a29e] italic">1. Add gratitude in journal</p>}
-                  {gratitude2 ? <p className="truncate">✓ 2. {gratitude2}</p> : <p className="text-[#a8a29e] italic">2. Add gratitude in journal</p>}
-                  {gratitude3 ? <p className="truncate">✓ 3. {gratitude3}</p> : <p className="text-[#a8a29e] italic">3. Add gratitude in journal</p>}
+                <div className="space-y-1 text-[11px] text-slate-300">
+                  {gratitude1 ? <p className="truncate">✓ 1. {gratitude1}</p> : <p className="text-slate-500 italic">1. Add gratitude in journal</p>}
+                  {gratitude2 ? <p className="truncate">✓ 2. {gratitude2}</p> : <p className="text-slate-500 italic">2. Add gratitude in journal</p>}
+                  {gratitude3 ? <p className="truncate">✓ 3. {gratitude3}</p> : <p className="text-slate-500 italic">3. Add gratitude in journal</p>}
                 </div>
               </div>
             </div>
@@ -352,44 +352,44 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         {/* DYNAMIC OPTION 5: DEFAULT STANDARD DOCUMENT PAGE */}
         {!widgetType && (
           <div className="space-y-3 animate-fade-in-up">
-            {/* Page Metrics Inspector (Dynamically Computed) */}
-            <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] shadow-xs space-y-3">
-              <div className="flex items-center space-x-1.5 text-[#ff7a00] font-bold text-[11px]">
-                <FileText className="w-3.5 h-3.5 text-[#ff7a00]" />
+            {/* Page Metrics Inspector */}
+            <div className="p-4 rounded-2xl bg-[#1c0f13]/90 border border-amber-500/30 text-white shadow-lg space-y-3">
+              <div className="flex items-center space-x-1.5 text-amber-400 font-bold text-[11px]">
+                <FileText className="w-3.5 h-3.5 text-amber-400" />
                 <span className="uppercase tracking-wider animate-text-float font-black">Page Inspector</span>
               </div>
 
               <div className="space-y-2 text-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-[#78716c]">Word Count</span>
-                  <span className="font-bold text-[#1c1917]">{wordCount} Words</span>
+                  <span className="text-slate-400">Word Count</span>
+                  <span className="font-bold text-slate-100">{wordCount} Words</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[#78716c]">Reading Time</span>
-                  <span className="font-bold text-[#1c1917]">~{readingTime} Min</span>
+                  <span className="text-slate-400">Reading Time</span>
+                  <span className="font-bold text-slate-100">~{readingTime} Min</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-[#78716c]">Last Modified</span>
-                  <span className="font-bold text-[#ff7a00]">Just Now</span>
+                  <span className="text-slate-400">Last Modified</span>
+                  <span className="font-bold text-amber-400">Just Now</span>
                 </div>
               </div>
             </div>
 
             {/* Quick Tools */}
-            <div className="p-4 rounded-2xl bg-white border border-[#f2e8da] shadow-xs space-y-2">
-              <div className="flex items-center space-x-1.5 text-[#ff7a00] font-bold text-[11px]">
-                <Brain className="w-3.5 h-3.5 text-[#ff7a00]" />
+            <div className="p-4 rounded-2xl bg-[#1c0f13]/90 border border-amber-500/30 text-white shadow-lg space-y-2">
+              <div className="flex items-center space-x-1.5 text-amber-400 font-bold text-[11px]">
+                <Brain className="w-3.5 h-3.5 text-amber-400" />
                 <span className="uppercase tracking-wider font-black">JARVIS Tools</span>
               </div>
               <button
                 onClick={() => createPage('workspace-akash-shiv', null, 'Daily Habit Tracker', 'habit_tracker')}
-                className="w-full text-left p-2 rounded-xl bg-[#f9f6f0] hover:bg-[#fff3e5] border border-[#f0e8dc] text-[#44403c] font-semibold text-[11px]"
+                className="w-full text-left p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-indigo-500/20 text-slate-200 font-semibold text-[11px]"
               >
                 🔥 Habit Tracker
               </button>
               <button
                 onClick={() => createPage('workspace-akash-shiv', null, 'Arc Focus Station', 'pomodoro')}
-                className="w-full text-left p-2 rounded-xl bg-[#f9f6f0] hover:bg-[#fff3e5] border border-[#f0e8dc] text-[#44403c] font-semibold text-[11px]"
+                className="w-full text-left p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-indigo-500/20 text-slate-200 font-semibold text-[11px]"
               >
                 ⚡ Arc Focus Timer
               </button>
@@ -398,17 +398,17 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         )}
 
         {/* Global Performance Footer */}
-        <div className="p-4 rounded-2xl bg-[#fffaf3] border border-[#ffe9d1] shadow-xs space-y-1.5">
-          <div className="flex items-center justify-between text-xs font-bold text-[#ff7a00]">
+        <div className="p-4 rounded-2xl bg-[#131b2e]/90 border border-amber-500/30 shadow-lg space-y-1.5">
+          <div className="flex items-center justify-between text-xs font-bold text-amber-400">
             <span className="flex items-center space-x-1">
-              <Award className="w-3.5 h-3.5 text-[#ff7a00]" />
+              <Award className="w-3.5 h-3.5 text-amber-400" />
               <span className="uppercase tracking-wider font-black text-[10px]">Executive Level</span>
             </span>
-            <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#ff7a00] text-white font-black">
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 font-black">
               MAX
             </span>
           </div>
-          <p className="text-[11px] text-[#57534e] font-medium leading-relaxed">
+          <p className="text-[11px] text-slate-300 font-medium leading-relaxed">
             {userFirstName}, your daily productivity score is {overallPercentage > 0 ? `${overallPercentage}%` : '100%'}.
           </p>
         </div>
@@ -417,3 +417,4 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
     </>
   );
 };
+

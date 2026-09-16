@@ -46,18 +46,18 @@ export const GeminiMotivationBanner: React.FC = () => {
 
   return (
     <div className="my-6 select-none animate-fade-in-up">
-      <div className="rounded-2xl bg-[#fffaf3] dark:bg-[#121216]/90 border border-amber-500/20 dark:border-red-900/30 p-6 text-[#1c1917] dark:text-zinc-100 space-y-4 shadow-sm">
+      <div className="rounded-2xl bg-[#131b2e]/90 border border-indigo-500/25 p-6 text-slate-100 space-y-4 shadow-lg backdrop-blur-xl">
         {/* Header Row */}
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-red-600 to-amber-500 text-white flex items-center justify-center shadow-xs animate-float">
-              <Shield className="w-5 h-5 text-white" />
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 flex items-center justify-center shadow-md animate-float">
+              <Shield className="w-5 h-5 text-slate-950 fill-slate-950" />
             </div>
             <div>
-              <span className="text-xs font-black uppercase tracking-wider text-gradient-flow text-glow inline-block">
+              <span className="text-xs font-black uppercase tracking-wider text-amber-400 inline-block">
                 JARVIS AI BOOST
               </span>
-              <p className="text-xs text-[#78716c] dark:text-zinc-400 animate-text-reveal">
+              <p className="text-xs text-slate-400 animate-text-reveal">
                 Personalized executive mindset for {fullName}
               </p>
             </div>
@@ -66,28 +66,28 @@ export const GeminiMotivationBanner: React.FC = () => {
           <button
             onClick={fetchMotivation}
             disabled={loading}
-            className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-white dark:bg-[#1c1922] hover:bg-amber-50 dark:hover:bg-zinc-800 border border-amber-500/30 text-xs font-bold text-red-600 dark:text-amber-400 transition-all hover:scale-105 shadow-xs"
+            className="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-xl bg-indigo-950/60 hover:bg-indigo-900/60 border border-amber-400/40 text-xs font-bold text-amber-400 transition-all hover:scale-105 shadow-sm"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
             <span className="hover-text-shimmer">{loading ? 'Generating...' : 'Refresh JARVIS Quote'}</span>
           </button>
         </div>
 
-        {/* Quote Block (Exact ChatGPT Quote Styling) */}
-        <div className="p-5 rounded-2xl bg-[#fffcf7] dark:bg-[#18161f]/90 border border-[#f5ede2] dark:border-red-900/30 space-y-3 relative shadow-xs">
-          <Quote className="w-10 h-10 text-red-600/10 dark:text-amber-500/10 absolute right-4 top-3 pointer-events-none" />
-          <p className="text-sm font-semibold italic text-[#1c1917] dark:text-zinc-100 leading-relaxed animate-text-reveal hover:text-red-600 dark:hover:text-amber-400 transition-colors duration-300">
+        {/* Quote Block */}
+        <div className="p-5 rounded-2xl bg-[#0f172a]/90 border border-indigo-500/20 space-y-3 relative shadow-sm">
+          <Quote className="w-10 h-10 text-amber-400/10 absolute right-4 top-3 pointer-events-none" />
+          <p className="text-sm font-semibold italic text-slate-200 leading-relaxed animate-text-reveal hover:text-amber-300 transition-colors duration-300">
             "{motivation.quote}"
           </p>
-          <div className="text-xs font-bold text-red-600 dark:text-amber-400 shimmer-text-orange inline-block">
+          <div className="text-xs font-bold text-amber-400 shimmer-text-orange inline-block">
             — {motivation.author}
           </div>
         </div>
 
-        {/* Live Typewriter Mindset Ticker (Letter-by-Letter typing & Backspacing) */}
-        <div className="flex items-center space-x-2 text-xs text-[#78716c] pt-2 border-t border-amber-500/20 overflow-hidden">
-          <div className="flex items-center space-x-1 font-bold text-red-600 uppercase tracking-wider text-[10px] shrink-0">
-            <Sparkles className="w-3 h-3 text-amber-500" />
+        {/* Live Typewriter Mindset Ticker */}
+        <div className="flex items-center space-x-2 text-xs text-slate-400 pt-2 border-t border-indigo-500/20 overflow-hidden">
+          <div className="flex items-center space-x-1 font-bold text-amber-400 uppercase tracking-wider text-[10px] shrink-0">
+            <Sparkles className="w-3 h-3 text-amber-400" />
             <span>EXECUTIVE TIP:</span>
           </div>
           <TypewriterText
@@ -100,11 +100,12 @@ export const GeminiMotivationBanner: React.FC = () => {
             typingSpeed={45}
             deletingSpeed={22}
             pauseDuration={2800}
-            className="text-xs font-semibold text-[#1c1917] truncate"
-            cursorClassName="text-red-600"
+            className="text-xs font-semibold text-slate-200 truncate"
+            cursorClassName="text-amber-400"
           />
         </div>
       </div>
     </div>
   );
 };
+
