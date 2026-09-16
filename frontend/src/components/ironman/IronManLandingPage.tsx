@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Shield, Sparkles, ArrowRight, Layout, ChevronRight } from 'lucide-react';
+import { Shield, ArrowRight, Layout, ChevronRight } from 'lucide-react';
 
 const FRAME_COUNT = 169;
 
@@ -49,11 +49,13 @@ interface IronManLandingPageProps {
 }
 
 export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterWorkspace }) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const framesRef = useRef<HTMLImageElement[]>([]);
   const tickingRef = useRef<boolean>(false);
   const lastFrameRef = useRef<number>(0);
+  const loadedRef = useRef<boolean>(false);
   const [loaded, setLoaded] = useState<boolean>(false);
   const [loadProgress, setLoadProgress] = useState<number>(0);
   const [visibleCards, setVisibleCards] = useState<Set<string>>(new Set());
@@ -73,6 +75,7 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
         count++;
         setLoadProgress(Math.round((count / FRAME_COUNT) * 100));
         if (count === FRAME_COUNT) {
+          loadedRef.current = true;
           setLoaded(true);
         }
       };
@@ -149,52 +152,77 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
     }
   }, [loaded, drawFrame]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (tickingRef.current) return;
-      tickingRef.current = true;
+  const updateScrollProgress = useCallback(() => {
+    if (tickingRef.current) return;
+    tickingRef.current = true;
 
-      requestAnimationFrame(() => {
-        tickingRef.current = false;
-        const section = sectionRef.current;
-        if (!section) return;
+    requestAnimationFrame(() => {
+      tickingRef.current = false;
+      const container = containerRef.current;
+      const section = sectionRef.current;
+      let progress = 0;
 
+      if (container) {
+        const scrollable = container.scrollHeight - container.clientHeight;
+        if (scrollable > 0) {
+          progress = Math.min(1, Math.max(0, container.scrollTop / scrollable));
+        }
+      } else if (section) {
         const rect = section.getBoundingClientRect();
         const scrollable = section.offsetHeight - window.innerHeight;
-        const progress =
-          scrollable <= 0 ? 0 : Math.min(1, Math.max(0, -rect.top / scrollable));
-
-        setScrollPercent(Math.round(progress * 100));
-
-        const frameIndex = Math.min(
-          FRAME_COUNT - 1,
-          Math.floor(progress * FRAME_COUNT)
-        );
-
-        if (frameIndex !== lastFrameRef.current) {
-          lastFrameRef.current = frameIndex;
-          drawFrame(frameIndex);
+        if (scrollable > 0) {
+          progress = Math.min(1, Math.max(0, -rect.top / scrollable));
         }
+      }
 
-        const newVisible = new Set<string>();
-        for (const d of DIALOGUES) {
-          if (progress >= d.show && progress <= d.hide) {
-            newVisible.add(d.id);
-          }
+      setScrollPercent(Math.round(progress * 100));
+
+      const frameIndex = Math.min(
+        FRAME_COUNT - 1,
+        Math.floor(progress * FRAME_COUNT)
+      );
+
+      if (frameIndex !== lastFrameRef.current) {
+        lastFrameRef.current = frameIndex;
+        drawFrame(frameIndex);
+      }
+
+      const newVisible = new Set<string>();
+      for (const d of DIALOGUES) {
+        if (progress >= d.show && progress <= d.hide) {
+          newVisible.add(d.id);
         }
-        setVisibleCards(newVisible);
-      });
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+      }
+      setVisibleCards(newVisible);
+    });
   }, [drawFrame]);
 
+  useEffect(() => {
+    const container = containerRef.current;
+    const handleScrollEvent = () => updateScrollProgress();
+
+    window.addEventListener('scroll', handleScrollEvent, { passive: true });
+    if (container) {
+      container.addEventListener('scroll', handleScrollEvent, { passive: true });
+    }
+    updateScrollProgress();
+
+    return () => {
+      window.removeEventListener('scroll', handleScrollEvent);
+      if (container) {
+        container.removeEventListener('scroll', handleScrollEvent);
+      }
+    };
+  }, [updateScrollProgress]);
+
   return (
-    <div className="bg-[#0a0a0b] text-white min-h-screen font-['Sora'] select-none relative">
+    <div
+      ref={containerRef}
+      onScroll={updateScrollProgress}
+      className="fixed inset-0 h-screen w-screen overflow-y-auto overflow-x-hidden bg-[#0a0a0b] text-white font-['Sora'] select-none z-40"
+    >
       {/* Top Stark Navbar */}
-      <header className="fixed inset-x-0 top-0 z-50 bg-transparent border-none">
+      <header className="fixed inset-x-0 top-0 z-50 bg-transparent border-none pointer-events-auto">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-600 via-amber-500 to-red-700 flex items-center justify-center text-white shadow-lg shadow-red-950/50">
@@ -222,7 +250,7 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
       </header>
 
       {/* Main Scroll Container */}
-      <div ref={sectionRef} className="relative h-[320vh]">
+      <div ref={sectionRef} className="relative h-[320vh] w-full">
         <div className="sticky top-0 h-screen w-full overflow-hidden">
           {/* Canvas Background */}
           <canvas
@@ -265,11 +293,6 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
 
           {/* Hero Left Text Overlay */}
           <div className="absolute left-6 md:left-12 bottom-24 md:bottom-28 z-20 max-w-sm sm:max-w-md space-y-4">
-            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-amber-500/30 text-amber-400 font-mono text-[10px] uppercase tracking-[0.24em]">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              <span>MARK LXXXV // EXECUTIVE OS</span>
-            </div>
-
             <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-white leading-none drop-shadow-xl">
               I am <br />
               <span className="bg-gradient-to-r from-red-500 via-amber-400 to-orange-500 bg-clip-text text-transparent">
