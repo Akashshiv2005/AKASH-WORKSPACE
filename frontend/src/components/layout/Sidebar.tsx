@@ -219,55 +219,56 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
           {/* Habit Tracker Template Pill */}
           <button
             onClick={() => openWidgetPage('habit_tracker')}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01] text-left"
           >
-            <Flame className="w-3.5 h-3.5 text-amber-600" />
-            <span>Habit Tracker</span>
+            <Flame className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+            <span className="truncate">Habit Tracker</span>
           </button>
 
           {/* To-Do Planner Template Pill */}
           <button
             onClick={() => openWidgetPage('todo_planner')}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01] text-left"
           >
-            <CheckSquare className="w-3.5 h-3.5 text-amber-600" />
-            <span>To-Do Planner</span>
+            <CheckSquare className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+            <span className="truncate">To-Do Planner</span>
           </button>
 
           {/* Pomodoro Focus Timer Pill */}
           <button
             onClick={() => openWidgetPage('pomodoro')}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01] text-left"
           >
-            <Zap className="w-3.5 h-3.5 text-amber-600" />
-            <span>Arc Focus Timer</span>
+            <Zap className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+            <span className="truncate">Arc Focus Timer</span>
           </button>
 
           {/* Daily Journal Pill */}
           <button
             onClick={() => openWidgetPage('journal')}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01] text-left"
           >
-            <BookOpen className="w-3.5 h-3.5 text-amber-600" />
-            <span>Daily Journal</span>
+            <BookOpen className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+            <span className="truncate">Daily Journal</span>
           </button>
 
           {/* Expense Tracker Pill */}
           <button
             onClick={() => openWidgetPage('expense_tracker')}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01] text-left"
           >
-            <span className="text-sm">💰</span>
-            <span>Expense Tracker</span>
+            <span className="text-sm shrink-0">💰</span>
+            <span className="truncate">Expense Tracker</span>
           </button>
 
           {/* Learning Management System Pill */}
           <button
             onClick={() => openWidgetPage('plans_hub')}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01] text-left"
+            title="Learning Management System"
           >
-            <GraduationCap className="w-3.5 h-3.5 text-amber-600" />
-            <span>Learning Management System</span>
+            <GraduationCap className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+            <span className="truncate">Learning Management System</span>
           </button>
         </div>
 
