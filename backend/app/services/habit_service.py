@@ -9,14 +9,11 @@ class HabitService:
     @staticmethod
     def get_workspace_habits(db: Session, workspace_id: str, user_id: str, archived: bool = False) -> List[Habit]:
         WorkspaceService.verify_member(db, workspace_id, user_id)
-        habits = (
-            db.query(Habit)
-            .filter(Habit.workspace_id == workspace_id, Habit.is_archived == archived)
-            .order_by(Habit.created_at.desc())
-            .all()
-        )
+        
+        # Only seed defaults if zero habits exist in total (active or archived)
+        total_habits_count = db.query(Habit).filter(Habit.workspace_id == workspace_id).count()
 
-        if not archived and len(habits) == 0:
+        if total_habits_count == 0 and not archived:
             default_habits = [
                 {"name": "Morning Mindset & Meditation", "icon": "🧠", "streak": 5, "completed_days": [True, True, True, True, True, False, False]},
                 {"name": "Deep Work Focus Session", "icon": "🔥", "streak": 7, "completed_days": [True, True, True, True, True, True, True]},
@@ -35,12 +32,12 @@ class HabitService:
                 db.add(new_h)
             db.commit()
 
-            habits = (
-                db.query(Habit)
-                .filter(Habit.workspace_id == workspace_id, Habit.is_archived == False)
-                .order_by(Habit.created_at.desc())
-                .all()
-            )
+        habits = (
+            db.query(Habit)
+            .filter(Habit.workspace_id == workspace_id, Habit.is_archived == archived)
+            .order_by(Habit.created_at.desc())
+            .all()
+        )
 
         return habits
 

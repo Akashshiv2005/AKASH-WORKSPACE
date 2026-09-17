@@ -99,19 +99,10 @@ export const useTaskStore = create<TaskState>()(
             apiClient.get<any[]>(`/workspaces/${workspaceId}/tasks?archived=true`),
           ]);
 
-          const hasActive = resActive.data && resActive.data.length > 0;
-          const hasArchived = resArchived.data && resArchived.data.length > 0;
-
-          if (hasActive) {
-            set({ tasks: resActive.data.map(mapBackendTask) });
-          }
-          if (hasArchived) {
-            set({ archivedTasks: resArchived.data.map(mapBackendTask) });
-          }
-
-          if (!hasActive && !hasArchived) {
-            await get().resetBoard(workspaceId);
-          }
+          set({
+            tasks: (resActive.data || []).map(mapBackendTask),
+            archivedTasks: (resArchived.data || []).map(mapBackendTask),
+          });
         } catch (err) {
           console.error('Failed to fetch tasks from DB:', err);
         } finally {
@@ -203,9 +194,11 @@ export const useTaskStore = create<TaskState>()(
         }));
 
         const token = localStorage.getItem('access_token');
-        if (token && !taskId.startsWith('task-')) {
+        if (token) {
           try {
-            await apiClient.patch(`/workspaces/${workspaceId}/tasks/${taskId}`, { is_archived: true });
+            if (!taskId.startsWith('task-')) {
+              await apiClient.patch(`/workspaces/${workspaceId}/tasks/${taskId}`, { is_archived: true });
+            }
           } catch (err) {
             console.error('Failed to archive task in DB:', err);
           }

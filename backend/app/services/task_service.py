@@ -9,16 +9,13 @@ class TaskService:
     @staticmethod
     def get_workspace_tasks(db: Session, workspace_id: str, user_id: str, archived: bool = False) -> List[Task]:
         WorkspaceService.verify_member(db, workspace_id, user_id)
-        tasks = (
-            db.query(Task)
-            .filter(Task.workspace_id == workspace_id, Task.is_archived == archived)
-            .order_by(Task.created_at.desc())
-            .all()
-        )
+        
+        # Only seed defaults if zero tasks exist in total (active or archived)
+        total_tasks_count = db.query(Task).filter(Task.workspace_id == workspace_id).count()
 
-        if not archived and len(tasks) == 0:
+        if total_tasks_count == 0 and not archived:
             default_tasks = [
-                {"title": "Review Akash Workspace Dashboard Overview", "priority": "High", "status": "done"},
+                {"title": "Review Akash Workspace Dashboard Overview", "priority": "High", "status": "completed"},
                 {"title": "Execute High-Impact Executive Strategy Plan", "priority": "High", "status": "in_progress"},
                 {"title": "Complete Daily Habit Tracker & Deep Focus Session", "priority": "Medium", "status": "in_progress"},
                 {"title": "Explore Learning Management System & Skill Hub", "priority": "Low", "status": "todo"},
@@ -34,12 +31,12 @@ class TaskService:
                 db.add(new_t)
             db.commit()
 
-            tasks = (
-                db.query(Task)
-                .filter(Task.workspace_id == workspace_id, Task.is_archived == False)
-                .order_by(Task.created_at.desc())
-                .all()
-            )
+        tasks = (
+            db.query(Task)
+            .filter(Task.workspace_id == workspace_id, Task.is_archived == archived)
+            .order_by(Task.created_at.desc())
+            .all()
+        )
 
         return tasks
 

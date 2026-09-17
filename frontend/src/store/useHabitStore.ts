@@ -113,19 +113,10 @@ export const useHabitStore = create<HabitState>()(
             apiClient.get<any[]>(`/workspaces/${workspaceId}/habits?archived=true`)
           ]);
           
-          const hasActive = resActive.data && resActive.data.length > 0;
-          const hasArchived = resArchived.data && resArchived.data.length > 0;
-
-          if (hasActive) {
-            set({ habits: resActive.data.map(mapBackendHabit) });
-          }
-          if (hasArchived) {
-            set({ archivedHabits: resArchived.data.map(mapBackendHabit) });
-          }
-
-          if (!hasActive && !hasArchived) {
-            await get().resetDefaultHabits(workspaceId);
-          }
+          set({
+            habits: (resActive.data || []).map(mapBackendHabit),
+            archivedHabits: (resArchived.data || []).map(mapBackendHabit),
+          });
         } catch (err) {
           console.error("Failed to fetch habits from DB:", err);
         } finally {
@@ -198,6 +189,7 @@ export const useHabitStore = create<HabitState>()(
       toggleDay: async (workspaceId: string, habitId: string, dayIndex: number) => {
         let updatedCompletedDays: boolean[] = [];
         let updatedStreak = 0;
+        let targetHabit = get().habits.find((h) => h.id === habitId);
 
         set((state) => ({
           habits: state.habits.map((h) => {
@@ -218,14 +210,33 @@ export const useHabitStore = create<HabitState>()(
         }));
 
         const token = localStorage.getItem('access_token');
-        if (token && !habitId.startsWith('habit-')) {
-          try {
-            await apiClient.patch(`/workspaces/${workspaceId}/habits/${habitId}`, {
-              completed_days: updatedCompletedDays,
-              streak: updatedStreak
-            });
-          } catch (err) {
-            console.error("Failed to update habit checkmark in DB:", err);
+        if (token && targetHabit) {
+          if (habitId.startsWith('habit-')) {
+            try {
+              const res = await apiClient.post<any>(`/workspaces/${workspaceId}/habits`, {
+                name: targetHabit.name,
+                icon: targetHabit.icon,
+                streak: updatedStreak,
+                completed_days: updatedCompletedDays
+              });
+              if (res.data && res.data.id) {
+                const realHabit = mapBackendHabit(res.data);
+                set((state) => ({
+                  habits: state.habits.map((h) => (h.id === habitId ? realHabit : h)),
+                }));
+              }
+            } catch (err) {
+              console.error("Failed to create habit in DB:", err);
+            }
+          } else {
+            try {
+              await apiClient.patch(`/workspaces/${workspaceId}/habits/${habitId}`, {
+                completed_days: updatedCompletedDays,
+                streak: updatedStreak
+              });
+            } catch (err) {
+              console.error("Failed to update habit checkmark in DB:", err);
+            }
           }
         }
       },
