@@ -125,16 +125,17 @@ export const useHabitStore = create<HabitState>()(
       },
 
       addHabit: async (arg1: string, arg2?: string, arg3?: string) => {
-        let workspaceId = 'workspace-akash-shiv';
+        const activeWsId = (typeof window !== 'undefined' ? (window as any).__ACTIVE_WS_ID__ : null) || 'workspace-akash-shiv';
+        let workspaceId = activeWsId;
         let name = '';
         let icon = '🎯';
 
         if (arg3 !== undefined) {
-          workspaceId = arg1;
+          workspaceId = arg1 || activeWsId;
           name = arg2 || '';
           icon = arg3 || '🎯';
         } else if (arg2 !== undefined) {
-          if (arg1.startsWith('workspace-') || arg1.length > 20) {
+          if (arg1 === activeWsId || arg1.startsWith('workspace-') || arg1.length > 15 || arg1.includes('-')) {
             workspaceId = arg1;
             name = arg2;
           } else {
@@ -180,8 +181,8 @@ export const useHabitStore = create<HabitState>()(
                 }));
               }
             })
-            .catch(() => {
-              // Retain local habit
+            .catch((err) => {
+              console.error("Failed to save habit to DB:", err);
             });
         }
       },
