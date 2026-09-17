@@ -9,12 +9,40 @@ class HabitService:
     @staticmethod
     def get_workspace_habits(db: Session, workspace_id: str, user_id: str, archived: bool = False) -> List[Habit]:
         WorkspaceService.verify_member(db, workspace_id, user_id)
-        return (
+        habits = (
             db.query(Habit)
             .filter(Habit.workspace_id == workspace_id, Habit.is_archived == archived)
             .order_by(Habit.created_at.desc())
             .all()
         )
+
+        if not archived and len(habits) == 0:
+            default_habits = [
+                {"name": "Morning Mindset & Meditation", "icon": "🧠", "streak": 5, "completed_days": [True, True, True, True, True, False, False]},
+                {"name": "Deep Work Focus Session", "icon": "🔥", "streak": 7, "completed_days": [True, True, True, True, True, True, True]},
+                {"name": "Daily Workout & Physical Fitness", "icon": "⚡", "streak": 3, "completed_days": [True, True, True, False, False, False, False]},
+                {"name": "Read 20 Pages & Skill Upgrade", "icon": "📚", "streak": 4, "completed_days": [True, True, True, True, False, False, False]},
+            ]
+            for h in default_habits:
+                new_h = Habit(
+                    workspace_id=workspace_id,
+                    name=h["name"],
+                    icon=h["icon"],
+                    streak=h["streak"],
+                    completed_days=h["completed_days"],
+                    is_archived=False,
+                )
+                db.add(new_h)
+            db.commit()
+
+            habits = (
+                db.query(Habit)
+                .filter(Habit.workspace_id == workspace_id, Habit.is_archived == False)
+                .order_by(Habit.created_at.desc())
+                .all()
+            )
+
+        return habits
 
     @staticmethod
     def create_habit(db: Session, workspace_id: str, user_id: str, data: HabitCreate) -> Habit:

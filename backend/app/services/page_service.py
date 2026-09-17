@@ -150,4 +150,31 @@ class PageService:
             Page.is_archived == archived,
         ).order_by(Page.position.asc()).all()
 
+        if not archived and len(pages) == 0:
+            default_pages = [
+                {"title": "Habit Tracker", "icon": "🎯", "position": 0.0},
+                {"title": "To-Do Planner", "icon": "📝", "position": 1.0},
+                {"title": "Arc Focus Timer", "icon": "⚡", "position": 2.0},
+                {"title": "Daily Journal", "icon": "📔", "position": 3.0},
+                {"title": "Expense Tracker", "icon": "💰", "position": 4.0},
+            ]
+            for p in default_pages:
+                new_p = Page(
+                    workspace_id=workspace_id,
+                    title=p["title"],
+                    icon=p["icon"],
+                    position=p["position"],
+                    created_by=user_id,
+                    is_favorite=False,
+                    is_archived=False,
+                )
+                db.add(new_p)
+            db.commit()
+
+            pages = db.query(Page).filter(
+                Page.workspace_id == workspace_id,
+                Page.parent_id.is_(None),
+                Page.is_archived == False,
+            ).order_by(Page.position.asc()).all()
+
         return pages

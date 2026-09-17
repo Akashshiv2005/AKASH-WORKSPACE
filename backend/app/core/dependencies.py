@@ -30,9 +30,8 @@ def get_current_user(
         demo_user = User(
             id="user-demo-guest",
             email="guest@akashworkspace.com",
-            full_name="Akash Guest",
-            hashed_password="demo_hash_key",
-            is_active=True,
+            username="akashguest",
+            password_hash="demo_hash_key",
         )
         db.add(demo_user)
         db.commit()
