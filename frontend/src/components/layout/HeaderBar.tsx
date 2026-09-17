@@ -22,6 +22,8 @@ import {
   Bell
 } from 'lucide-react';
 
+import { useBackendStatus } from '../../hooks/useBackendStatus';
+
 interface HeaderBarProps {
   isSidebarOpen: boolean;
   toggleSidebar: () => void;
@@ -45,6 +47,7 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
   const { activeWorkspace } = useWorkspaceStore();
   const { user, isAuthenticated, setAuthModalOpen } = useAuthStore();
   const { setModalOpen: setNotificationModalOpen, settings: notificationSettings } = useNotificationStore();
+  const { status: backendStatus } = useBackendStatus();
   
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -108,6 +111,39 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           <div className="hidden md:flex items-center space-x-2 shrink-0">
             <span className="text-xs font-black text-zinc-900 tracking-wide truncate max-w-[140px] md:max-w-none">
               {activeWorkspace?.name || "Akash Shiv's Workspace"}
+            </span>
+          </div>
+
+          {/* Backend Live/Offline Status Badge */}
+          <div
+            className="flex items-center space-x-1.5 px-2 py-0.5 rounded-full bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 text-[10px] font-bold shrink-0 cursor-default"
+            title={
+              backendStatus === 'live'
+                ? 'Render API Backend is Online & Live'
+                : backendStatus === 'waking_up'
+                ? 'Render API Backend is Waking Up (~30s)'
+                : 'Render API Backend is Offline'
+            }
+          >
+            <span
+              className={`w-2 h-2 rounded-full ${
+                backendStatus === 'live'
+                  ? 'bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.8)] animate-pulse'
+                  : backendStatus === 'waking_up'
+                  ? 'bg-amber-400 animate-ping'
+                  : 'bg-red-500'
+              }`}
+            />
+            <span
+              className={`uppercase font-black text-[9px] tracking-wider ${
+                backendStatus === 'live'
+                  ? 'text-emerald-700 dark:text-emerald-400'
+                  : backendStatus === 'waking_up'
+                  ? 'text-amber-700 dark:text-amber-400'
+                  : 'text-red-600 dark:text-red-400'
+              }`}
+            >
+              {backendStatus === 'live' ? 'LIVE' : backendStatus === 'waking_up' ? 'WAKING' : 'OFFLINE'}
             </span>
           </div>
 

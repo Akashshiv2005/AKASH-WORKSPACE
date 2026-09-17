@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Shield, ArrowRight, Layout } from 'lucide-react';
+import { useBackendStatus } from '../../hooks/useBackendStatus';
 
 const FRAME_COUNT_1 = 169;
 const FRAME_COUNT_2 = 169;
@@ -357,6 +358,8 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
     };
   }, [updateScrollProgress]);
 
+  const { status: backendStatus } = useBackendStatus();
+
   return (
     <div
       ref={containerRef}
@@ -378,7 +381,40 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
             </div>
           </div>
 
-          <div className="flex items-center space-x-2 sm:space-x-4 shrink-0">
+          <div className="flex items-center space-x-2 sm:space-x-3 shrink-0">
+            {/* Backend Live / Offline Status Badge */}
+            <div
+              className="flex items-center space-x-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-black/70 backdrop-blur-md border border-amber-500/30 text-[10px] font-bold shrink-0 cursor-default"
+              title={
+                backendStatus === 'live'
+                  ? 'Render API Backend is Online & Live'
+                  : backendStatus === 'waking_up'
+                  ? 'Render API Backend is Waking Up (~30s)'
+                  : 'Render API Backend is Offline'
+              }
+            >
+              <span
+                className={`w-2 h-2 rounded-full ${
+                  backendStatus === 'live'
+                    ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.9)] animate-pulse'
+                    : backendStatus === 'waking_up'
+                    ? 'bg-amber-400 animate-ping'
+                    : 'bg-red-500'
+                }`}
+              />
+              <span
+                className={`uppercase font-mono text-[8px] sm:text-[9px] tracking-widest ${
+                  backendStatus === 'live'
+                    ? 'text-emerald-400 font-extrabold'
+                    : backendStatus === 'waking_up'
+                    ? 'text-amber-400 font-bold'
+                    : 'text-red-400 font-bold'
+                }`}
+              >
+                {backendStatus === 'live' ? 'LIVE' : backendStatus === 'waking_up' ? 'WAKING' : 'OFFLINE'}
+              </span>
+            </div>
+
             <button
               onClick={onEnterWorkspace}
               className="flex items-center space-x-1.5 sm:space-x-2 px-3 py-1.5 sm:px-5 sm:py-2 rounded-full bg-gradient-to-r from-red-600 via-orange-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-extrabold text-[10px] sm:text-xs shadow-xl shadow-red-600/40 hover:scale-105 active:scale-95 transition-all duration-300 border border-amber-400/40"
