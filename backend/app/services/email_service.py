@@ -17,22 +17,27 @@ DEFAULT_SMTP_PASS = "ukfnmemgezqmuhio"
 def get_smtp_credentials(custom_user: Optional[str] = None, custom_pass: Optional[str] = None) -> Tuple[str, str]:
     """Retrieve SMTP credentials from request, settings, environment variables, or default fallback."""
     user = (custom_user or "").strip()
-    if not user or len(user) < 5 or "@" not in user:
+    if len(user) < 5 or "@" not in user:
         user = (settings.SMTP_USER or "").strip()
-    if not user or len(user) < 5 or "@" not in user:
-        user = (os.getenv("GMAIL_USER") or os.getenv("SMTP_USER") or "").strip()
-    if not user or len(user) < 5 or "@" not in user:
+    if len(user) < 5 or "@" not in user:
+        env_u = (os.getenv("GMAIL_USER") or os.getenv("SMTP_USER") or "").strip()
+        if len(env_u) >= 5 and "@" in env_u:
+            user = env_u
+    if len(user) < 5 or "@" not in user:
         user = DEFAULT_SMTP_USER
 
     password = (custom_pass or "").replace(" ", "").strip()
-    if not password or len(password) < 8:
+    if len(password) < 8:
         password = (settings.SMTP_PASSWORD or "").replace(" ", "").strip()
-    if not password or len(password) < 8:
-        password = (os.getenv("GMAIL_APP_PASSWORD") or os.getenv("SMTP_PASSWORD") or "").replace(" ", "").strip()
-    if not password or len(password) < 8:
+    if len(password) < 8:
+        env_p = (os.getenv("GMAIL_APP_PASSWORD") or os.getenv("SMTP_PASSWORD") or "").replace(" ", "").strip()
+        if len(env_p) >= 8:
+            password = env_p
+    if len(password) < 8:
         password = DEFAULT_SMTP_PASS
 
     return user, password
+
 
 def send_smtp_email(
     to_email: str,
@@ -61,19 +66,28 @@ def send_smtp_email(
     msg.attach(MIMEText(html_content, "html"))
 
     try:
-        # Gmail SMTP with STARTTLS on port 587
-        server = smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT, timeout=20)
-        server.ehlo()
-        server.starttls()
-        server.ehlo()
-        server.login(smtp_user, smtp_password)
-        server.sendmail(smtp_user, [to_email], msg.as_string())
-        server.quit()
-        return True, f"Email successfully delivered to {to_email}."
+        # 1. Try SSL on port 465 first (cloud firewall friendly for Render)
+        try:
+            server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=15)
+            server.login(smtp_user, smtp_password)
+            server.sendmail(smtp_user, [to_email], msg.as_string())
+            server.quit()
+            return True, f"Email successfully delivered to {to_email}."
+        except Exception as ssl_err:
+            print(f"[SMTP SSL 465 failed: {ssl_err}. Trying STARTTLS 587...]")
+            # 2. Fallback to STARTTLS on port 587
+            server = smtplib.SMTP("smtp.gmail.com", 587, timeout=15)
+            server.ehlo()
+            server.starttls()
+            server.ehlo()
+            server.login(smtp_user, smtp_password)
+            server.sendmail(smtp_user, [to_email], msg.as_string())
+            server.quit()
+            return True, f"Email successfully delivered to {to_email}."
     except smtplib.SMTPAuthenticationError as auth_err:
         return False, (
-            f"Gmail Authentication Failed. Google requires an App Password instead of your regular password. "
-            f"Error details: {str(auth_err)}"
+            f"Gmail Authentication Failed. Please verify your 16-character App Password. "
+            f"Details: {str(auth_err)}"
         )
     except Exception as e:
         return False, f"Failed to send email: {str(e)}"
