@@ -14,7 +14,8 @@ import {
   CheckSquare,
   Zap,
   BookOpen,
-  Shield
+  Shield,
+  GraduationCap
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -44,7 +45,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
 
   if (!isOpen) return null;
 
-  const openWidgetPage = (widgetType: 'habit_tracker' | 'todo_planner' | 'pomodoro' | 'journal' | 'expense_tracker') => {
+  const openWidgetPage = (widgetType: 'habit_tracker' | 'todo_planner' | 'pomodoro' | 'journal' | 'expense_tracker' | 'plans_hub') => {
     if (activeWorkspace) {
       const titles: Record<string, string> = {
         habit_tracker: 'Daily Habit Tracker & Streaks',
@@ -52,6 +53,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
         pomodoro: 'Arc Pomodoro Focus Station',
         journal: 'Daily Journal',
         expense_tracker: 'Expense Tracker',
+        plans_hub: 'Learning Management System',
       };
       const existing = pages.find((p) => (p.widget_type === widgetType || (p.title || '').toLowerCase().includes(widgetType.split('_')[0])) && !p.is_archived);
       if (existing) {
@@ -257,6 +259,15 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
           >
             <span className="text-sm">💰</span>
             <span>Expense Tracker</span>
+          </button>
+
+          {/* Learning Management System Pill */}
+          <button
+            onClick={() => openWidgetPage('plans_hub')}
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
+          >
+            <GraduationCap className="w-3.5 h-3.5 text-amber-600" />
+            <span>Learning Management System</span>
           </button>
         </div>
 

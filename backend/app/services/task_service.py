@@ -9,12 +9,39 @@ class TaskService:
     @staticmethod
     def get_workspace_tasks(db: Session, workspace_id: str, user_id: str, archived: bool = False) -> List[Task]:
         WorkspaceService.verify_member(db, workspace_id, user_id)
-        return (
+        tasks = (
             db.query(Task)
             .filter(Task.workspace_id == workspace_id, Task.is_archived == archived)
             .order_by(Task.created_at.desc())
             .all()
         )
+
+        if not archived and len(tasks) == 0:
+            default_tasks = [
+                {"title": "Review Akash Workspace Dashboard Overview", "priority": "High", "status": "done"},
+                {"title": "Execute High-Impact Executive Strategy Plan", "priority": "High", "status": "in_progress"},
+                {"title": "Complete Daily Habit Tracker & Deep Focus Session", "priority": "Medium", "status": "in_progress"},
+                {"title": "Explore Learning Management System & Skill Hub", "priority": "Low", "status": "todo"},
+            ]
+            for t in default_tasks:
+                new_t = Task(
+                    workspace_id=workspace_id,
+                    title=t["title"],
+                    priority=t["priority"],
+                    status=t["status"],
+                    is_archived=False,
+                )
+                db.add(new_t)
+            db.commit()
+
+            tasks = (
+                db.query(Task)
+                .filter(Task.workspace_id == workspace_id, Task.is_archived == False)
+                .order_by(Task.created_at.desc())
+                .all()
+            )
+
+        return tasks
 
     @staticmethod
     def create_task(db: Session, workspace_id: str, user_id: str, data: TaskCreate) -> Task:

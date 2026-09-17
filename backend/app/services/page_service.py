@@ -157,6 +157,7 @@ class PageService:
                 {"title": "Arc Focus Timer", "icon": "⚡", "position": 2.0},
                 {"title": "Daily Journal", "icon": "📔", "position": 3.0},
                 {"title": "Expense Tracker", "icon": "💰", "position": 4.0},
+                {"title": "Learning Management System", "icon": "🎓", "position": 5.0},
             ]
             for p in default_pages:
                 new_p = Page(
