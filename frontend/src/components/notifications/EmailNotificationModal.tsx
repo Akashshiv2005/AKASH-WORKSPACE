@@ -207,7 +207,18 @@ export const EmailNotificationModal: React.FC = () => {
 
         {/* Modal Body */}
         <div className="p-6 space-y-5 overflow-y-auto flex-1">
-          {/* Status Message Banner */}
+          {/* Connected SMTP Active Badge */}
+          <div className="p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-xl flex items-center justify-between text-xs text-emerald-800 dark:text-emerald-200">
+            <div className="flex items-center space-x-2">
+              <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+              <span className="font-bold">Gmail SMTP Connected & Active</span>
+            </div>
+            <span className="text-[11px] font-mono bg-emerald-100 dark:bg-emerald-900/60 px-2 py-0.5 rounded text-emerald-700 dark:text-emerald-300 font-bold">
+              akashsivalingam5@gmail.com
+            </span>
+          </div>
+
+          {/* Status Message Toast */}
           {statusMessage && (
             <div
               className={`p-3.5 rounded-xl text-xs flex items-start space-x-2.5 transition-all ${
