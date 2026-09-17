@@ -41,6 +41,16 @@ class Settings(BaseSettings):
     SMTP_PASSWORD: str = "ukfnmemgezqmuhio"
     NOTIFICATION_EMAIL: str = "akashsivalingam5@gmail.com"
 
+    @field_validator("DATABASE_URL", mode="before")
+    @classmethod
+    def assemble_db_url(cls, v: str) -> str:
+        if isinstance(v, str):
+            if v.startswith("postgres://"):
+                v = v.replace("postgres://", "postgresql+psycopg2://", 1)
+            elif v.startswith("postgresql://") and not v.startswith("postgresql+psycopg2://"):
+                v = v.replace("postgresql://", "postgresql+psycopg2://", 1)
+        return v
+
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod
     def assemble_cors_origins(cls, v: Union[str, List[str]]) -> List[str]:
