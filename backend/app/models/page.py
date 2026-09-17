@@ -55,6 +55,10 @@ class Page(Base, TimestampMixin):
         Text,
         nullable=True,
     )
+    widget_type: Mapped[Optional[str]] = mapped_column(
+        String(100),
+        nullable=True,
+    )
     is_favorite: Mapped[bool] = mapped_column(
         Boolean,
         default=False,

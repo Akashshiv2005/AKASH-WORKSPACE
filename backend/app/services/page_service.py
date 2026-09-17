@@ -33,6 +33,7 @@ class PageService:
             icon=data.icon or "📄",
             cover_image=data.cover_image,
             content=data.content,
+            widget_type=data.widget_type,
             created_by=user_id,
             position=float(max_pos),
         )
@@ -62,6 +63,8 @@ class PageService:
             page.cover_image = data.cover_image
         if data.content is not None:
             page.content = data.content
+        if data.widget_type is not None:
+            page.widget_type = data.widget_type
         if data.is_favorite is not None:
             page.is_favorite = data.is_favorite
         if data.is_archived is not None:
@@ -94,6 +97,7 @@ class PageService:
             icon=original.icon,
             cover_image=original.cover_image,
             content=original.content,
+            widget_type=original.widget_type,
             created_by=user_id,
             position=original.position + 0.1,
         )
@@ -152,18 +156,19 @@ class PageService:
 
         if not archived and len(pages) == 0:
             default_pages = [
-                {"title": "Habit Tracker", "icon": "🎯", "position": 0.0},
-                {"title": "To-Do Planner", "icon": "📝", "position": 1.0},
-                {"title": "Arc Focus Timer", "icon": "⚡", "position": 2.0},
-                {"title": "Daily Journal", "icon": "📔", "position": 3.0},
-                {"title": "Expense Tracker", "icon": "💰", "position": 4.0},
-                {"title": "Learning Management System", "icon": "🎓", "position": 5.0},
+                {"title": "Daily Habit Tracker & Streaks", "icon": "🔥", "widget_type": "habit_tracker", "position": 0.0},
+                {"title": "Task Planner Goals", "icon": "📋", "widget_type": "todo_planner", "position": 1.0},
+                {"title": "Arc Pomodoro Focus Station", "icon": "⚡", "widget_type": "pomodoro", "position": 2.0},
+                {"title": "Daily Journal", "icon": "📖", "widget_type": "journal", "position": 3.0},
+                {"title": "Expense Tracker", "icon": "💰", "widget_type": "expense_tracker", "position": 4.0},
+                {"title": "🎯 Study & Learning Plans", "icon": "🎯", "widget_type": "plans_hub", "position": 5.0},
             ]
             for p in default_pages:
                 new_p = Page(
                     workspace_id=workspace_id,
                     title=p["title"],
                     icon=p["icon"],
+                    widget_type=p["widget_type"],
                     position=p["position"],
                     created_by=user_id,
                     is_favorite=False,

@@ -9,6 +9,7 @@ class PageBase(BaseModel):
     icon: Optional[str] = "📄"
     cover_image: Optional[str] = None
     content: Optional[str] = None
+    widget_type: Optional[str] = None
 
 
 class PageCreate(PageBase):
@@ -21,6 +22,7 @@ class PageUpdate(BaseModel):
     icon: Optional[str] = None
     cover_image: Optional[str] = None
     content: Optional[str] = None
+    widget_type: Optional[str] = None
     is_favorite: Optional[bool] = None
     is_archived: Optional[bool] = None
     position: Optional[float] = None

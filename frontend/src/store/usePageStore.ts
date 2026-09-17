@@ -220,6 +220,7 @@ export const usePageStore = create<PageState>()(
               workspace_id: workspaceId,
               parent_id: parentId,
               icon: getIcon(),
+              widget_type: widgetType,
             })
             .then((res) => {
               if (res.data && res.data.id) {
@@ -244,11 +245,33 @@ export const usePageStore = create<PageState>()(
         }));
 
         const token = localStorage.getItem('access_token');
-        if (token && !pageId.startsWith('page-')) {
-          try {
-            await apiClient.patch(`/pages/${pageId}`, updates);
-          } catch {
-            // handle sync error silently
+        if (token) {
+          const currentPage = get().pages.find((p) => p.id === pageId);
+          if (pageId.startsWith('page-') && currentPage) {
+            try {
+              const res = await apiClient.post<Page>('/pages', {
+                title: updates.title || currentPage.title,
+                icon: updates.icon || currentPage.icon || '📄',
+                workspace_id: currentPage.workspace_id || 'workspace-akash-shiv',
+                widget_type: currentPage.widget_type,
+                content: updates.content !== undefined ? updates.content : currentPage.content,
+              });
+              if (res.data && res.data.id) {
+                const realId = res.data.id;
+                set((state) => ({
+                  pages: state.pages.map((p) => (p.id === pageId ? { ...p, ...updates, id: realId } : p)),
+                  activePageId: state.activePageId === pageId ? realId : state.activePageId,
+                }));
+              }
+            } catch (err) {
+              console.error('Failed to convert temp page to DB row:', err);
+            }
+          } else {
+            try {
+              await apiClient.patch(`/pages/${pageId}`, updates);
+            } catch {
+              // handle sync error silently
+            }
           }
         }
       },
