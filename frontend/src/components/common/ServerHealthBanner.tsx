@@ -29,13 +29,15 @@ export const ServerHealthBanner: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Initial health check
+    // Initial health check & immediate Render wakeup ping
     checkHealth();
+    fetch('https://akash-workspace.onrender.com/api/health/ping', { mode: 'no-cors' }).catch(() => {});
 
-    // Periodic keep-alive ping every 5 minutes while active
+    // Periodic keep-alive ping every 3 minutes while active to prevent Render free-tier sleep
     const keepAliveInterval = setInterval(() => {
       axios.get(`${API_BASE_URL}/health/ping`).catch(() => {});
-    }, 5 * 60 * 1000);
+      fetch('https://akash-workspace.onrender.com/api/health/ping', { mode: 'no-cors' }).catch(() => {});
+    }, 3 * 60 * 1000);
 
     return () => clearInterval(keepAliveInterval);
   }, [checkHealth]);

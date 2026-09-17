@@ -96,8 +96,11 @@ export const IronManLandingPage: React.FC<IronManLandingPageProps> = ({ onEnterW
   const [visibleCineCards, setVisibleCineCards] = useState<Set<string>>(new Set());
   const [scrollPercent2, setScrollPercent2] = useState<number>(0);
 
-  // Preload frame sequences (frames and frames2)
+  // Preload frame sequences and trigger background Render wakeup ping
   useEffect(() => {
+    // Trigger immediate background wakeup ping for Render free tier backend
+    fetch('https://akash-workspace.onrender.com/api/health/ping', { mode: 'no-cors' }).catch(() => {});
+
     let cancelled = false;
     let count1 = 0;
     let count2 = 0;
