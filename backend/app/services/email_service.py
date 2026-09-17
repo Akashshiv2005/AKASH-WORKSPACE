@@ -269,15 +269,28 @@ def trigger_daily_digest(
     habits = habit_query.all()
 
     today_idx = datetime.now().weekday()
-    pending_tasks = [t for t in tasks if t.status.lower() != "done"]
+    pending_tasks = [
+        t for t in tasks
+        if not t.is_archived and t.status.lower() not in ("done", "completed")
+    ]
     habits_done_today = [
         h for h in habits
-        if isinstance(h.completed_days, list) and today_idx < len(h.completed_days) and h.completed_days[today_idx]
+        if not h.is_archived and isinstance(h.completed_days, list) and today_idx < len(h.completed_days) and h.completed_days[today_idx]
+    ]
+    habits_pending_today = [
+        h for h in habits
+        if not h.is_archived and (
+            not isinstance(h.completed_days, list)
+            or today_idx >= len(h.completed_days)
+            or not h.completed_days[today_idx]
+        )
     ]
 
-    # If user set "notify_if_pending_only" and has zero pending tasks
-    if setting and setting.notify_if_pending_only and not pending_tasks and not force:
-        return True, "No pending tasks today. Notification skipped as per 'Pending Only' preference.", {
+    has_incomplete_items = (len(pending_tasks) > 0) or (len(habits_pending_today) > 0)
+
+    # If user set "notify_if_pending_only" AND everything is 100% completed today (0 pending tasks and 0 pending habits)
+    if setting and setting.notify_if_pending_only and not has_incomplete_items and not force:
+        return True, "All tasks and habits are 100% completed today. Notification skipped as per 'Alert Only If Incomplete' preference.", {
             "tasks_count": len(tasks),
             "pending_tasks_count": len(pending_tasks),
             "habits_count": len(habits),
