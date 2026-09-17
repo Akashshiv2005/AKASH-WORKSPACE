@@ -78,18 +78,21 @@ export const EmailNotificationModal: React.FC = () => {
 
   useEffect(() => {
     if (isModalOpen) {
+      setStatusMessage(null);
       fetchSettings();
       fetchLogs();
     }
-  }, [isModalOpen, fetchSettings, fetchLogs]);
+  }, [isModalOpen, fetchSettings, fetchLogs, setStatusMessage]);
 
   useEffect(() => {
     if (settings) {
-      setRecipientEmail(settings.recipient_email || '');
+      setRecipientEmail(settings.recipient_email || 'akashsivalingam5@gmail.com');
       setIsEnabled(settings.is_enabled ?? true);
       setPendingOnly(settings.notify_if_pending_only ?? false);
       if ((settings as any).custom_smtp_user) setSmtpUser((settings as any).custom_smtp_user);
       if ((settings as any).custom_smtp_password) setSmtpPassword((settings as any).custom_smtp_password);
+    } else {
+      setRecipientEmail('akashsivalingam5@gmail.com');
     }
   }, [settings]);
 

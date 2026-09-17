@@ -17,19 +17,19 @@ DEFAULT_SMTP_PASS = "ukfnmemgezqmuhio"
 def get_smtp_credentials(custom_user: Optional[str] = None, custom_pass: Optional[str] = None) -> Tuple[str, str]:
     """Retrieve SMTP credentials from request, settings, environment variables, or default fallback."""
     user = (custom_user or "").strip()
-    if not user:
+    if not user or len(user) < 5 or "@" not in user:
         user = (settings.SMTP_USER or "").strip()
-    if not user:
+    if not user or len(user) < 5 or "@" not in user:
         user = (os.getenv("GMAIL_USER") or os.getenv("SMTP_USER") or "").strip()
-    if not user:
+    if not user or len(user) < 5 or "@" not in user:
         user = DEFAULT_SMTP_USER
 
     password = (custom_pass or "").replace(" ", "").strip()
-    if not password:
+    if not password or len(password) < 8:
         password = (settings.SMTP_PASSWORD or "").replace(" ", "").strip()
-    if not password:
+    if not password or len(password) < 8:
         password = (os.getenv("GMAIL_APP_PASSWORD") or os.getenv("SMTP_PASSWORD") or "").replace(" ", "").strip()
-    if not password:
+    if not password or len(password) < 8:
         password = DEFAULT_SMTP_PASS
 
     return user, password
