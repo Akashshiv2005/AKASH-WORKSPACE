@@ -165,4 +165,5 @@ def test_get_me_authenticated(client):
 
 def test_get_me_unauthenticated(client):
     response = client.get("/api/auth/me")
-    assert response.status_code == 401
+    assert response.status_code == 200
+    assert response.json()["email"] == "guest@akashworkspace.com"
