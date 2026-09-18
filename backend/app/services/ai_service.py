@@ -48,7 +48,7 @@ class AIService:
             return "👋 Hello Akash! Great to connect with you. How can I assist you with your habits, tasks, schedule, or productivity today?"
         if any(w in lower for w in ['habit', 'streak', 'routine']):
             return "🔥 Here is a quick check on your habits routine, Akash: Consistency is your super-power! Keep checking off your daily targets on your Habit Tracker."
-        if any(w in lower for w in ['task', 'todo', , 'work']):
+        if any(w in lower for w in ['task', 'todo', 'work']):
             return "🎯 I'm ready to organize your workflow, Akash. You can ask me to create tasks (e.g., 'create high priority task...'), or review your board anytime."
         return f"I understand your message, Akash. I'm here to support your productivity, assist with your tasks, and help you maintain your daily streaks."
 
