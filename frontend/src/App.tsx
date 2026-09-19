@@ -18,7 +18,9 @@ import { useHabitStore } from './store/useHabitStore';
 import { useExpenseStore } from './store/useExpenseStore';
 
 export const App: React.FC = () => {
-  const [viewMode, setViewMode] = useState<'landing' | 'workspace'>('landing');
+  const [viewMode, setViewMode] = useState<'landing' | 'workspace'>(
+    (localStorage.getItem('akash_workspace_view_mode') as 'landing' | 'workspace') || 'landing'
+  );
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
   const mainRef = useRef<HTMLElement | null>(null);
@@ -63,7 +65,10 @@ export const App: React.FC = () => {
 
   if (viewMode === 'landing') {
     return (
-      <IronManLandingPage onEnterWorkspace={() => setViewMode('workspace')} />
+      <IronManLandingPage onEnterWorkspace={() => {
+        localStorage.setItem('akash_workspace_view_mode', 'workspace');
+        setViewMode('workspace');
+      }} />
     );
   }
 
@@ -76,7 +81,10 @@ export const App: React.FC = () => {
           setIsSidebarOpen(!isSidebarOpen);
           if (!isSidebarOpen && window.innerWidth <= 768) setIsRightSidebarOpen(false);
         }}
-        onBackToLanding={() => setViewMode('landing')}
+        onBackToLanding={() => {
+          localStorage.setItem('akash_workspace_view_mode', 'landing');
+          setViewMode('landing');
+        }}
       />
 
       {/* Center Layout Area */}
@@ -98,7 +106,10 @@ export const App: React.FC = () => {
           }}
           darkMode={darkMode}
           setDarkMode={setDarkMode}
-          onBackToLanding={() => setViewMode('landing')}
+          onBackToLanding={() => {
+            localStorage.setItem('akash_workspace_view_mode', 'landing');
+            setViewMode('landing');
+          }}
         />
 
         {/* Main Editor Page View */}
