@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { apiClient } from '../../api/client';
 import { Page, usePageStore } from '../../store/usePageStore';
+import { ConfirmModal } from '../common/ConfirmModal';
 
 export interface PlanProblem {
   id: string;
@@ -227,8 +228,11 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
   const [newPlanTitle, setNewPlanTitle] = useState('');
   const [newPlanCategory, setNewPlanCategory] = useState('DSA & Coding');
   const [pastedText, setPastedText] = useState('');
+  
+  // Confirm Modal State
+  const [deleteConfirmPlanId, setDeleteConfirmPlanId] = useState<string | null>(null);
 
-  // Active view tab inside plan detail
+  // Load from LocalStorage view tab inside plan detail
   const [detailTab, setDetailTab] = useState<'roadmap' | 'notes' | 'uploads'>('roadmap');
 
   // Note form state
@@ -374,11 +378,17 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
       alert('You must keep at least one plan.');
       return;
     }
-    if (confirm('Are you sure you want to delete this plan?')) {
-      const filtered = plans.filter((p) => p.id !== planId);
-      savePlansState(filtered);
+    setDeleteConfirmPlanId(planId);
+  };
+
+  const executeDeletePlan = () => {
+    if (!deleteConfirmPlanId) return;
+    const filtered = plans.filter((p) => p.id !== deleteConfirmPlanId);
+    savePlansState(filtered);
+    if (selectedPlanId === deleteConfirmPlanId) {
       setSelectedPlanId(filtered[0].id);
     }
+    setDeleteConfirmPlanId(null);
   };
 
   // Toggle Day Completion
@@ -979,6 +989,18 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
           </div>
         </div>
       )}
+
+      {/* Custom Confirm Modal for Deletion */}
+      <ConfirmModal
+        isOpen={deleteConfirmPlanId !== null}
+        title="Delete Plan"
+        message="Are you sure you want to delete this plan? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        isDestructive={true}
+        onConfirm={executeDeletePlan}
+        onCancel={() => setDeleteConfirmPlanId(null)}
+      />
     </div>
   );
 };
