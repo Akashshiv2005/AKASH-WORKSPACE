@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 from typing import Optional
-from app.services.ai_service import AIService
+from app.services.ai_service import ai_service
 
 router = APIRouter(prefix="/ai", tags=["AI Assistance"])
 
@@ -13,9 +13,12 @@ class ChatRequest(BaseModel):
 
 @router.post("/motivate")
 async def get_motivation(data: MotivationRequest):
-    return await AIService.get_daily_motivation(data.topic or "productivity")
+    topic = data.topic or "productivity"
+    prompt = f"Give me a short, highly motivating quote and one sentence of advice about {topic}."
+    reply = await ai_service.generate_response(prompt)
+    return {"motivation": reply}
 
 @router.post("/chat")
 async def chat_ai(data: ChatRequest):
-    reply = await AIService.chat_with_gemini(data.message)
+    reply = await ai_service.generate_response(data.message)
     return {"reply": reply}
