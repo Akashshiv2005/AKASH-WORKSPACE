@@ -231,6 +231,7 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
   
   // Confirm Modal State
   const [deleteConfirmPlanId, setDeleteConfirmPlanId] = useState<string | null>(null);
+  const [showMinPlanAlert, setShowMinPlanAlert] = useState(false);
 
   // Load from LocalStorage view tab inside plan detail
   const [detailTab, setDetailTab] = useState<'roadmap' | 'notes' | 'uploads'>('roadmap');
@@ -375,7 +376,7 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
   const handleDeletePlan = (planId: string, e: React.MouseEvent) => {
     e.stopPropagation();
     if (plans.length <= 1) {
-      alert('You must keep at least one plan.');
+      setShowMinPlanAlert(true);
       return;
     }
     setDeleteConfirmPlanId(planId);
@@ -1000,6 +1001,18 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
         isDestructive={true}
         onConfirm={executeDeletePlan}
         onCancel={() => setDeleteConfirmPlanId(null)}
+      />
+
+      {/* Custom Alert Modal for Minimum Plans */}
+      <ConfirmModal
+        isOpen={showMinPlanAlert}
+        title="Cannot Delete Plan"
+        message="You must keep at least one active plan in your hub."
+        confirmText="OK"
+        isDestructive={false}
+        hideCancel={true}
+        onConfirm={() => setShowMinPlanAlert(false)}
+        onCancel={() => setShowMinPlanAlert(false)}
       />
     </div>
   );
