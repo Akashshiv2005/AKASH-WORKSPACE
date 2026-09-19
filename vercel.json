@@ -13,13 +13,18 @@
       ]
     }
   ],
+  "functions": {
+    "api/*.js": {
+      "maxDuration": 25
+    }
+  },
   "rewrites": [
     {
       "source": "/api/((?!email-relay).*)",
       "destination": "https://akash-workspace.onrender.com/api/$1"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
   ]
