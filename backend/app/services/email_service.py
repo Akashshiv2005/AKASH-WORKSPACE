@@ -126,7 +126,7 @@ def send_smtp_email(
     try:
         # 1. Try SSL on port 465 first (cloud firewall friendly)
         try:
-            server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=15)
+            server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=5)
             server.login(smtp_user, smtp_password)
             server.sendmail(smtp_user, [to_email], msg.as_string())
             server.quit()
@@ -134,7 +134,7 @@ def send_smtp_email(
         except Exception as ssl_err:
             print(f"[SMTP SSL 465 failed: {ssl_err}. Trying STARTTLS 587...]")
             # 2. Fallback to STARTTLS on port 587
-            server = smtplib.SMTP("smtp.gmail.com", 587, timeout=15)
+            server = smtplib.SMTP("smtp.gmail.com", 587, timeout=5)
             server.ehlo()
             server.starttls()
             server.ehlo()
