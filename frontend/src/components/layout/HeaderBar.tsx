@@ -18,7 +18,6 @@ import {
   Copy,
   Check,
   Zap,
-  Shield,
   Bell
 } from 'lucide-react';
 
@@ -31,7 +30,6 @@ interface HeaderBarProps {
   toggleRightSidebar?: () => void;
   darkMode: boolean;
   setDarkMode: (val: boolean) => void;
-  onBackToLanding?: () => void;
 }
 
 export const HeaderBar: React.FC<HeaderBarProps> = ({
@@ -41,7 +39,6 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
   toggleRightSidebar,
   darkMode,
   setDarkMode,
-  onBackToLanding,
 }) => {
   const { pages, activePageId, toggleFavorite, archivePage, duplicatePage } = usePageStore();
   const { activeWorkspace } = useWorkspaceStore();
