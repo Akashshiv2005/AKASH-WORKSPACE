@@ -106,10 +106,6 @@ export const App: React.FC = () => {
           }}
           darkMode={darkMode}
           setDarkMode={setDarkMode}
-          onBackToLanding={() => {
-            localStorage.setItem('akash_workspace_view_mode', 'landing');
-            setViewMode('landing');
-          }}
         />
 
         {/* Main Editor Page View */}
@@ -141,6 +137,10 @@ export const App: React.FC = () => {
         toggleRightSidebar={() => {
           setIsRightSidebarOpen(!isRightSidebarOpen);
           if (!isRightSidebarOpen && window.innerWidth <= 768) setIsSidebarOpen(false);
+        }}
+        onBackToLanding={() => {
+          localStorage.setItem('akash_workspace_view_mode', 'landing');
+          setViewMode('landing');
         }}
       />
 

@@ -95,18 +95,6 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
             </button>
           )}
 
-          {/* Iron Man Landing Page Back Trigger */}
-          {onBackToLanding && (
-            <button
-              onClick={onBackToLanding}
-              className="flex items-center space-x-1 px-2 sm:px-3 py-1 rounded-full bg-gradient-to-r from-red-600 via-red-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-black text-[10px] sm:text-[11px] tracking-wider transition-all hover:scale-105 shadow-sm border border-amber-400/50 shrink-0 whitespace-nowrap"
-              title="Return to Iron Man Home Landing Page"
-            >
-              <Shield className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-200 fill-amber-200 shrink-0" />
-              <span>HOME</span>
-            </button>
-          )}
-
           {/* Workspace Shield Logo */}
           <div className="hidden md:flex items-center space-x-2 shrink-0">
             <span className="text-xs font-black text-zinc-900 tracking-wide truncate max-w-[140px] md:max-w-none">

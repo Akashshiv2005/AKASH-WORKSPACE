@@ -27,11 +27,13 @@ import { useJournalStore } from '../../store/useJournalStore';
 interface RightSidebarProps {
   isOpen: boolean;
   toggleRightSidebar: () => void;
+  onBackToLanding?: () => void;
 }
 
 export const RightSidebar: React.FC<RightSidebarProps> = ({
   isOpen,
   toggleRightSidebar,
+  onBackToLanding,
 }) => {
   const { pages, activePageId, createPage } = usePageStore();
   const activePage = pages.find((p) => p.id === activePageId);
@@ -119,13 +121,25 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
               : 'PAGE DOCK'}
           </span>
         </div>
-        <button
-          onClick={toggleRightSidebar}
-          className="p-1 rounded-lg hover:bg-amber-50 text-zinc-400 hover:text-zinc-900"
-          title="Close Dock"
-        >
-          <PanelRightClose className="w-4 h-4" />
-        </button>
+        <div className="flex items-center space-x-2">
+          {onBackToLanding && (
+            <button
+              onClick={onBackToLanding}
+              className="flex items-center space-x-1 px-2 py-1 rounded-full bg-gradient-to-r from-red-600 via-red-500 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-black text-[10px] tracking-wider transition-all hover:scale-105 shadow-sm border border-amber-400/50 shrink-0 whitespace-nowrap"
+              title="Return to Iron Man Home Landing Page"
+            >
+              <Shield className="w-3 h-3 text-amber-200 fill-amber-200 shrink-0" />
+              <span>HOME</span>
+            </button>
+          )}
+          <button
+            onClick={toggleRightSidebar}
+            className="p-1 rounded-lg hover:bg-amber-50 text-zinc-400 hover:text-zinc-900"
+            title="Close Dock"
+          >
+            <PanelRightClose className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
       {/* Main Dynamic Content Area */}
