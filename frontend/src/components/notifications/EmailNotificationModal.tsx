@@ -394,7 +394,20 @@ export const EmailNotificationModal: React.FC = () => {
                           </a>
                         </li>
                         <li>Create an App Password named <b>"Akash Workspace"</b>.</li>
-                        <li>Copy the 16-character password and paste it below or set <code>GMAIL_APP_PASSWORD</code> on Render.</li>
+                        <li>Copy the 16-character password and paste below.</li>
+                        <li>
+                          <i>Cloud Note:</i> For Render free tier, you can also paste a free{' '}
+                          <a
+                            href="https://resend.com"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="font-bold underline inline-flex items-center space-x-0.5 text-[#ff7a00]"
+                          >
+                            <span>Resend API Key (re_...)</span>
+                            <ExternalLink className="w-2.5 h-2.5 ml-0.5" />
+                          </a>{' '}
+                          for 100% cloud delivery.
+                        </li>
                       </ol>
                     </div>
 
@@ -405,17 +418,17 @@ export const EmailNotificationModal: React.FC = () => {
                           type="email"
                           value={smtpUser}
                           onChange={(e) => setSmtpUser(e.target.value)}
-                          placeholder="e.g. akashshiv2005@gmail.com"
+                          placeholder="e.g. akashsivalingam5@gmail.com"
                           className="w-full mt-1 px-3 py-2 bg-[#fdfaf6] dark:bg-[#262422] border border-[#e7dfd5] dark:border-[#383531] rounded-lg text-xs"
                         />
                       </div>
                       <div>
-                        <label className="text-[11px] font-bold text-[#78716c]">16-Character Google App Password</label>
+                        <label className="text-[11px] font-bold text-[#78716c]">16-Character Google App Password or Resend API Key</label>
                         <input
                           type="password"
                           value={smtpPassword}
                           onChange={(e) => setSmtpPassword(e.target.value)}
-                          placeholder="xxxx xxxx xxxx xxxx"
+                          placeholder="Google App Password or re_xxxx..."
                           className="w-full mt-1 px-3 py-2 bg-[#fdfaf6] dark:bg-[#262422] border border-[#e7dfd5] dark:border-[#383531] rounded-lg text-xs tracking-widest font-mono"
                         />
                       </div>

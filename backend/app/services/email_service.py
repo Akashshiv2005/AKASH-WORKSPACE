@@ -65,8 +65,66 @@ def send_smtp_email(
         msg.attach(MIMEText(text_content, "plain"))
     msg.attach(MIMEText(html_content, "html"))
 
+    # 0. Check for HTTPS API keys (Resend or Brevo) for cloud environments like Render
+    resend_key = os.getenv("RESEND_API_KEY", "").strip()
+    brevo_key = os.getenv("BREVO_API_KEY", "").strip()
+    if custom_pass and custom_pass.startswith("re_"):
+        resend_key = custom_pass.strip()
+    elif custom_pass and custom_pass.startswith("xkeysib-"):
+        brevo_key = custom_pass.strip()
+
+    if resend_key:
+        import urllib.request
+        import json
+        try:
+            req = urllib.request.Request(
+                "https://api.resend.com/emails",
+                data=json.dumps({
+                    "from": "Akash Workspace <onboarding@resend.dev>",
+                    "to": [to_email],
+                    "subject": subject,
+                    "html": html_content,
+                }).encode("utf-8"),
+                headers={
+                    "Authorization": f"Bearer {resend_key}",
+                    "Content-Type": "application/json",
+                },
+                method="POST",
+            )
+            with urllib.request.urlopen(req, timeout=20) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                return True, f"Email delivered via Resend API to {to_email} (ID: {data.get('id', 'ok')})."
+        except Exception as r_err:
+            print(f"[Resend API Error: {r_err}]")
+            return False, f"Resend API error: {str(r_err)}"
+
+    if brevo_key:
+        import urllib.request
+        import json
+        try:
+            req = urllib.request.Request(
+                "https://api.brevo.com/v3/smtp/email",
+                data=json.dumps({
+                    "sender": {"name": "Akash Workspace", "email": smtp_user or "akashsivalingam5@gmail.com"},
+                    "to": [{"email": to_email}],
+                    "subject": subject,
+                    "htmlContent": html_content,
+                }).encode("utf-8"),
+                headers={
+                    "api-key": brevo_key,
+                    "Content-Type": "application/json",
+                },
+                method="POST",
+            )
+            with urllib.request.urlopen(req, timeout=20) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                return True, f"Email delivered via Brevo API to {to_email}."
+        except Exception as b_err:
+            print(f"[Brevo API Error: {b_err}]")
+            return False, f"Brevo API error: {str(b_err)}"
+
     try:
-        # 1. Try SSL on port 465 first (cloud firewall friendly for Render)
+        # 1. Try SSL on port 465 first (cloud firewall friendly)
         try:
             server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=15)
             server.login(smtp_user, smtp_password)
@@ -90,35 +148,14 @@ def send_smtp_email(
             f"Details: {str(auth_err)}"
         )
     except Exception as e:
-        # Fallback to HTTPS Email Relay (essential for cloud platforms like Render where outbound SMTP ports 25/465/587 are blocked)
-        print(f"[Direct SMTP failed: {e}. Attempting HTTPS email relay on Vercel...]")
-        try:
-            import urllib.request
-            import json
-            relay_url = os.getenv("EMAIL_RELAY_URL", "https://akash-workspace.vercel.app/api/email-relay")
-            payload = {
-                "to": to_email,
-                "subject": subject,
-                "html": html_content,
-                "text": text_content,
-                "smtpUser": smtp_user,
-                "smtpPass": smtp_password,
-            }
-            req = urllib.request.Request(
-                relay_url,
-                data=json.dumps(payload).encode("utf-8"),
-                headers={"Content-Type": "application/json"},
-                method="POST",
+        err_msg = str(e)
+        if "101" in err_msg or "unreachable" in err_msg.lower() or "timeout" in err_msg.lower():
+            return False, (
+                "Render Free Tier blocks outbound SMTP ports (465/587) to prevent spam. "
+                "To send emails from the cloud deployment, add a free RESEND_API_KEY to Render "
+                "(get one free in 30 seconds at https://resend.com) or paste it in the App Password field."
             )
-            with urllib.request.urlopen(req, timeout=25) as resp:
-                result = json.loads(resp.read().decode("utf-8"))
-                if result.get("success"):
-                    return True, result.get("message", f"Email successfully delivered to {to_email}.")
-                else:
-                    return False, result.get("message", "Relay failed to deliver email.")
-        except Exception as relay_err:
-            print(f"[HTTPS email relay failed: {relay_err}]")
-            return False, f"Failed to send email: {str(e)} (Relay fallback error: {str(relay_err)})"
+        return False, f"Failed to send email: {err_msg}"
 
 def generate_digest_html(
     user_name: str,
