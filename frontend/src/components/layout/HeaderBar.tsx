@@ -181,6 +181,18 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
             {darkMode ? <Sun className="w-4 h-4 text-amber-600" /> : <Moon className="w-4 h-4 text-zinc-600" />}
           </button>
 
+          {/* Notifications Icon (Visible on Mobile & Desktop) */}
+          <button
+            onClick={() => setNotificationModalOpen(true)}
+            className="flex group relative p-1.5 rounded-lg hover:bg-amber-50 text-amber-600 hover:scale-110 active:scale-90 transition-all duration-200"
+            title="Gmail Daily Digest & Task Reminders"
+          >
+            <Bell className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+            {notificationSettings?.is_enabled && (
+              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-red-600 ring-2 ring-white animate-pulse" />
+            )}
+          </button>
+
           {/* Right Side Dock Toggle Button */}
           {toggleRightSidebar && (
             <button
@@ -193,18 +205,6 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
               <PanelRight className="w-4 h-4" />
             </button>
           )}
-
-          {/* Notifications Icon (Desktop & Tablet) */}
-          <button
-            onClick={() => setNotificationModalOpen(true)}
-            className="hidden sm:flex group relative p-1.5 rounded-lg hover:bg-amber-50 text-amber-600 hover:scale-110 active:scale-90 transition-all duration-200"
-            title="Gmail Daily Digest & Task Reminders"
-          >
-            <Bell className="w-4 h-4 group-hover:rotate-12 transition-transform" />
-            {notificationSettings?.is_enabled && (
-              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-red-600 ring-2 ring-white animate-pulse" />
-            )}
-          </button>
 
           {/* Share Button */}
           <button
