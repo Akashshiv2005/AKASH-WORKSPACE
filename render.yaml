@@ -7,8 +7,15 @@ services:
     startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: DATABASE_URL
-        value: sqlite:///./notion_clone.db
+        fromDatabase:
+          name: akash-workspace-db
+          property: connectionString
       - key: CORS_ORIGINS
         value: "*"
       - key: SECRET_KEY
         generateValue: true
+
+databases:
+  - name: akash-workspace-db
+    plan: free
+    region: oregon
