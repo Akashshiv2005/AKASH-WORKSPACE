@@ -13,7 +13,7 @@ export const FloatingAiOrb: React.FC = () => {
   return (
     <>
       {/* Floating Action Button */}
-      <div className="fixed bottom-6 right-6 z-40 select-none group">
+      <div className="hidden md:block fixed bottom-6 right-6 z-40 select-none group">
         {/* Tooltip Teaser Bubble */}
         {showTooltip && !isOpen && (
           <div className="absolute right-0 bottom-16 mb-2 w-56 p-3 rounded-xl bg-white border border-[#f2e8da] shadow-xl text-xs flex items-start justify-between animate-fade-in-up">
