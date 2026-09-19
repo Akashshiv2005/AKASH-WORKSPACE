@@ -86,7 +86,12 @@ export const EmailNotificationModal: React.FC = () => {
 
   useEffect(() => {
     if (settings) {
-      setRecipientEmail(settings.recipient_email || 'akashsivalingam5@gmail.com');
+      const email = settings.recipient_email;
+      if (email && email.includes('@') && !email.endsWith('.ai')) {
+        setRecipientEmail(email);
+      } else {
+        setRecipientEmail('akashsivalingam5@gmail.com');
+      }
       setIsEnabled(settings.is_enabled ?? true);
       setPendingOnly(settings.notify_if_pending_only ?? false);
       if ((settings as any).custom_smtp_user) setSmtpUser((settings as any).custom_smtp_user);
@@ -558,28 +563,59 @@ export const EmailNotificationModal: React.FC = () => {
           )}
         </div>
 
+        {/* Status Toast Notification pinned above footer so it is never missed */}
+        {statusMessage && (
+          <div
+            className={`mx-5 mb-2 p-3 rounded-xl text-xs flex items-center justify-between shadow-lg animate-fade-in ${
+              statusMessage.type === 'success'
+                ? 'bg-emerald-600 text-white font-semibold'
+                : 'bg-rose-600 text-white font-semibold'
+            }`}
+          >
+            <div className="flex items-center space-x-2">
+              {statusMessage.type === 'success' ? (
+                <CheckCircle className="w-4 h-4 shrink-0 text-white" />
+              ) : (
+                <AlertCircle className="w-4 h-4 shrink-0 text-white" />
+              )}
+              <span className="leading-snug">{statusMessage.text}</span>
+            </div>
+            <button
+              onClick={() => setStatusMessage(null)}
+              className="p-1 hover:bg-white/20 rounded-lg transition-colors ml-2 shrink-0"
+            >
+              <X className="w-3.5 h-3.5 text-white" />
+            </button>
+          </div>
+        )}
+
         {/* Modal Footer */}
         <div className="p-4 border-t border-[#f0e8dc] dark:border-[#2e2b27] bg-[#fdfaf6] dark:bg-[#262422] flex flex-wrap items-center justify-between gap-2.5">
-          <div className="flex items-center space-x-2">
-            <button
-              onClick={handleSendTest}
-              disabled={isSending}
-              className="px-3.5 py-2 rounded-xl border border-[#e7dfd5] dark:border-[#383531] hover:bg-[#ebd5b3] dark:hover:bg-[#33302c] text-xs font-bold text-[#44403c] dark:text-[#d6d3d1] transition-all flex items-center space-x-1.5 disabled:opacity-50"
-              title="Sends a test email to verify Gmail connection"
-            >
-              {isSending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
-              <span>Test Email</span>
-            </button>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={handleSendTest}
+                disabled={isSending}
+                className="px-3.5 py-2 rounded-xl border border-[#e7dfd5] dark:border-[#383531] hover:bg-[#ebd5b3] dark:hover:bg-[#33302c] text-xs font-bold text-[#44403c] dark:text-[#d6d3d1] transition-all flex items-center space-x-1.5 disabled:opacity-50"
+                title={`Sends a test email to ${recipientEmail || 'akashsivalingam5@gmail.com'}`}
+              >
+                {isSending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
+                <span>Test Email</span>
+              </button>
 
-            <button
-              onClick={handleSendDigest}
-              disabled={isSending}
-              className="px-3.5 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-xs font-bold text-[#ff7a00] transition-all flex items-center space-x-1.5 disabled:opacity-50"
-              title="Immediately compiles today's tasks and sends the live digest"
-            >
-              {isSending ? <Loader2 className="w-3.5 h-3.5 animate-spin text-[#ff7a00]" /> : <Mail className="w-3.5 h-3.5" />}
-              <span>Send Digest Now</span>
-            </button>
+              <button
+                onClick={handleSendDigest}
+                disabled={isSending}
+                className="px-3.5 py-2 rounded-xl bg-stone-100 hover:bg-stone-200 dark:bg-stone-800 dark:hover:bg-stone-700 text-xs font-bold text-[#ff7a00] transition-all flex items-center space-x-1.5 disabled:opacity-50"
+                title="Immediately compiles today's tasks and sends the live digest"
+              >
+                {isSending ? <Loader2 className="w-3.5 h-3.5 animate-spin text-[#ff7a00]" /> : <Mail className="w-3.5 h-3.5" />}
+                <span>Send Digest Now</span>
+              </button>
+            </div>
+            <span className="text-[11px] text-stone-500 dark:text-stone-400 font-mono truncate max-w-[200px]" title={recipientEmail || 'akashsivalingam5@gmail.com'}>
+              to: {recipientEmail || 'akashsivalingam5@gmail.com'}
+            </span>
           </div>
 
           <div className="flex items-center space-x-2">

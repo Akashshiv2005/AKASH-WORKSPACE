@@ -90,7 +90,35 @@ def send_smtp_email(
             f"Details: {str(auth_err)}"
         )
     except Exception as e:
-        return False, f"Failed to send email: {str(e)}"
+        # Fallback to HTTPS Email Relay (essential for cloud platforms like Render where outbound SMTP ports 25/465/587 are blocked)
+        print(f"[Direct SMTP failed: {e}. Attempting HTTPS email relay on Vercel...]")
+        try:
+            import urllib.request
+            import json
+            relay_url = os.getenv("EMAIL_RELAY_URL", "https://akash-workspace.vercel.app/api/email-relay")
+            payload = {
+                "to": to_email,
+                "subject": subject,
+                "html": html_content,
+                "text": text_content,
+                "smtpUser": smtp_user,
+                "smtpPass": smtp_password,
+            }
+            req = urllib.request.Request(
+                relay_url,
+                data=json.dumps(payload).encode("utf-8"),
+                headers={"Content-Type": "application/json"},
+                method="POST",
+            )
+            with urllib.request.urlopen(req, timeout=25) as resp:
+                result = json.loads(resp.read().decode("utf-8"))
+                if result.get("success"):
+                    return True, result.get("message", f"Email successfully delivered to {to_email}.")
+                else:
+                    return False, result.get("message", "Relay failed to deliver email.")
+        except Exception as relay_err:
+            print(f"[HTTPS email relay failed: {relay_err}]")
+            return False, f"Failed to send email: {str(e)} (Relay fallback error: {str(relay_err)})"
 
 def generate_digest_html(
     user_name: str,

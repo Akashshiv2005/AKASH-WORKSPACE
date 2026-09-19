@@ -132,7 +132,7 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
 
   sendTestEmail: async (email, smtpUser, smtpPass) => {
     set({ isSending: true, statusMessage: null });
-    const targetEmail = email || get().settings?.recipient_email || 'akashsivalingam5@gmail.com';
+    const targetEmail = (email || get().settings?.recipient_email || 'akashsivalingam5@gmail.com').trim();
     try {
       const res = await apiClient.post('/notifications/test-email', {
         recipient_email: targetEmail,
@@ -140,15 +140,83 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
         smtp_password: smtpPass || undefined,
       });
       const data = res.data;
+
+      // If backend failed (e.g. Render port block), try Vercel Serverless Relay directly
+      if (!data.success && typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
+        try {
+          const relayRes = await fetch('/api/email-relay', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              to: targetEmail,
+              subject: '✨ Akash Workspace - Gmail Integration Test',
+              html: `<div style="font-family: Arial, sans-serif; padding: 24px; color: #1c1917; background-color: #fdfaf6; border-radius: 12px; border: 1px solid #ebd5b3;">
+                <div style="background: linear-gradient(135deg, #ff7a00, #ff9500); padding: 20px; border-radius: 10px; color: white;">
+                  <h2 style="margin: 0 0 8px 0;">🚀 Gmail Notification Connected!</h2>
+                  <p style="margin: 0; opacity: 0.95;">Your Gmail integration for Akash Workspace is configured properly.</p>
+                </div>
+                <p style="margin-top: 16px; font-size: 14px; color: #44403c; line-height: 1.6;">
+                  You will receive daily reminders if you forget tasks or to review your daily habits.
+                </p>
+                <p style="font-size: 12px; color: #78716c; margin-top: 16px;">Delivered directly to: <b>${targetEmail}</b></p>
+              </div>`,
+              smtpUser: smtpUser || undefined,
+              smtpPass: smtpPass || undefined,
+            }),
+          });
+          const relayData = await relayRes.json();
+          if (relayData.success) {
+            set({
+              statusMessage: {
+                type: 'success',
+                text: `✨ Test email successfully delivered to ${targetEmail}! Please check your inbox or spam folder.`,
+              },
+            });
+            get().fetchLogs();
+            return { success: true, message: relayData.message };
+          }
+        } catch {
+          // Fall through to display backend message
+        }
+      }
+
       set({
         statusMessage: {
           type: data.success ? 'success' : 'error',
-          text: data.message,
+          text: data.success
+            ? `✨ Test email sent successfully to ${targetEmail}! Please check your inbox or spam folder.`
+            : data.message,
         },
       });
       get().fetchLogs();
       return data;
     } catch (err: any) {
+      // If backend network error, attempt direct Vercel relay
+      if (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
+        try {
+          const relayRes = await fetch('/api/email-relay', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              to: targetEmail,
+              subject: '✨ Akash Workspace - Gmail Integration Test',
+              html: `<div style="font-family: Arial, sans-serif; padding: 20px;"><h2>🚀 Gmail Connected!</h2><p>Delivered to: <b>${targetEmail}</b></p></div>`,
+              smtpUser: smtpUser || undefined,
+              smtpPass: smtpPass || undefined,
+            }),
+          });
+          const relayData = await relayRes.json();
+          if (relayData.success) {
+            set({
+              statusMessage: {
+                type: 'success',
+                text: `✨ Test email successfully delivered to ${targetEmail}! Please check your inbox.`,
+              },
+            });
+            return { success: true, message: relayData.message };
+          }
+        } catch {}
+      }
       const msg = err.response?.data?.detail || 'Failed to trigger test email';
       set({ statusMessage: { type: 'error', text: msg } });
       get().fetchLogs();
@@ -160,7 +228,7 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
 
   sendDailyDigest: async (email, smtpUser, smtpPass) => {
     set({ isSending: true, statusMessage: null });
-    const targetEmail = email || get().settings?.recipient_email || 'akashsivalingam5@gmail.com';
+    const targetEmail = (email || get().settings?.recipient_email || 'akashsivalingam5@gmail.com').trim();
     try {
       const res = await apiClient.post('/notifications/send-digest', {
         recipient_email: targetEmail,
@@ -172,10 +240,11 @@ export const useNotificationStore = create<NotificationState>((set, get) => ({
       set({
         statusMessage: {
           type: data.success ? 'success' : 'error',
-          text: data.message,
+          text: data.success
+            ? `Daily digest sent to ${targetEmail}! Check your inbox.`
+            : data.message,
         },
       });
-      // Refresh settings to update last_sent_at and refresh logs
       get().fetchSettings();
       get().fetchLogs();
       return data;

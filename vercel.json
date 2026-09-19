@@ -15,6 +15,10 @@
   ],
   "rewrites": [
     {
+      "source": "/api/email-relay",
+      "destination": "/api/email-relay"
+    },
+    {
       "source": "/api/:path*",
       "destination": "https://akash-workspace.onrender.com/api/:path*"
     },
