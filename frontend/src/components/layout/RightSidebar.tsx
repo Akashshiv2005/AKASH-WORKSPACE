@@ -75,14 +75,14 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         className="fixed inset-0 bg-black/20 z-40 md:hidden" 
         onClick={toggleRightSidebar}
       />
-      <aside className="fixed right-0 md:relative z-50 w-64 h-screen bg-[#faf9f6] backdrop-blur-xl border-l border-zinc-200 flex flex-col shrink-0 select-none transition-all animate-slide-in-right font-['Sora'] text-zinc-900">
+      <aside className="fixed right-0 md:relative z-50 w-64 h-screen bg-[#faf9f6] dark:bg-[#121118] backdrop-blur-xl border-l border-zinc-200 dark:border-zinc-800 flex flex-col shrink-0 select-none transition-all animate-slide-in-right font-['Sora'] text-zinc-900 dark:text-zinc-100">
       {/* Header Bar */}
-      <div className="p-3 border-b border-zinc-200 bg-white flex items-center justify-between">
+      <div className="p-3 border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#18181b] flex items-center justify-between">
         <div className="flex items-center space-x-2">
-          <div className="p-1.5 rounded-lg bg-amber-50 border border-amber-300 text-amber-700 shadow-xs">
-            <TrendingUp className="w-3.5 h-3.5 text-amber-600" />
+          <div className="p-1.5 rounded-lg bg-amber-50 dark:bg-zinc-800 border border-amber-300 dark:border-zinc-700 text-amber-700 dark:text-amber-400 shadow-xs">
+            <TrendingUp className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
           </div>
-          <span className="text-xs font-black tracking-wide text-amber-700 uppercase animate-text-float">
+          <span className="text-xs font-black tracking-wide text-amber-700 dark:text-amber-400 uppercase animate-text-float">
             {widgetType === 'habit_tracker'
               ? 'HABIT INSPECTOR'
               : widgetType === 'todo_planner'
@@ -107,7 +107,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
           )}
           <button
             onClick={toggleRightSidebar}
-            className="p-1 rounded-lg hover:bg-amber-50 text-zinc-400 hover:text-zinc-900"
+            className="p-1 rounded-lg hover:bg-amber-50 dark:hover:bg-zinc-800 text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
             title="Close Dock"
           >
             <PanelRightClose className="w-4 h-4" />
@@ -121,61 +121,61 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         {widgetType === 'habit_tracker' && (
           <div className="space-y-3 animate-fade-in-up">
             {/* Active Streak Card */}
-            <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-2 text-center animate-float">
-              <div className="flex items-center justify-center space-x-1.5 text-amber-600 font-bold">
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm space-y-2 text-center animate-float">
+              <div className="flex items-center justify-center space-x-1.5 text-amber-600 dark:text-amber-400 font-bold">
                 <Flame className="w-4 h-4 fill-amber-500 text-amber-500 animate-bounce" />
-                <span className="uppercase text-[10px] tracking-wider text-zinc-500 font-black">ACTIVE STREAK</span>
+                <span className="uppercase text-[10px] tracking-wider text-zinc-500 dark:text-zinc-400 font-black">ACTIVE STREAK</span>
               </div>
-              <div className="text-3xl font-black text-red-600">
+              <div className="text-3xl font-black text-red-600 dark:text-red-500">
                 {bestStreak} {bestStreak === 1 ? 'Day' : 'Days'} Active
               </div>
-              <p className="text-[11px] text-zinc-500 font-medium">
+              <p className="text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
                 {habits.length} daily habits configured
               </p>
             </div>
 
             {/* Weekly Completion Progress */}
-            <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-2.5">
-              <div className="flex items-center justify-between text-xs font-bold text-zinc-900">
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm space-y-2.5">
+              <div className="flex items-center justify-between text-xs font-bold text-zinc-900 dark:text-zinc-100">
                 <span className="flex items-center space-x-1.5">
                   <TrendingUp className="w-3.5 h-3.5 text-amber-500" />
-                  <span className="uppercase text-[10px] tracking-wider text-zinc-500 font-black">WEEKLY GOAL</span>
+                  <span className="uppercase text-[10px] tracking-wider text-zinc-500 dark:text-zinc-400 font-black">WEEKLY GOAL</span>
                 </span>
-                <span className="text-amber-600 font-black text-sm">{overallPercentage}%</span>
+                <span className="text-amber-600 dark:text-amber-400 font-black text-sm">{overallPercentage}%</span>
               </div>
-              <div className="w-full bg-zinc-100 h-2.5 rounded-full overflow-hidden border border-zinc-200">
+              <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-2.5 rounded-full overflow-hidden border border-zinc-200 dark:border-zinc-700">
                 <div style={{ width: `${overallPercentage}%` }} className="h-full bg-gradient-to-r from-red-600 to-amber-500 transition-all duration-500" />
               </div>
-              <p className="text-[10px] text-zinc-500 text-right font-medium">
+              <p className="text-[10px] text-zinc-500 dark:text-zinc-400 text-right font-medium">
                 {totalCheckmarks} of {maxCheckmarks} checked
               </p>
             </div>
 
             {/* JARVIS Habit Advice */}
-            <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200 shadow-sm space-y-1.5">
-              <div className="flex items-center space-x-1.5 text-amber-700 font-bold text-[11px]">
-                <Target className="w-3.5 h-3.5 text-amber-600" />
+            <div className="p-4 rounded-2xl bg-amber-50/60 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/40 shadow-sm space-y-1.5">
+              <div className="flex items-center space-x-1.5 text-amber-700 dark:text-amber-400 font-bold text-[11px]">
+                <Target className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                 <span className="uppercase text-[10px] tracking-wider font-black">JARVIS HABIT ADVICE</span>
               </div>
-              <p className="text-[11px] text-zinc-700 leading-relaxed font-medium">
+              <p className="text-[11px] text-zinc-700 dark:text-zinc-300 leading-relaxed font-medium">
                 Consistency beats intensity every single time, {userFirstName}. Keep your streak alive!
               </p>
             </div>
 
             {/* JARVIS Assistant Teaser */}
             {showAssistantBox && (
-              <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-2 relative animate-fade-in-up">
+              <div className="p-4 rounded-2xl bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm space-y-2 relative animate-fade-in-up">
                 <button
                   onClick={() => setShowAssistantBox(false)}
-                  className="absolute right-3 top-3 text-zinc-400 hover:text-zinc-900"
+                  className="absolute right-3 top-3 text-zinc-400 hover:text-zinc-900 dark:hover:text-white"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
-                <div className="flex items-center space-x-1.5 text-amber-700 font-bold text-[11px]">
-                  <Shield className="w-3.5 h-3.5 text-amber-600" />
+                <div className="flex items-center space-x-1.5 text-amber-700 dark:text-amber-400 font-bold text-[11px]">
+                  <Shield className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                   <span className="uppercase text-[10px] tracking-wider font-black">JARVIS ASSISTANT</span>
                 </div>
-                <p className="text-[11px] text-zinc-600 font-medium">
+                <p className="text-[11px] text-zinc-600 dark:text-zinc-300 font-medium">
                   Need habit advice or task assistance, {userFirstName}?
                 </p>
               </div>
@@ -187,53 +187,51 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         {widgetType === 'todo_planner' && (
           <div className="space-y-3 animate-fade-in-up">
             {/* Priority Operations Breakdown */}
-            <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-3">
-              <div className="flex items-center space-x-1.5 text-amber-700 font-bold text-[11px]">
-                <Target className="w-3.5 h-3.5 text-amber-600" />
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm space-y-3">
+              <div className="flex items-center space-x-1.5 text-amber-700 dark:text-amber-400 font-bold text-[11px]">
+                <Target className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                 <span className="uppercase tracking-wider font-black">OPERATIONS BREAKDOWN</span>
               </div>
 
               <div className="space-y-2">
-                <div className="flex items-center justify-between p-2 rounded-xl bg-rose-50 border border-rose-200">
-                  <span className="text-rose-800 font-bold text-xs">High Priority</span>
+                <div className="flex items-center justify-between p-2 rounded-xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/40">
+                  <span className="text-rose-800 dark:text-rose-300 font-bold text-xs">High Priority</span>
                   <span className="px-2 py-0.5 rounded-full bg-red-600 text-white font-black text-xs">{highPriorityTasks} Tasks</span>
                 </div>
-                <div className="flex items-center justify-between p-2 rounded-xl bg-amber-50 border border-amber-200">
-                  <span className="text-amber-800 font-bold text-xs">Medium Priority</span>
+                <div className="flex items-center justify-between p-2 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/40">
+                  <span className="text-amber-800 dark:text-amber-300 font-bold text-xs">Medium Priority</span>
                   <span className="px-2 py-0.5 rounded-full bg-amber-500 text-white font-black text-xs">{mediumPriorityTasks} Tasks</span>
                 </div>
-                <div className="flex items-center justify-between p-2 rounded-xl bg-emerald-50 border border-emerald-200">
-                  <span className="text-emerald-800 font-bold text-xs">Low Priority</span>
+                <div className="flex items-center justify-between p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/40">
+                  <span className="text-emerald-800 dark:text-emerald-300 font-bold text-xs">Low Priority</span>
                   <span className="px-2 py-0.5 rounded-full bg-emerald-600 text-white font-black text-xs">{lowPriorityTasks} Tasks</span>
                 </div>
               </div>
             </div>
 
             {/* Column Pipeline Ratios */}
-            <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-2">
-              <div className="flex items-center space-x-1.5 text-amber-700 font-bold text-[11px]">
-                <ListTodo className="w-3.5 h-3.5 text-amber-600" />
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm space-y-2">
+              <div className="flex items-center space-x-1.5 text-amber-700 dark:text-amber-400 font-bold text-[11px]">
+                <ListTodo className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                 <span className="uppercase tracking-wider font-black">PIPELINE STATUS</span>
               </div>
               <div className="grid grid-cols-3 gap-2 text-center pt-1">
-                <div className="p-2 rounded-xl bg-rose-50 border border-rose-200">
-                  <div className="font-black text-rose-700 text-sm">{todoCount}</div>
-                  <div className="text-[10px] text-zinc-600 font-medium">To Do</div>
+                <div className="p-2 rounded-xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/40">
+                  <div className="font-black text-rose-700 dark:text-rose-300 text-sm">{todoCount}</div>
+                  <div className="text-[10px] text-zinc-600 dark:text-zinc-400 font-medium">To Do</div>
                 </div>
-                <div className="p-2 rounded-xl bg-amber-50 border border-amber-200">
-                  <div className="font-black text-amber-700 text-sm">{inProgressCount}</div>
-                  <div className="text-[10px] text-zinc-600 font-medium">In Progress</div>
+                <div className="p-2 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/40">
+                  <div className="font-black text-amber-700 dark:text-amber-300 text-sm">{inProgressCount}</div>
+                  <div className="text-[10px] text-zinc-600 dark:text-zinc-400 font-medium">In Progress</div>
                 </div>
-                <div className="p-2 rounded-xl bg-emerald-50 border border-emerald-200">
-                  <div className="font-black text-emerald-700 text-sm">{completedCount}</div>
-                  <div className="text-[10px] text-zinc-600 font-medium">Done</div>
+                <div className="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900/40">
+                  <div className="font-black text-emerald-700 dark:text-emerald-300 text-sm">{completedCount}</div>
+                  <div className="text-[10px] text-zinc-600 dark:text-zinc-400 font-medium">Done</div>
                 </div>
               </div>
             </div>
           </div>
         )}
-
-
 
         {/* DYNAMIC OPTION 4: DAILY JOURNAL ACTIVE */}
         {widgetType === 'journal' && (() => {
@@ -249,7 +247,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
           return (
             <div className="space-y-3 animate-fade-in-up">
               {/* Today's Mood Status */}
-              <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-2 text-center animate-float">
+              <div className="p-4 rounded-2xl bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm space-y-2 text-center animate-float">
                 <div className="flex items-center justify-center space-x-1 text-amber-400 font-bold text-[11px]">
                   <Smile className="w-3.5 h-3.5 text-amber-400" />
                   <span className="uppercase tracking-wider font-black">Logged Mood</span>
@@ -257,22 +255,22 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
                 <div className="text-3xl font-black text-amber-400">
                   {selectedMood || '🚀'} {moodName}
                 </div>
-                <p className="text-[11px] text-slate-400">{userFirstName}'s mood logged today</p>
+                <p className="text-[11px] text-zinc-500 dark:text-zinc-400">{userFirstName}'s mood logged today</p>
               </div>
 
               {/* Gratitude Counter */}
-              <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-2">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-100">
+              <div className="p-4 rounded-2xl bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm space-y-2">
+                <div className="flex items-center justify-between text-xs font-bold text-zinc-900 dark:text-zinc-100">
                   <span className="flex items-center space-x-1.5">
                     <BookOpen className="w-3.5 h-3.5 text-amber-400" />
-                    <span className="uppercase tracking-wider text-[10px] text-slate-400 font-black">Gratitude Logs</span>
+                    <span className="uppercase tracking-wider text-[10px] text-zinc-500 dark:text-zinc-400 font-black">Gratitude Logs</span>
                   </span>
                   <span className="text-amber-400 font-black">{gratitudeItems.length} / 3</span>
                 </div>
-                <div className="space-y-1 text-[11px] text-slate-300">
-                  {gratitude1 ? <p className="truncate">✓ 1. {gratitude1}</p> : <p className="text-slate-500 italic">1. Add gratitude in journal</p>}
-                  {gratitude2 ? <p className="truncate">✓ 2. {gratitude2}</p> : <p className="text-slate-500 italic">2. Add gratitude in journal</p>}
-                  {gratitude3 ? <p className="truncate">✓ 3. {gratitude3}</p> : <p className="text-slate-500 italic">3. Add gratitude in journal</p>}
+                <div className="space-y-1 text-[11px] text-zinc-700 dark:text-zinc-300">
+                  {gratitude1 ? <p className="truncate">✓ 1. {gratitude1}</p> : <p className="text-zinc-500 italic">1. Add gratitude in journal</p>}
+                  {gratitude2 ? <p className="truncate">✓ 2. {gratitude2}</p> : <p className="text-zinc-500 italic">2. Add gratitude in journal</p>}
+                  {gratitude3 ? <p className="truncate">✓ 3. {gratitude3}</p> : <p className="text-zinc-500 italic">3. Add gratitude in journal</p>}
                 </div>
               </div>
             </div>
@@ -283,7 +281,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
         {!widgetType && (
           <div className="space-y-3 animate-fade-in-up">
             {/* Page Metrics Inspector */}
-            <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-3">
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm space-y-3">
               <div className="flex items-center space-x-1.5 text-amber-400 font-bold text-[11px]">
                 <FileText className="w-3.5 h-3.5 text-amber-400" />
                 <span className="uppercase tracking-wider animate-text-float font-black">Page Inspector</span>
@@ -291,49 +289,48 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
 
               <div className="space-y-2 text-xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-400">Word Count</span>
-                  <span className="font-bold text-slate-100">{wordCount} Words</span>
+                  <span className="text-zinc-500 dark:text-zinc-400">Word Count</span>
+                  <span className="font-bold text-zinc-900 dark:text-zinc-100">{wordCount} Words</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-400">Reading Time</span>
-                  <span className="font-bold text-slate-100">~{readingTime} Min</span>
+                  <span className="text-zinc-500 dark:text-zinc-400">Reading Time</span>
+                  <span className="font-bold text-zinc-900 dark:text-zinc-100">~{readingTime} Min</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-400">Last Modified</span>
+                  <span className="text-zinc-500 dark:text-zinc-400">Last Modified</span>
                   <span className="font-bold text-amber-400">Just Now</span>
                 </div>
               </div>
             </div>
 
             {/* Quick Tools */}
-            <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-2">
-              <div className="flex items-center space-x-1.5 text-amber-700 font-bold text-[11px]">
-                <Brain className="w-3.5 h-3.5 text-amber-600" />
+            <div className="p-4 rounded-2xl bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm space-y-2">
+              <div className="flex items-center space-x-1.5 text-amber-700 dark:text-amber-400 font-bold text-[11px]">
+                <Brain className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                 <span className="uppercase tracking-wider font-black">JARVIS Tools</span>
               </div>
               <button
                 onClick={() => createPage('workspace-akash-shiv', null, 'Daily Habit Tracker', 'habit_tracker')}
-                className="w-full text-left p-2 rounded-xl bg-zinc-50 hover:bg-amber-50 border border-zinc-200 text-zinc-800 font-semibold text-[11px]"
+                className="w-full text-left p-2 rounded-xl bg-zinc-50 dark:bg-zinc-800 hover:bg-amber-50 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-200 font-semibold text-[11px]"
               >
                 🔥 Habit Tracker
               </button>
-
             </div>
           </div>
         )}
 
         {/* Global Performance Footer */}
-        <div className="p-4 rounded-2xl bg-amber-50/60 border border-amber-200 shadow-sm space-y-1.5">
-          <div className="flex items-center justify-between text-xs font-bold text-amber-800">
+        <div className="p-4 rounded-2xl bg-amber-50/60 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/40 shadow-sm space-y-1.5">
+          <div className="flex items-center justify-between text-xs font-bold text-amber-800 dark:text-amber-300">
             <span className="flex items-center space-x-1">
-              <Award className="w-3.5 h-3.5 text-amber-600" />
+              <Award className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
               <span className="uppercase tracking-wider font-black text-[10px]">Executive Level</span>
             </span>
             <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500 text-white font-black">
               MAX
             </span>
           </div>
-          <p className="text-[11px] text-slate-300 font-medium leading-relaxed">
+          <p className="text-[11px] text-zinc-700 dark:text-zinc-300 font-medium leading-relaxed">
             {userFirstName}, your daily productivity score is {overallPercentage > 0 ? `${overallPercentage}%` : '100%'}.
           </p>
         </div>
