@@ -273,10 +273,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
                 : 'border-transparent hover:bg-amber-100/60 text-zinc-700 hover:text-zinc-950 font-medium'
             }`}
           >
-            <BookOpen className={`w-4 h-4 shrink-0 ${isWidgetActive('journal') ? 'text-purple-600 fill-purple-400' : 'text-amber-600/80'}`} />
+            <BookOpen className={`w-4 h-4 shrink-0 ${isWidgetActive('journal') ? 'text-amber-600 fill-amber-400' : 'text-amber-600/80'}`} />
             <span className="truncate flex-1">Daily Journal</span>
             {isWidgetActive('journal') && (
-              <span className="w-2 h-2 rounded-full bg-purple-500 animate-ping shrink-0" />
+              <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping shrink-0" />
             )}
           </button>
 

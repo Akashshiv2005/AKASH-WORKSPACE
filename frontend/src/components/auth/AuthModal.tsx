@@ -30,10 +30,10 @@ export const AuthModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4 select-none animate-fade-in-up">
-      <div className="w-full max-w-md bg-white dark:bg-[#201c2e] border border-purple-500/30 rounded-3xl shadow-2xl p-7 text-[#37352f] dark:text-[#e6e6e6] relative">
+      <div className="w-full max-w-md bg-white dark:bg-[#18181b] border border-amber-500/30 rounded-3xl shadow-2xl p-7 text-[#37352f] dark:text-[#e6e6e6] relative">
         <button
           onClick={() => setAuthModalOpen(false)}
-          className="absolute top-5 right-5 p-1.5 rounded-xl hover:bg-[#efefee] dark:hover:bg-[#2e2744] text-[#787774] transition-colors"
+          className="absolute top-5 right-5 p-1.5 rounded-xl hover:bg-[#efefee] dark:hover:bg-[#27272a] text-[#787774] transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
@@ -75,7 +75,7 @@ export const AuthModal: React.FC = () => {
                   placeholder="John Doe"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full pl-10 pr-3.5 py-2.5 bg-[#f7f7f5] dark:bg-[#1a1726] border border-[#e9e9e7] dark:border-[#372e50] rounded-xl text-xs outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/30 transition-all font-medium"
+                  className="w-full pl-10 pr-3.5 py-2.5 bg-[#f7f7f5] dark:bg-[#27272a] border border-[#e9e9e7] dark:border-zinc-700 rounded-xl text-xs outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/30 transition-all font-medium text-zinc-900 dark:text-white"
                 />
               </div>
             </div>
@@ -93,7 +93,7 @@ export const AuthModal: React.FC = () => {
                 placeholder="name@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full pl-10 pr-3.5 py-2.5 bg-[#f7f7f5] dark:bg-[#1a1726] border border-[#e9e9e7] dark:border-[#372e50] rounded-xl text-xs outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/30 transition-all font-medium"
+                className="w-full pl-10 pr-3.5 py-2.5 bg-[#f7f7f5] dark:bg-[#27272a] border border-[#e9e9e7] dark:border-zinc-700 rounded-xl text-xs outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/30 transition-all font-medium text-zinc-900 dark:text-white"
               />
             </div>
           </div>
@@ -110,7 +110,7 @@ export const AuthModal: React.FC = () => {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full pl-10 pr-3.5 py-2.5 bg-[#f7f7f5] dark:bg-[#1a1726] border border-[#e9e9e7] dark:border-[#372e50] rounded-xl text-xs outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/30 transition-all font-medium"
+                className="w-full pl-10 pr-3.5 py-2.5 bg-[#f7f7f5] dark:bg-[#27272a] border border-[#e9e9e7] dark:border-zinc-700 rounded-xl text-xs outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/30 transition-all font-medium text-zinc-900 dark:text-white"
               />
             </div>
           </div>
@@ -138,7 +138,7 @@ export const AuthModal: React.FC = () => {
               Don't have an account?{' '}
               <button
                 onClick={() => setAuthModalOpen(true, 'register')}
-                className="text-purple-600 dark:text-purple-400 font-bold hover:underline"
+                className="text-amber-600 dark:text-amber-400 font-bold hover:underline"
               >
                 Register here
               </button>
@@ -148,7 +148,7 @@ export const AuthModal: React.FC = () => {
               Already have an account?{' '}
               <button
                 onClick={() => setAuthModalOpen(true, 'login')}
-                className="text-purple-600 dark:text-purple-400 font-bold hover:underline"
+                className="text-amber-600 dark:text-amber-400 font-bold hover:underline"
               >
                 Sign in here
               </button>
