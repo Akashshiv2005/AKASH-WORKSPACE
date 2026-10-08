@@ -14,16 +14,26 @@ import {
   BookOpen,
   Shield,
   GraduationCap,
-  LayoutDashboard
+  LayoutDashboard,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 interface SidebarProps {
   isOpen: boolean;
   toggleSidebar: () => void;
   onBackToLanding?: () => void;
+  darkMode?: boolean;
+  setDarkMode?: (val: boolean) => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackToLanding }) => {
+export const Sidebar: React.FC<SidebarProps> = ({
+  isOpen,
+  toggleSidebar,
+  onBackToLanding,
+  darkMode = true,
+  setDarkMode,
+}) => {
   const {
     pages,
     activePageId,
@@ -316,6 +326,24 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
 
         {/* Footer: Options, User Profile & Trash Bin */}
         <div className="p-2 border-t border-zinc-200 space-y-1 select-none">
+          {setDarkMode && (
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 dark:hover:bg-zinc-800 text-xs font-bold text-zinc-800 dark:text-zinc-200 transition-all hover:scale-[1.01] border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-[#18181b]"
+            >
+              <div className="flex items-center space-x-2">
+                {darkMode ? (
+                  <Moon className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                ) : (
+                  <Sun className="w-3.5 h-3.5 text-amber-600 fill-amber-500" />
+                )}
+                <span>Theme Mode</span>
+              </div>
+              <span className="px-2 py-0.5 text-[10px] font-black uppercase rounded-lg bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">
+                {darkMode ? '🌙 Dark' : '☀️ Light'}
+              </span>
+            </button>
+          )}
 
           <button
             onClick={() => setAuthModalOpen(true, 'login')}

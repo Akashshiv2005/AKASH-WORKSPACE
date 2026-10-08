@@ -175,10 +175,10 @@ export const HeaderBar: React.FC<HeaderBarProps> = ({
           {/* Theme Toggle */}
           <button
             onClick={() => setDarkMode(!darkMode)}
-            className="hidden sm:flex p-1.5 rounded-lg hover:bg-amber-50 text-amber-600 transition-colors"
-            title="Toggle Theme"
+            className="flex p-1.5 rounded-lg hover:bg-amber-50 dark:hover:bg-zinc-800 text-amber-600 transition-colors"
+            title="Toggle Theme (Dark / Light)"
           >
-            {darkMode ? <Sun className="w-4 h-4 text-amber-600" /> : <Moon className="w-4 h-4 text-zinc-600" />}
+            {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-zinc-600" />}
           </button>
 
           {/* Notifications Icon (Visible on Mobile & Desktop) */}

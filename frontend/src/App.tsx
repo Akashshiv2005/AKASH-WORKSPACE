@@ -29,7 +29,10 @@ export const App: React.FC = () => {
     setIsSidebarOpen(window.innerWidth > 768);
     setIsRightSidebarOpen(window.innerWidth > 768);
   }, []);
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState<boolean>(() => {
+    const saved = localStorage.getItem('akash_theme_mode');
+    return saved ? saved === 'dark' : true;
+  });
 
   const { fetchCurrentUser } = useAuthStore();
   const { fetchWorkspaces, activeWorkspace } = useWorkspaceStore();
@@ -56,8 +59,10 @@ export const App: React.FC = () => {
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
+      localStorage.setItem('akash_theme_mode', 'dark');
     } else {
       document.documentElement.classList.remove('dark');
+      localStorage.setItem('akash_theme_mode', 'light');
     }
   }, [darkMode]);
 
@@ -73,7 +78,7 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-white text-zinc-900 relative font-['Sora'] select-none">
+    <div className="flex h-screen w-screen overflow-hidden bg-white dark:bg-[#0f0e13] text-zinc-900 dark:text-zinc-100 relative font-['Sora'] select-none">
       {/* Left Sidebar */}
       <Sidebar
         isOpen={isSidebarOpen}
@@ -85,6 +90,8 @@ export const App: React.FC = () => {
           localStorage.setItem('akash_workspace_view_mode', 'landing');
           setViewMode('landing');
         }}
+        darkMode={darkMode}
+        setDarkMode={setDarkMode}
       />
 
       {/* Center Layout Area */}
