@@ -274,27 +274,62 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
 }
 
-/* Executive White Background Component Styles */
+/* Executive Component Styles with Dark Mode Overrides */
 .stark-hud-card, .glass-card {
-  background: #ffffff !important;
-  border: 1px solid #f3f4f6 !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
-  color: #111827 !important;
+  background: #ffffff;
+  border: 1px solid #f3f4f6;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  color: #111827;
+}
+
+.dark .stark-hud-card, .dark .glass-card {
+  background: #18181b !important;
+  border: 1px solid #27272a !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+  color: #f4f4f5 !important;
 }
 
 .glass-header {
-  background: #ffffff !important;
-  border-bottom: 1px solid #f3f4f6 !important;
-  color: #111827 !important;
+  background: #ffffff;
+  border-bottom: 1px solid #f3f4f6;
+  color: #111827;
+}
+
+.dark .glass-header {
+  background: #121118 !important;
+  border-bottom: 1px solid #27272a !important;
+  color: #f4f4f5 !important;
+}
+
+.dark .heading-animated {
+  background: linear-gradient(90deg, #f4f4f5 0%, #e4e4e7 70%, #f59e0b 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dark .text-gradient-flow {
+  background: linear-gradient(135deg, #ef4444, #f59e0b, #f4f4f5, #ef4444);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .active-page-pill {
   position: relative;
-  background: linear-gradient(90deg, #fef3c7 0%, #fee2e2 100%) !important;
+  background: linear-gradient(90deg, #fef3c7 0%, #fee2e2 100%);
+  border: 1px solid #f59e0b;
+  color: #b45309;
+  font-weight: 800;
+  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.2);
+}
+
+.dark .active-page-pill {
+  background: linear-gradient(90deg, #78350f 0%, #7f1d1d 100%) !important;
   border: 1px solid #f59e0b !important;
-  color: #b45309 !important;
-  font-weight: 800 !important;
-  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.2) !important;
+  color: #fef3c7 !important;
 }
 
 .active-page-pill::before {
@@ -315,6 +350,10 @@
   font-size: 16px;
   line-height: 1.7;
   color: #111827;
+}
+
+.dark .ProseMirror {
+  color: #f4f4f5;
 }
 
 .ProseMirror p.is-editor-empty:first-child::before {
