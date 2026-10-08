@@ -27,6 +27,7 @@ interface SidebarProps {
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackToLanding }) => {
   const {
     pages,
+    activePageId,
     archivedPages,
     setActivePageId,
     createPage,
@@ -44,6 +45,21 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
   const [isTrashOpen, setIsTrashOpen] = useState(false);
 
   if (!isOpen) return null;
+
+  const activePage = pages.find((p) => p.id === activePageId);
+
+  const isWidgetActive = (widgetType: string) => {
+    if (!activePage) return false;
+    if (activePage.widget_type === widgetType) return true;
+    const titleLower = (activePage.title || '').toLowerCase();
+    if (widgetType === 'dashboard') return titleLower.includes('dashboard') || titleLower.includes('overall') || titleLower.includes('overview') || titleLower.includes('executive') || titleLower.includes('home');
+    if (widgetType === 'habit_tracker') return titleLower.includes('habit');
+    if (widgetType === 'todo_planner') return titleLower.includes('task') || titleLower.includes('to-do') || titleLower.includes('todo');
+    if (widgetType === 'journal') return titleLower.includes('journal') || titleLower.includes('diary');
+    if (widgetType === 'expense_tracker') return titleLower.includes('expense');
+    if (widgetType === 'plans_hub') return titleLower.includes('learning') || titleLower.includes('plans') || titleLower.includes('study');
+    return false;
+  };
 
   const openWidgetPage = (widgetType: 'dashboard' | 'habit_tracker' | 'todo_planner' | 'pomodoro' | 'journal' | 'expense_tracker' | 'plans_hub') => {
     if (activeWorkspace) {
@@ -75,6 +91,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
       setIsWorkspaceMenuOpen(false);
     }
   };
+
+  const isDashActive = isWidgetActive('dashboard');
 
   return (
     <>
@@ -185,14 +203,20 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
           {/* Top Executive Dashboard Home Button */}
           <button
             onClick={() => openWidgetPage('dashboard')}
-            className="w-full flex items-center justify-between px-2.5 py-2 rounded-xl bg-gradient-to-r from-red-600 via-amber-600 to-red-600 hover:from-red-500 hover:to-amber-500 text-white font-black text-xs shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all my-1 border border-amber-300/40 text-left"
+            className={`w-full flex items-center justify-between px-2.5 py-2 rounded-xl transition-all my-1 text-left ${
+              isDashActive
+                ? 'bg-gradient-to-r from-red-600 via-amber-600 to-red-600 text-white font-black shadow-lg ring-2 ring-amber-400 scale-[1.02]'
+                : 'bg-gradient-to-r from-red-600/90 via-amber-600/90 to-red-600/90 hover:from-red-600 hover:to-amber-500 text-white font-extrabold shadow-md hover:scale-[1.01]'
+            }`}
           >
             <div className="flex items-center space-x-2 min-w-0">
-              <LayoutDashboard className="w-4 h-4 text-amber-200 fill-amber-200/30 shrink-0" />
+              <LayoutDashboard className={`w-4 h-4 text-amber-200 shrink-0 ${isDashActive ? 'animate-pulse' : ''}`} />
               <span className="truncate tracking-wide">Executive Dashboard</span>
             </div>
-            <span className="px-1.5 py-0.5 text-[9px] font-black uppercase rounded-md bg-black/30 text-amber-200 border border-white/20 shrink-0">
-              360° LIVE
+            <span className={`px-1.5 py-0.5 text-[9px] font-black uppercase rounded-md shrink-0 ${
+              isDashActive ? 'bg-amber-400 text-zinc-950 font-black shadow-xs' : 'bg-black/30 text-amber-200 border border-white/20'
+            }`}>
+              {isDashActive ? 'OPEN ⚡' : '360° LIVE'}
             </span>
           </button>
 
@@ -213,47 +237,82 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
           {/* Habit Tracker Template Pill */}
           <button
             onClick={() => openWidgetPage('habit_tracker')}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01] text-left"
+            className={`w-full flex items-center space-x-2.5 px-2.5 py-2 rounded-xl text-xs font-bold transition-all text-left border ${
+              isWidgetActive('habit_tracker')
+                ? 'bg-amber-100/90 dark:bg-amber-950/70 border-amber-400 text-amber-950 dark:text-amber-200 shadow-xs border-l-4 border-l-amber-600 scale-[1.01]'
+                : 'border-transparent hover:bg-amber-100/60 text-zinc-700 hover:text-zinc-950 font-medium'
+            }`}
           >
-            <Flame className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-            <span className="truncate">Habit Tracker</span>
+            <Flame className={`w-4 h-4 shrink-0 ${isWidgetActive('habit_tracker') ? 'text-amber-600 fill-amber-400' : 'text-amber-600/80'}`} />
+            <span className="truncate flex-1">Habit Tracker</span>
+            {isWidgetActive('habit_tracker') && (
+              <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping shrink-0" />
+            )}
           </button>
 
           {/* To-Do Planner Template Pill */}
           <button
             onClick={() => openWidgetPage('todo_planner')}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01] text-left"
+            className={`w-full flex items-center space-x-2.5 px-2.5 py-2 rounded-xl text-xs font-bold transition-all text-left border ${
+              isWidgetActive('todo_planner')
+                ? 'bg-amber-100/90 dark:bg-amber-950/70 border-amber-400 text-amber-950 dark:text-amber-200 shadow-xs border-l-4 border-l-amber-600 scale-[1.01]'
+                : 'border-transparent hover:bg-amber-100/60 text-zinc-700 hover:text-zinc-950 font-medium'
+            }`}
           >
-            <CheckSquare className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-            <span className="truncate">To-Do Planner</span>
+            <CheckSquare className={`w-4 h-4 shrink-0 ${isWidgetActive('todo_planner') ? 'text-red-600 fill-red-400' : 'text-amber-600/80'}`} />
+            <span className="truncate flex-1">To-Do Planner</span>
+            {isWidgetActive('todo_planner') && (
+              <span className="w-2 h-2 rounded-full bg-red-500 animate-ping shrink-0" />
+            )}
           </button>
 
           {/* Daily Journal Pill */}
           <button
             onClick={() => openWidgetPage('journal')}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01] text-left"
+            className={`w-full flex items-center space-x-2.5 px-2.5 py-2 rounded-xl text-xs font-bold transition-all text-left border ${
+              isWidgetActive('journal')
+                ? 'bg-amber-100/90 dark:bg-amber-950/70 border-amber-400 text-amber-950 dark:text-amber-200 shadow-xs border-l-4 border-l-amber-600 scale-[1.01]'
+                : 'border-transparent hover:bg-amber-100/60 text-zinc-700 hover:text-zinc-950 font-medium'
+            }`}
           >
-            <BookOpen className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-            <span className="truncate">Daily Journal</span>
+            <BookOpen className={`w-4 h-4 shrink-0 ${isWidgetActive('journal') ? 'text-purple-600 fill-purple-400' : 'text-amber-600/80'}`} />
+            <span className="truncate flex-1">Daily Journal</span>
+            {isWidgetActive('journal') && (
+              <span className="w-2 h-2 rounded-full bg-purple-500 animate-ping shrink-0" />
+            )}
           </button>
 
           {/* Expense Tracker Pill */}
           <button
             onClick={() => openWidgetPage('expense_tracker')}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01] text-left"
+            className={`w-full flex items-center space-x-2.5 px-2.5 py-2 rounded-xl text-xs font-bold transition-all text-left border ${
+              isWidgetActive('expense_tracker')
+                ? 'bg-amber-100/90 dark:bg-amber-950/70 border-amber-400 text-amber-950 dark:text-amber-200 shadow-xs border-l-4 border-l-amber-600 scale-[1.01]'
+                : 'border-transparent hover:bg-amber-100/60 text-zinc-700 hover:text-zinc-950 font-medium'
+            }`}
           >
             <span className="text-sm shrink-0">💰</span>
-            <span className="truncate">Expense Tracker</span>
+            <span className="truncate flex-1">Expense Tracker</span>
+            {isWidgetActive('expense_tracker') && (
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping shrink-0" />
+            )}
           </button>
 
           {/* Learning Management System Pill */}
           <button
             onClick={() => openWidgetPage('plans_hub')}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01] text-left"
+            className={`w-full flex items-center space-x-2.5 px-2.5 py-2 rounded-xl text-xs font-bold transition-all text-left border ${
+              isWidgetActive('plans_hub')
+                ? 'bg-amber-100/90 dark:bg-amber-950/70 border-amber-400 text-amber-950 dark:text-amber-200 shadow-xs border-l-4 border-l-amber-600 scale-[1.01]'
+                : 'border-transparent hover:bg-amber-100/60 text-zinc-700 hover:text-zinc-950 font-medium'
+            }`}
             title="Learning Management System"
           >
-            <GraduationCap className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-            <span className="truncate">Learning Management System</span>
+            <GraduationCap className={`w-4 h-4 shrink-0 ${isWidgetActive('plans_hub') ? 'text-amber-600 fill-amber-400' : 'text-amber-600/80'}`} />
+            <span className="truncate flex-1">Learning Management System</span>
+            {isWidgetActive('plans_hub') && (
+              <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping shrink-0" />
+            )}
           </button>
         </div>
 
