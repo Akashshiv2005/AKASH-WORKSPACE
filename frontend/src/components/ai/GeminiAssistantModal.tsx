@@ -190,18 +190,37 @@ export const GeminiAssistantModal: React.FC<GeminiAssistantModalProps> = ({
 
   const processAutomaticActions = (text: string): string[] => {
     const actions: string[] = [];
-    const lower = text.toLowerCase();
+    const lower = text.toLowerCase().trim();
 
-    // 1. Habit Creation Detector
+    // Do NOT trigger creation actions if the user is asking to view/show/get/give lists or info
+    const isQueryOrView = (
+      lower.includes('give') ||
+      lower.includes('show') ||
+      lower.includes('what') ||
+      lower.includes('list') ||
+      lower.includes('display') ||
+      lower.includes('get') ||
+      lower.includes('view') ||
+      lower.includes('fetch') ||
+      lower.includes('tell') ||
+      lower.startsWith('is ') ||
+      lower.startsWith('are ')
+    );
+
+    if (isQueryOrView) {
+      return actions;
+    }
+
+    // 1. Habit Creation Detector (explicit creation commands only)
     if (
       lower.includes('create habit') ||
       lower.includes('add habit') ||
       lower.includes('track habit') ||
-      lower.includes('create the habit') ||
-      lower.includes('habit:')
+      lower.includes('new habit') ||
+      lower.startsWith('habit:')
     ) {
       let habitName = text
-        .replace(/create the habit|create habit|add habit|track habit|habit:/gi, '')
+        .replace(/create the habit|create habit|add habit|track habit|new habit|habit:/gi, '')
         .replace(/for today|today|daily/gi, '')
         .trim();
       if (!habitName) habitName = 'Daily Routine Target';
@@ -210,21 +229,20 @@ export const GeminiAssistantModal: React.FC<GeminiAssistantModalProps> = ({
       actions.push(`✅ Created New Habit: "${habitName}" in Habit Tracker`);
     }
 
-    // 2. Task Creation Detector (handles typos like ctrace, craete, make task, todo, to do)
+    // 2. Task Creation Detector (explicit creation commands only)
     if (
       lower.includes('create task') ||
       lower.includes('add task') ||
-      lower.includes('remind me') ||
-      lower.includes('todo') ||
-      lower.includes('to do') ||
-      lower.includes('ctrace') ||
-      lower.includes('craete') ||
+      lower.includes('remind me to') ||
       lower.includes('make task') ||
       lower.includes('add to do') ||
-      lower.includes('create to do')
+      lower.includes('create to do') ||
+      lower.includes('new task') ||
+      lower.startsWith('todo:') ||
+      lower.startsWith('task:')
     ) {
       let taskName = text
-        .replace(/create task|add task|remind me to|remind me|todo:|todo|ctrace the to do for today|ctrace|craete|make task|add to do|create to do/gi, '')
+        .replace(/create task|add task|remind me to|make task|add to do|create to do|new task|todo:|task:/gi, '')
         .replace(/high priority|medium priority|low priority|for today|today/gi, '')
         .trim();
       if (!taskName) taskName = 'New Task Priority';
@@ -243,24 +261,37 @@ export const GeminiAssistantModal: React.FC<GeminiAssistantModalProps> = ({
   const generateDynamicChatGPTReply = (userText: string, actions: string[]): string => {
     const lower = userText.toLowerCase().trim();
 
-    // Greetings
+    // 1. Task Queries ("give the to do list", "show my tasks", "what is my to do list")
+    if (
+      lower.includes('to do') ||
+      lower.includes('todo') ||
+      lower.includes('task') ||
+      lower.includes('work list')
+    ) {
+      if (actions.length === 0) {
+        const taskList = tasks.length > 0
+          ? tasks.map((t) => `• [${t.priority}] ${t.title} (${t.status === 'completed' ? 'Done ✓' : t.status === 'in_progress' ? 'In Progress ⏳' : 'To Do 📌'})`).join('\n')
+          : '• No tasks currently on your board.';
+        return `🎯 Here is your Task Board summary for today, Akash:\n\n${taskList}\n\nYou can ask me anytime: "Create task [task title] with High Priority"!`;
+      }
+    }
+
+    // 2. Habit Queries
+    if (lower.includes('habit') || lower.includes('streak') || lower.includes('routine')) {
+      if (actions.length === 0) {
+        const habitList = habits.length > 0
+          ? habits.map((h) => `• ${h.icon} ${h.name} (${h.streak}d streak)`).join('\n')
+          : '• No active habits configured yet.';
+        return `🔥 Here is your live Habit Tracker status, Akash:\n\n${habitList}\n\n🏆 Active Streak: ${getBestStreak()} Days (${getOverallPercentage()}% Weekly Progress). Keep up the momentum!`;
+      }
+    }
+
+    // 3. Greetings
     if (['hi', 'hello', 'hey', 'greetings', 'good morning', 'good afternoon', 'sup'].includes(lower) || lower.startsWith('hi ') || lower.startsWith('hello ')) {
       return "👋 Hello Akash Shiv! Great to connect with you. I am monitoring your workspace. How can I assist you with your habits, schedule, tasks, or productivity goals right now?";
     }
 
-    // Queries about Today Tasks / To Do ("what is to day to do", "what are my tasks", "todo list")
-    if (lower.includes('to do') || lower.includes('todo') || lower.includes('task') || lower.includes('work')) {
-      const taskList = tasks.map((t) => `• [${t.priority}] ${t.title} (${t.status})`).join('\n');
-      return `🎯 Here is your Task Board summary for today, Akash:\n\n${taskList || '• No tasks currently on your board.'}\n\nYou can tell me anytime: "Create task [task title] with High Priority"!`;
-    }
-
-    // Queries about Habits
-    if (lower.includes('habit') || lower.includes('streak') || lower.includes('routine')) {
-      const habitList = habits.map((h) => `• ${h.icon} ${h.name} (${h.streak}d streak)`).join('\n');
-      return `🔥 Here is your live Habit Tracker status, Akash:\n\n${habitList || '• No active habits configured yet.'}\n\n🏆 Active Streak: ${getBestStreak()} Days (${getOverallPercentage()}% Weekly Progress). Keep up the momentum!`;
-    }
-
-    // Queries about Wellness
+    // 4. Wellness
     if (lower.includes('wellbeing') || lower.includes('wellness') || lower.includes('care') || lower.includes('health') || lower.includes('tired') || lower.includes('break')) {
       return "❤️ Akash, your health and energy are your greatest assets. Take a 5-minute breather, hydrate with water, and protect your focus. I'm here to handle the heavy lifting for you!";
     }

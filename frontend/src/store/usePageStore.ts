@@ -86,28 +86,7 @@ const DEMO_PAGES: Page[] = [
     is_archived: false,
     position: 1,
   },
-  {
-    id: 'page-pomodoro',
-    title: 'Arc Pomodoro Focus Station',
-    icon: '⚡',
-    cover_image: '',
-    content: JSON.stringify({
-      type: 'doc',
-      content: [
-        {
-          type: 'heading',
-          attrs: { level: 1 },
-          content: [{ type: 'text', text: 'Deep Focus & Productivity Timer' }],
-        },
-      ],
-    }),
-    widget_type: 'pomodoro',
-    workspace_id: 'workspace-akash-shiv',
-    parent_id: null,
-    is_favorite: true,
-    is_archived: false,
-    position: 2,
-  },
+
   {
     id: 'page-plans-hub',
     title: '🎯 Study & Learning Plans',

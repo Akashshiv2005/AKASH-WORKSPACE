@@ -401,12 +401,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
               >
                 🔥 Habit Tracker
               </button>
-              <button
-                onClick={() => createPage('workspace-akash-shiv', null, 'Arc Focus Station', 'pomodoro')}
-                className="w-full text-left p-2 rounded-xl bg-zinc-50 hover:bg-amber-50 border border-zinc-200 text-zinc-800 font-semibold text-[11px]"
-              >
-                ⚡ Arc Focus Timer
-              </button>
+
             </div>
           </div>
         )}

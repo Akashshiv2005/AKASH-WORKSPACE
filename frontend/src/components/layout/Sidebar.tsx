@@ -12,7 +12,6 @@ import {
   RotateCcw,
   Flame,
   CheckSquare,
-  Zap,
   BookOpen,
   Shield,
   GraduationCap
@@ -232,15 +231,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
           >
             <CheckSquare className="w-3.5 h-3.5 text-amber-600 shrink-0" />
             <span className="truncate">To-Do Planner</span>
-          </button>
-
-          {/* Pomodoro Focus Timer Pill */}
-          <button
-            onClick={() => openWidgetPage('pomodoro')}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01] text-left"
-          >
-            <Zap className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-            <span className="truncate">Arc Focus Timer</span>
           </button>
 
           {/* Daily Journal Pill */}
