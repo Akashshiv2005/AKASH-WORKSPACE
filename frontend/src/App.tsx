@@ -112,7 +112,12 @@ export const App: React.FC = () => {
         <main ref={mainRef} className="flex-1 overflow-y-auto relative z-10">
           {activePage ? (
             <div className="animate-fade-in-up">
-              <PageHeader page={activePage} />
+              {!(
+                activePage.widget_type ||
+                ['dashboard', 'journal', 'habit', 'task', 'todo', 'expense', 'dsa', 'plans', 'learning', 'pomodoro'].some(kw =>
+                  (activePage.title || '').toLowerCase().includes(kw)
+                )
+              ) && <PageHeader page={activePage} />}
               <BlockEditor page={activePage} />
             </div>
           ) : (
