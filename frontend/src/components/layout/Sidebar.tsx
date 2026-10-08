@@ -14,7 +14,8 @@ import {
   CheckSquare,
   BookOpen,
   Shield,
-  GraduationCap
+  GraduationCap,
+  LayoutDashboard
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -44,9 +45,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
 
   if (!isOpen) return null;
 
-  const openWidgetPage = (widgetType: 'habit_tracker' | 'todo_planner' | 'pomodoro' | 'journal' | 'expense_tracker' | 'plans_hub') => {
+  const openWidgetPage = (widgetType: 'dashboard' | 'habit_tracker' | 'todo_planner' | 'pomodoro' | 'journal' | 'expense_tracker' | 'plans_hub') => {
     if (activeWorkspace) {
       const titles: Record<string, string> = {
+        dashboard: '📊 Executive Workspace Dashboard',
         habit_tracker: 'Daily Habit Tracker & Streaks',
         todo_planner: 'Task Planner',
         pomodoro: 'Arc Pomodoro Focus Station',
@@ -180,12 +182,26 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
 
         {/* Navigation Section */}
         <div className="p-2 space-y-1 border-b border-zinc-200 select-none flex-1 overflow-y-auto custom-scrollbar">
+          {/* Top Executive Dashboard Home Button */}
+          <button
+            onClick={() => openWidgetPage('dashboard')}
+            className="w-full flex items-center justify-between px-2.5 py-2 rounded-xl bg-gradient-to-r from-red-600 via-amber-600 to-red-600 hover:from-red-500 hover:to-amber-500 text-white font-black text-xs shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all my-1 border border-amber-300/40 text-left"
+          >
+            <div className="flex items-center space-x-2 min-w-0">
+              <LayoutDashboard className="w-4 h-4 text-amber-200 fill-amber-200/30 shrink-0" />
+              <span className="truncate tracking-wide">Executive Dashboard</span>
+            </div>
+            <span className="px-1.5 py-0.5 text-[9px] font-black uppercase rounded-md bg-black/30 text-amber-200 border border-white/20 shrink-0">
+              360° LIVE
+            </span>
+          </button>
+
           {onBackToLanding && (
             <button
               onClick={onBackToLanding}
-              className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-red-600 via-red-500 to-amber-500 text-white font-extrabold text-xs shadow-xs hover:scale-[1.01] transition-all"
+              className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg bg-zinc-100 hover:bg-amber-100/60 text-zinc-800 font-bold text-xs hover:scale-[1.01] transition-all"
             >
-              <Shield className="w-3.5 h-3.5 text-amber-200 fill-amber-200" />
+              <Shield className="w-3.5 h-3.5 text-red-600 fill-red-600" />
               <span>Iron Man Home</span>
             </button>
           )}
@@ -214,6 +230,15 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
           <div className="pt-2 px-2.5 pb-1 text-[10px] font-black uppercase text-amber-700 tracking-wider">
             HABIT & PRODUCTIVITY
           </div>
+
+          {/* Overall Data Dashboard Pill */}
+          <button
+            onClick={() => openWidgetPage('dashboard')}
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg bg-amber-100/70 hover:bg-amber-200/80 text-xs text-amber-950 font-extrabold transition-all hover:scale-[1.01] text-left border border-amber-300/50"
+          >
+            <LayoutDashboard className="w-3.5 h-3.5 text-red-600 shrink-0" />
+            <span className="truncate">Overall Data Dashboard</span>
+          </button>
 
           {/* Habit Tracker Template Pill */}
           <button
