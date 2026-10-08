@@ -553,9 +553,9 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
 
       {/* PLANS SELECTION CAROUSEL / ROW */}
       <div className="space-y-2 min-w-0">
-        <div className="text-xs font-black uppercase text-[#a8a29e] tracking-wider flex items-center justify-between px-1">
+        <div className="text-xs font-black uppercase text-[#a8a29e] dark:text-zinc-400 tracking-wider flex items-center justify-between px-1">
           <span>YOUR ACTIVE PLANS ({plans.length})</span>
-          <span className="text-[11px] font-semibold text-red-600">Click a plan to switch view</span>
+          <span className="text-[11px] font-semibold text-red-600 dark:text-red-400">Click a plan to switch view</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 min-w-0">
@@ -571,32 +571,32 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
                 onClick={() => setSelectedPlanId(p.id)}
                 className={`p-4 rounded-xl border cursor-pointer transition-all relative group min-w-0 max-w-full ${
                   isSelected
-                    ? 'bg-white border-red-500 shadow-lg ring-2 ring-red-400/30'
-                    : 'bg-[#faf7f2] border-[#f0e8dc] hover:border-red-400/40'
+                    ? 'bg-white dark:bg-[#18181b] border-red-500 shadow-lg ring-2 ring-red-400/30 text-zinc-900 dark:text-zinc-100'
+                    : 'bg-[#faf7f2] dark:bg-zinc-900 border-[#f0e8dc] dark:border-zinc-800 hover:border-red-400/40 text-zinc-900 dark:text-zinc-100'
                 }`}
               >
                 <div className="flex items-start justify-between min-w-0">
-                  <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-300/60 truncate max-w-[80%]">
+                  <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-950 text-amber-900 dark:text-amber-300 border border-amber-300/60 dark:border-amber-900/50 truncate max-w-[80%]">
                     {p.category}
                   </span>
 
                   <button
                     onClick={(e) => handleDeletePlan(p.id, e)}
-                    className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 p-1 text-[#a8a29e] hover:text-red-500 rounded transition-all shrink-0"
+                    className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 p-1 text-[#a8a29e] dark:text-zinc-400 hover:text-red-500 rounded transition-all shrink-0"
                     title="Delete Plan"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
 
-                <h3 className="text-xs font-extrabold text-[#1c1917] mt-2 truncate min-w-0">{p.title}</h3>
+                <h3 className="text-xs font-extrabold text-[#1c1917] dark:text-zinc-100 mt-2 truncate min-w-0">{p.title}</h3>
 
                 <div className="mt-3 space-y-1 min-w-0">
-                  <div className="flex justify-between text-[11px] font-bold text-[#44403c]">
-                    <span className="text-red-600 font-extrabold">{pPct}% Learned</span>
+                  <div className="flex justify-between text-[11px] font-bold text-[#44403c] dark:text-zinc-300">
+                    <span className="text-red-600 dark:text-red-400 font-extrabold">{pPct}% Learned</span>
                     <span>{pDone}/{pTotal} Days</span>
                   </div>
-                  <div className="w-full bg-[#f0e8dc] h-2 rounded-full overflow-hidden">
+                  <div className="w-full bg-[#f0e8dc] dark:bg-zinc-800 h-2 rounded-full overflow-hidden">
                     <div
                       className="bg-gradient-to-r from-red-600 via-amber-500 to-yellow-500 h-full rounded-full transition-all duration-300"
                       style={{ width: `${pPct}%` }}
@@ -610,16 +610,16 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
       </div>
 
       {/* PLAN DETAILS CONTAINER */}
-      <div className="bg-white rounded-2xl border border-[#f0e8dc] shadow-xl p-5 space-y-6 min-w-0 max-w-full overflow-hidden">
+      <div className="bg-white dark:bg-[#18181b] rounded-2xl border border-[#f0e8dc] dark:border-zinc-800 shadow-xl p-5 space-y-6 min-w-0 max-w-full overflow-hidden text-zinc-900 dark:text-zinc-100">
         {/* DETAIL NAVIGATION TABS */}
-        <div className="flex items-center justify-between border-b border-[#f0e8dc] pb-4 flex-wrap gap-2 min-w-0">
+        <div className="flex items-center justify-between border-b border-[#f0e8dc] dark:border-zinc-800 pb-4 flex-wrap gap-2 min-w-0">
           <div className="flex items-center space-x-2 flex-wrap gap-1">
             <button
               onClick={() => setDetailTab('roadmap')}
               className={`flex items-center space-x-2 px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all ${
                 detailTab === 'roadmap'
                   ? 'bg-gradient-to-r from-red-600 to-amber-600 text-white shadow-md'
-                  : 'bg-[#faf7f2] text-[#44403c] hover:bg-[#f2ebe1]'
+                  : 'bg-[#faf7f2] dark:bg-zinc-900 text-[#44403c] dark:text-zinc-300 hover:bg-[#f2ebe1] dark:hover:bg-zinc-800'
               }`}
             >
               <Layers className="w-3.5 h-3.5" />
@@ -631,7 +631,7 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
               className={`flex items-center space-x-2 px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all ${
                 detailTab === 'notes'
                   ? 'bg-gradient-to-r from-red-600 to-amber-600 text-white shadow-md'
-                  : 'bg-[#faf7f2] text-[#44403c] hover:bg-[#f2ebe1]'
+                  : 'bg-[#faf7f2] dark:bg-zinc-900 text-[#44403c] dark:text-zinc-300 hover:bg-[#f2ebe1] dark:hover:bg-zinc-800'
               }`}
             >
               <FileText className="w-3.5 h-3.5" />
@@ -643,7 +643,7 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
               className={`flex items-center space-x-2 px-3 py-1.5 rounded-xl text-xs font-extrabold transition-all ${
                 detailTab === 'uploads'
                   ? 'bg-gradient-to-r from-red-600 to-amber-600 text-white shadow-md'
-                  : 'bg-[#faf7f2] text-[#44403c] hover:bg-[#f2ebe1]'
+                  : 'bg-[#faf7f2] dark:bg-zinc-900 text-[#44403c] dark:text-zinc-300 hover:bg-[#f2ebe1] dark:hover:bg-zinc-800'
               }`}
             >
               <Upload className="w-3.5 h-3.5" />
@@ -654,7 +654,7 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
           <div className="flex items-center space-x-2 shrink-0">
             <button
               onClick={sendPushNotification}
-              className="p-1.5 rounded-xl border border-[#e7dfd4] hover:border-[#ff7a00] text-[#ff7a00] bg-[#fff3e5]"
+              className="p-1.5 rounded-xl border border-[#e7dfd4] dark:border-zinc-700 hover:border-[#ff7a00] text-[#ff7a00] dark:text-amber-400 bg-[#fff3e5] dark:bg-amber-950/40"
               title="Notify Today's Lesson"
             >
               <Bell className="w-4 h-4" />
@@ -662,7 +662,7 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
             <button
               onClick={sendEmailNotification}
               disabled={isSendingEmail}
-              className="p-1.5 rounded-xl border border-[#ff7a00]/30 text-[#ff7a00] hover:bg-[#ff7a00]/10 font-bold text-xs"
+              className="p-1.5 rounded-xl border border-[#ff7a00]/30 text-[#ff7a00] dark:text-amber-400 hover:bg-[#ff7a00]/10 font-bold text-xs"
               title="Send Email Reminder"
             >
               <Send className="w-4 h-4" />
@@ -671,8 +671,8 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
         </div>
 
         {emailStatus && (
-          <div className="text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg p-2.5 flex items-center space-x-2 min-w-0">
-            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+          <div className="text-xs font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900/50 rounded-lg p-2.5 flex items-center space-x-2 min-w-0">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
             <span className="truncate">{emailStatus}</span>
           </div>
         )}
@@ -682,17 +682,17 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
           <div className="space-y-6 min-w-0 max-w-full">
             {/* TODAY'S GOAL FOCUS SPOTLIGHT CARD */}
             {currentDayData && (
-              <div className="bg-gradient-to-br from-[#fff1f2] via-[#fffbeb] to-[#fef3c7] border-2 border-red-400/60 rounded-2xl p-4 shadow-sm relative overflow-hidden min-w-0 max-w-full">
+              <div className="bg-gradient-to-br from-[#fff1f2] via-[#fffbeb] to-[#fef3c7] dark:from-red-950/40 dark:via-amber-950/30 dark:to-zinc-900 border-2 border-red-400/60 dark:border-red-900/50 rounded-2xl p-4 shadow-sm relative overflow-hidden min-w-0 max-w-full">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 min-w-0">
                   <div className="flex items-center space-x-3 min-w-0 flex-1">
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-r from-red-600 via-amber-500 to-yellow-500 text-white flex items-center justify-center font-black text-sm shadow-md shrink-0">
                       D{currentDayData.day}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <div className="text-[10px] font-black uppercase text-red-600 tracking-wider">
+                      <div className="text-[10px] font-black uppercase text-red-600 dark:text-red-400 tracking-wider">
                         WHAT TO LEARN TODAY
                       </div>
-                      <h2 className="text-xs font-extrabold text-[#1c1917] mt-0.5 truncate max-w-full">
+                      <h2 className="text-xs font-extrabold text-[#1c1917] dark:text-zinc-100 mt-0.5 truncate max-w-full">
                         {currentDayData.title}
                       </h2>
                     </div>
@@ -711,15 +711,15 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
                   </button>
                 </div>
 
-                <p className="text-xs text-[#44403c] mt-3 bg-white/80 backdrop-blur-xs p-3 rounded-xl border border-[#f0e8dc] leading-relaxed font-medium break-words max-w-full">
+                <p className="text-xs text-[#44403c] dark:text-zinc-200 mt-3 bg-white/80 dark:bg-zinc-900/80 backdrop-blur-xs p-3 rounded-xl border border-[#f0e8dc] dark:border-zinc-800 leading-relaxed font-medium break-words max-w-full">
                   {currentDayData.theory}
                 </p>
               </div>
             )}
 
-            {/* DAY-WISE LIST (STRICT RESPONSIVE GRID WITH FIXED MIN-W-0) */}
+            {/* DAY-WISE LIST */}
             <div className="space-y-2 min-w-0 max-w-full">
-              <h3 className="text-xs font-black uppercase text-[#1c1917] tracking-wider">
+              <h3 className="text-xs font-black uppercase text-[#1c1917] dark:text-zinc-100 tracking-wider">
                 ALL {activePlan.days.length} DAYS ROADMAP
               </h3>
 
@@ -733,10 +733,10 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
                       onClick={() => setActiveDay(d.day)}
                       className={`p-3.5 rounded-xl border cursor-pointer transition-all min-w-0 max-w-full overflow-hidden ${
                         isActive
-                          ? 'bg-[#fff1f2] border-red-500 ring-2 ring-red-400/30'
+                          ? 'bg-[#fff1f2] dark:bg-red-950/30 border-red-500 ring-2 ring-red-400/30'
                           : d.completed
-                          ? 'bg-emerald-50/40 border-emerald-200'
-                          : 'bg-[#faf7f2] border-[#f0e8dc] hover:border-red-400/40'
+                          ? 'bg-emerald-50/40 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-900/50'
+                          : 'bg-[#faf7f2] dark:bg-zinc-900 border-[#f0e8dc] dark:border-zinc-800 hover:border-red-400/40'
                       }`}
                     >
                       <div className="flex items-center justify-between min-w-0 gap-2">
@@ -747,12 +747,12 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
                                 ? 'bg-emerald-600 text-white'
                                 : isActive
                                 ? 'bg-gradient-to-r from-red-600 to-amber-500 text-white'
-                                : 'bg-[#e7dfd4] text-[#78716c]'
+                                : 'bg-[#e7dfd4] dark:bg-zinc-800 text-[#78716c] dark:text-zinc-300'
                             }`}
                           >
                             {d.day}
                           </span>
-                          <span className="text-xs font-extrabold text-[#1c1917] truncate max-w-full min-w-0 flex-1">
+                          <span className="text-xs font-extrabold text-[#1c1917] dark:text-zinc-100 truncate max-w-full min-w-0 flex-1">
                             {d.title}
                           </span>
                         </div>
@@ -765,14 +765,14 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
                           className="text-[#a8a29e] hover:text-[#ff7a00] shrink-0"
                         >
                           {d.completed ? (
-                            <CheckCircle2 className="w-5 h-5 text-emerald-600 fill-emerald-100" />
+                            <CheckCircle2 className="w-5 h-5 text-emerald-600 fill-emerald-100 dark:fill-emerald-950" />
                           ) : (
                             <Circle className="w-5 h-5" />
                           )}
                         </button>
                       </div>
 
-                      <p className="text-[11px] text-[#78716c] line-clamp-2 mt-2 break-words max-w-full min-w-0 leading-snug">
+                      <p className="text-[11px] text-[#78716c] dark:text-zinc-400 line-clamp-2 mt-2 break-words max-w-full min-w-0 leading-snug">
                         {d.theory}
                       </p>
                     </div>
@@ -787,7 +787,7 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
         {detailTab === 'notes' && (
           <div className="space-y-4 min-w-0 max-w-full">
             <div className="flex items-center justify-between min-w-0">
-              <h3 className="text-xs font-black uppercase text-[#1c1917]">
+              <h3 className="text-xs font-black uppercase text-[#1c1917] dark:text-zinc-100">
                 Study Notes ({activePlan.notes.length})
               </h3>
               <button
@@ -800,26 +800,26 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
             </div>
 
             {showNoteForm && (
-              <form onSubmit={handleAddNote} className="bg-[#faf7f2] border border-[#f0e8dc] p-4 rounded-xl space-y-3 min-w-0">
+              <form onSubmit={handleAddNote} className="bg-[#faf7f2] dark:bg-zinc-900 border border-[#f0e8dc] dark:border-zinc-800 p-4 rounded-xl space-y-3 min-w-0">
                 <input
                   type="text"
                   placeholder="Note Title (e.g. Dynamic Programming Formulas)..."
                   value={newNoteTitle}
                   onChange={(e) => setNewNoteTitle(e.target.value)}
-                  className="w-full px-3 py-2 bg-white border border-[#e7dfd4] rounded-lg text-xs font-bold outline-none focus:border-[#ff7a00]"
+                  className="w-full px-3 py-2 bg-white dark:bg-[#18181b] border border-[#e7dfd4] dark:border-zinc-700 rounded-lg text-xs font-bold outline-none focus:border-[#ff7a00] text-zinc-900 dark:text-white"
                   required
                 />
                 <textarea
                   placeholder="Write your note content or code snippets..."
                   value={newNoteContent}
                   onChange={(e) => setNewNoteContent(e.target.value)}
-                  className="w-full px-3 py-2 bg-white border border-[#e7dfd4] rounded-lg text-xs font-mono min-h-[100px] outline-none focus:border-[#ff7a00] resize-none"
+                  className="w-full px-3 py-2 bg-white dark:bg-[#18181b] border border-[#e7dfd4] dark:border-zinc-700 rounded-lg text-xs font-mono min-h-[100px] outline-none focus:border-[#ff7a00] resize-none text-zinc-900 dark:text-white"
                 />
                 <div className="flex justify-end space-x-2">
                   <button
                     type="button"
                     onClick={() => setShowNoteForm(false)}
-                    className="px-3 py-1 text-xs text-[#78716c]"
+                    className="px-3 py-1 text-xs text-[#78716c] dark:text-zinc-400"
                   >
                     Cancel
                   </button>
@@ -835,15 +835,15 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 min-w-0">
               {activePlan.notes.length === 0 ? (
-                <p className="text-xs text-[#a8a29e] py-4">No notes created yet for this plan.</p>
+                <p className="text-xs text-[#a8a29e] dark:text-zinc-500 py-4">No notes created yet for this plan.</p>
               ) : (
                 activePlan.notes.map((note) => (
-                  <div key={note.id} className="p-4 bg-[#faf7f2] border border-[#f0e8dc] rounded-xl space-y-2 min-w-0 max-w-full">
+                  <div key={note.id} className="p-4 bg-[#faf7f2] dark:bg-zinc-900 border border-[#f0e8dc] dark:border-zinc-800 rounded-xl space-y-2 min-w-0 max-w-full">
                     <div className="flex items-center justify-between min-w-0">
-                      <h4 className="text-xs font-extrabold text-[#1c1917] truncate min-w-0">{note.title}</h4>
-                      <span className="text-[10px] text-[#a8a29e] shrink-0 ml-2">{note.updatedAt}</span>
+                      <h4 className="text-xs font-extrabold text-[#1c1917] dark:text-zinc-100 truncate min-w-0">{note.title}</h4>
+                      <span className="text-[10px] text-[#a8a29e] dark:text-zinc-400 shrink-0 ml-2">{note.updatedAt}</span>
                     </div>
-                    <p className="text-xs font-mono text-[#44403c] whitespace-pre-wrap bg-white p-3 rounded-lg border border-[#e7dfd4] break-words max-w-full">
+                    <p className="text-xs font-mono text-[#44403c] dark:text-zinc-200 whitespace-pre-wrap bg-white dark:bg-[#18181b] p-3 rounded-lg border border-[#e7dfd4] dark:border-zinc-700 break-words max-w-full">
                       {note.content}
                     </p>
                   </div>
@@ -856,12 +856,12 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
         {/* UPLOADED FILES TAB */}
         {detailTab === 'uploads' && (
           <div className="space-y-4 min-w-0 max-w-full">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#faf7f2] border border-[#f0e8dc] p-4 rounded-xl min-w-0">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#faf7f2] dark:bg-zinc-900 border border-[#f0e8dc] dark:border-zinc-800 p-4 rounded-xl min-w-0">
               <div>
-                <h3 className="text-xs font-black uppercase text-[#1c1917]">
+                <h3 className="text-xs font-black uppercase text-[#1c1917] dark:text-zinc-100">
                   Upload Notes & Attachments
                 </h3>
-                <p className="text-[11px] text-[#78716c]">
+                <p className="text-[11px] text-[#78716c] dark:text-zinc-400">
                   Upload PDFs, images, docs, or cheat sheets. Synced directly to backend database.
                 </p>
               </div>
@@ -880,17 +880,17 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 min-w-0">
               {activePlan.attachments.length === 0 ? (
-                <div className="col-span-full py-8 text-center text-xs text-[#a8a29e]">
+                <div className="col-span-full py-8 text-center text-xs text-[#a8a29e] dark:text-zinc-500">
                   No document attachments uploaded yet. Click Upload Document above.
                 </div>
               ) : (
                 activePlan.attachments.map((att) => (
-                  <div key={att.id} className="p-3 bg-white border border-[#f0e8dc] rounded-xl flex items-center justify-between shadow-xs min-w-0 max-w-full">
+                  <div key={att.id} className="p-3 bg-white dark:bg-[#18181b] border border-[#f0e8dc] dark:border-zinc-800 rounded-xl flex items-center justify-between shadow-xs min-w-0 max-w-full">
                     <div className="flex items-center space-x-2 min-w-0 flex-1">
                       <FileText className="w-5 h-5 text-[#ff7a00] shrink-0" />
                       <div className="min-w-0 flex-1">
-                        <div className="text-xs font-bold text-[#1c1917] truncate max-w-full">{att.name}</div>
-                        <div className="text-[10px] text-[#a8a29e] truncate">{att.size} • {att.uploadedAt}</div>
+                        <div className="text-xs font-bold text-[#1c1917] dark:text-zinc-100 truncate max-w-full">{att.name}</div>
+                        <div className="text-[10px] text-[#a8a29e] dark:text-zinc-400 truncate">{att.size} • {att.uploadedAt}</div>
                       </div>
                     </div>
 
@@ -898,14 +898,14 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
                       <a
                         href={att.dataUrl}
                         download={att.name}
-                        className="p-1 rounded text-[#ff7a00] hover:bg-[#fff3e5]"
+                        className="p-1 rounded text-[#ff7a00] hover:bg-[#fff3e5] dark:hover:bg-zinc-800"
                         title="Download / View"
                       >
                         <Download className="w-4 h-4" />
                       </a>
                       <button
                         onClick={() => deleteAttachment(att.id)}
-                        className="p-1 rounded text-[#a8a29e] hover:text-red-500"
+                        className="p-1 rounded text-[#a8a29e] dark:text-zinc-400 hover:text-red-500"
                         title="Delete File"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -922,43 +922,43 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
       {/* CREATE / IMPORT CHATGPT PLAN MODAL */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/40 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl border border-[#f0e8dc] shadow-2xl max-w-xl w-full p-6 space-y-4 animate-fade-in-up">
-            <div className="flex items-center justify-between border-b border-[#f0e8dc] pb-3">
-              <h2 className="text-base font-black text-[#1c1917] flex items-center">
+          <div className="bg-white dark:bg-[#18181b] rounded-2xl border border-[#f0e8dc] dark:border-zinc-800 shadow-2xl max-w-xl w-full p-6 space-y-4 animate-fade-in-up text-zinc-900 dark:text-zinc-100">
+            <div className="flex items-center justify-between border-b border-[#f0e8dc] dark:border-zinc-800 pb-3">
+              <h2 className="text-base font-black text-[#1c1917] dark:text-white flex items-center">
                 <Sparkles className="w-4 h-4 mr-2 text-[#ff7a00]" />
                 Create or Paste ChatGPT Plan
               </h2>
-              <button onClick={() => setShowCreateModal(false)} className="text-[#a8a29e] hover:text-[#1c1917]">
+              <button onClick={() => setShowCreateModal(false)} className="text-[#a8a29e] dark:text-zinc-400 hover:text-[#1c1917] dark:hover:text-white">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={handleCreatePlanSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-[#1c1917] mb-1">Plan Title</label>
+                <label className="block text-xs font-bold text-[#1c1917] dark:text-zinc-200 mb-1">Plan Title</label>
                 <input
                   type="text"
                   placeholder="e.g. 30-Day DSA Mastery or Python Fullcourse..."
                   value={newPlanTitle}
                   onChange={(e) => setNewPlanTitle(e.target.value)}
-                  className="w-full px-3 py-2 bg-[#faf7f2] border border-[#f0e8dc] rounded-xl text-xs outline-none focus:border-[#ff7a00]"
+                  className="w-full px-3 py-2 bg-[#faf7f2] dark:bg-zinc-900 border border-[#f0e8dc] dark:border-zinc-700 rounded-xl text-xs outline-none focus:border-[#ff7a00] text-zinc-900 dark:text-white"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#1c1917] mb-1">Category</label>
+                <label className="block text-xs font-bold text-[#1c1917] dark:text-zinc-200 mb-1">Category</label>
                 <input
                   type="text"
                   placeholder="e.g. DSA, Web Dev, System Design..."
                   value={newPlanCategory}
                   onChange={(e) => setNewPlanCategory(e.target.value)}
-                  className="w-full px-3 py-2 bg-[#faf7f2] border border-[#f0e8dc] rounded-xl text-xs outline-none focus:border-[#ff7a00]"
+                  className="w-full px-3 py-2 bg-[#faf7f2] dark:bg-zinc-900 border border-[#f0e8dc] dark:border-zinc-700 rounded-xl text-xs outline-none focus:border-[#ff7a00] text-zinc-900 dark:text-white"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#1c1917] mb-1 flex items-center justify-between">
+                <label className="block text-xs font-bold text-[#1c1917] dark:text-zinc-200 mb-1 flex items-center justify-between">
                   <span>Paste Raw ChatGPT / Study Plan Text</span>
                   <span className="text-[10px] text-[#ff7a00] font-normal">Auto-formats into Day 1, Day 2...</span>
                 </label>
@@ -966,7 +966,7 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
                   placeholder={`Paste text from ChatGPT here, e.g.:\nDay 1: Arrays & Two Pointers\nLearn basic array traversal...\nDay 2: Sliding Window\nLearn fixed and variable window...`}
                   value={pastedText}
                   onChange={(e) => setPastedText(e.target.value)}
-                  className="w-full px-3 py-2 bg-[#faf7f2] border border-[#f0e8dc] rounded-xl text-xs font-mono min-h-[140px] outline-none focus:border-[#ff7a00] resize-none"
+                  className="w-full px-3 py-2 bg-[#faf7f2] dark:bg-zinc-900 border border-[#f0e8dc] dark:border-zinc-700 rounded-xl text-xs font-mono min-h-[140px] outline-none focus:border-[#ff7a00] resize-none text-zinc-900 dark:text-white"
                   required
                 />
               </div>
@@ -975,7 +975,7 @@ export const PlansHub: React.FC<PlansHubProps> = ({ page }) => {
                 <button
                   type="button"
                   onClick={() => setShowCreateModal(false)}
-                  className="px-4 py-2 text-xs font-bold text-[#78716c]"
+                  className="px-4 py-2 text-xs font-bold text-[#78716c] dark:text-zinc-400"
                 >
                   Cancel
                 </button>
