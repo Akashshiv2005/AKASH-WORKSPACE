@@ -206,39 +206,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
             </button>
           )}
 
-          <button
-            onClick={() => setSearching(true)}
-            className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
-          >
-            <div className="flex items-center space-x-2">
-              <Search className="w-3.5 h-3.5 text-amber-600" />
-              <span>Search Workspace</span>
-            </div>
-            <kbd className="px-1.5 py-0.5 bg-amber-100 border border-amber-300 text-[10px] font-mono rounded text-amber-800">
-              Ctrl K
-            </kbd>
-          </button>
-
-          <button
-            onClick={() => setAuthModalOpen(true, 'login')}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-900 transition-all hover:scale-[1.01]"
-          >
-            <Settings className="w-3.5 h-3.5 text-amber-600" />
-            <span>Settings & Auth</span>
-          </button>
-
-          <div className="pt-2 px-2.5 pb-1 text-[10px] font-black uppercase text-amber-700 tracking-wider">
+          <div className="pt-3 px-2.5 pb-1 text-[10px] font-black uppercase text-amber-700 tracking-wider">
             HABIT & PRODUCTIVITY
           </div>
-
-          {/* Overall Data Dashboard Pill */}
-          <button
-            onClick={() => openWidgetPage('dashboard')}
-            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg bg-amber-100/70 hover:bg-amber-200/80 text-xs text-amber-950 font-extrabold transition-all hover:scale-[1.01] text-left border border-amber-300/50"
-          >
-            <LayoutDashboard className="w-3.5 h-3.5 text-red-600 shrink-0" />
-            <span className="truncate">Overall Data Dashboard</span>
-          </button>
 
           {/* Habit Tracker Template Pill */}
           <button
@@ -287,8 +257,29 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
           </button>
         </div>
 
-        {/* Footer: User Profile & Trash Bin */}
+        {/* Footer: Options, User Profile & Trash Bin */}
         <div className="p-2 border-t border-zinc-200 space-y-1 select-none">
+          <button
+            onClick={() => setSearching(true)}
+            className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
+          >
+            <div className="flex items-center space-x-2">
+              <Search className="w-3.5 h-3.5 text-amber-600" />
+              <span>Search Workspace</span>
+            </div>
+            <kbd className="px-1.5 py-0.5 bg-amber-100 border border-amber-300 text-[10px] font-mono rounded text-amber-800">
+              Ctrl K
+            </kbd>
+          </button>
+
+          <button
+            onClick={() => setAuthModalOpen(true, 'login')}
+            className="w-full flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-900 transition-all hover:scale-[1.01]"
+          >
+            <Settings className="w-3.5 h-3.5 text-amber-600" />
+            <span>Settings & Auth</span>
+          </button>
+
           <div className="flex items-center justify-between px-2.5 py-1.5 rounded-lg bg-amber-50 border border-amber-200">
             <div className="flex items-center space-x-2 min-w-0">
               <div className="w-6 h-6 rounded-full bg-gradient-to-r from-red-600 to-amber-500 flex items-center justify-center text-[10px] font-black text-white shrink-0">
