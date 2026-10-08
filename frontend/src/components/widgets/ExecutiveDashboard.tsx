@@ -89,7 +89,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({ onNaviga
         {/* Habit Kpi */}
         <div
           onClick={() => navigateTo('habit_tracker')}
-          className="p-5 rounded-3xl bg-white dark:bg-[#201c2e] border border-[#e9e9e7] dark:border-[#372e50] shadow-xl hover:shadow-2xl transition-all cursor-pointer hover:scale-[1.02] space-y-3"
+          className="p-5 rounded-3xl bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 shadow-xl hover:shadow-2xl transition-all cursor-pointer hover:scale-[1.02] space-y-3"
         >
           <div className="flex items-center justify-between">
             <span className="p-2.5 rounded-2xl bg-amber-500/10 text-amber-600 font-bold">
@@ -112,7 +112,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({ onNaviga
         {/* Task Kpi */}
         <div
           onClick={() => navigateTo('todo_planner')}
-          className="p-5 rounded-3xl bg-white dark:bg-[#201c2e] border border-[#e9e9e7] dark:border-[#372e50] shadow-xl hover:shadow-2xl transition-all cursor-pointer hover:scale-[1.02] space-y-3"
+          className="p-5 rounded-3xl bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 shadow-xl hover:shadow-2xl transition-all cursor-pointer hover:scale-[1.02] space-y-3"
         >
           <div className="flex items-center justify-between">
             <span className="p-2.5 rounded-2xl bg-red-500/10 text-red-600 font-bold">
@@ -138,13 +138,13 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({ onNaviga
         {/* Daily Journal Kpi */}
         <div
           onClick={() => navigateTo('journal')}
-          className="p-5 rounded-3xl bg-white dark:bg-[#201c2e] border border-[#e9e9e7] dark:border-[#372e50] shadow-xl hover:shadow-2xl transition-all cursor-pointer hover:scale-[1.02] space-y-3"
+          className="p-5 rounded-3xl bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 shadow-xl hover:shadow-2xl transition-all cursor-pointer hover:scale-[1.02] space-y-3"
         >
           <div className="flex items-center justify-between">
-            <span className="p-2.5 rounded-2xl bg-purple-500/10 text-purple-600 font-bold">
-              <BookOpen className="w-5 h-5 text-purple-500" />
+            <span className="p-2.5 rounded-2xl bg-amber-500/10 text-amber-600 font-bold">
+              <BookOpen className="w-5 h-5 text-amber-500" />
             </span>
-            <span className="text-xs font-bold text-purple-600 dark:text-purple-400 flex items-center">
+            <span className="text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center">
               <span>{entries.length} Entries Logged</span>
               <ArrowUpRight className="w-3.5 h-3.5 ml-0.5" />
             </span>
@@ -157,14 +157,14 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({ onNaviga
             <div className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">Daily Diary Mood & Reflection</div>
           </div>
           <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-1.5 rounded-full overflow-hidden">
-            <div className="bg-purple-500 h-full rounded-full transition-all" style={{ width: '100%' }} />
+            <div className="bg-amber-500 h-full rounded-full transition-all" style={{ width: '100%' }} />
           </div>
         </div>
 
         {/* Expense Kpi */}
         <div
           onClick={() => navigateTo('expense_tracker')}
-          className="p-5 rounded-3xl bg-white dark:bg-[#201c2e] border border-[#e9e9e7] dark:border-[#372e50] shadow-xl hover:shadow-2xl transition-all cursor-pointer hover:scale-[1.02] space-y-3"
+          className="p-5 rounded-3xl bg-white dark:bg-[#18181b] border border-zinc-200 dark:border-zinc-800 shadow-xl hover:shadow-2xl transition-all cursor-pointer hover:scale-[1.02] space-y-3"
         >
           <div className="flex items-center justify-between">
             <span className="p-2.5 rounded-2xl bg-emerald-500/10 text-emerald-600 font-bold">
@@ -188,7 +188,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({ onNaviga
       {/* Main Workspace 2-Column Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left Column: Today's Tasks & Priority Board */}
-        <div className="rounded-3xl border border-[#e9e9e7] dark:border-[#372e50] bg-white dark:bg-[#201c2e] p-6 shadow-xl space-y-4">
+        <div className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#18181b] p-6 shadow-xl space-y-4">
           <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
             <div className="flex items-center space-x-2">
               <CheckSquare className="w-4 h-4 text-red-500" />
@@ -209,7 +209,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({ onNaviga
               {tasks.slice(0, 5).map((task) => (
                 <div
                   key={task.id}
-                  className="flex items-center justify-between p-3 rounded-2xl bg-[#f7f7f5] dark:bg-[#1a1726] border border-[#e9e9e7] dark:border-[#372e50] text-xs font-medium"
+                  className="flex items-center justify-between p-3 rounded-2xl bg-[#f7f7f5] dark:bg-[#27272a] border border-zinc-200 dark:border-zinc-700 text-xs font-medium"
                 >
                   <div className="flex items-center space-x-2 min-w-0">
                     <span
@@ -239,7 +239,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({ onNaviga
         </div>
 
         {/* Right Column: Today's Habits Quick Tracker */}
-        <div className="rounded-3xl border border-[#e9e9e7] dark:border-[#372e50] bg-white dark:bg-[#201c2e] p-6 shadow-xl space-y-4">
+        <div className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#18181b] p-6 shadow-xl space-y-4">
           <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
             <div className="flex items-center space-x-2">
               <Flame className="w-4 h-4 text-amber-500" />
@@ -263,7 +263,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({ onNaviga
                 return (
                   <div
                     key={habit.id}
-                    className="flex items-center justify-between p-3 rounded-2xl bg-[#f7f7f5] dark:bg-[#1a1726] border border-[#e9e9e7] dark:border-[#372e50] text-xs font-medium"
+                    className="flex items-center justify-between p-3 rounded-2xl bg-[#f7f7f5] dark:bg-[#27272a] border border-zinc-200 dark:border-zinc-700 text-xs font-medium"
                   >
                     <div className="flex items-center space-x-2 min-w-0">
                       <span className="text-base">{habit.icon}</span>
@@ -278,7 +278,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({ onNaviga
                       className={`p-1.5 rounded-xl border transition-all shrink-0 ${
                         isChecked
                           ? 'bg-emerald-500 text-white border-emerald-600'
-                          : 'bg-white dark:bg-[#201c2e] text-zinc-400 border-zinc-300 dark:border-zinc-700'
+                          : 'bg-white dark:bg-[#18181b] text-zinc-400 border-zinc-300 dark:border-zinc-700'
                       }`}
                     >
                       <CheckCircle2 className="w-4 h-4" />
@@ -292,21 +292,21 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({ onNaviga
       </div>
 
       {/* Latest Journal Entry Digest Card */}
-      <div className="rounded-3xl border border-[#e9e9e7] dark:border-[#372e50] bg-white dark:bg-[#201c2e] p-6 shadow-xl space-y-3">
+      <div className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#18181b] p-6 shadow-xl space-y-3">
         <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-3">
-          <div className="flex items-center space-x-2 text-purple-600 dark:text-purple-400 font-extrabold text-sm">
+          <div className="flex items-center space-x-2 text-amber-600 dark:text-amber-400 font-extrabold text-sm">
             <BookOpen className="w-4 h-4" />
             <span>Today's Logged Daily Reflection</span>
           </div>
           <button
             onClick={() => navigateTo('journal')}
-            className="text-xs font-bold text-purple-600 dark:text-purple-400 hover:underline"
+            className="text-xs font-bold text-amber-600 dark:text-amber-400 hover:underline"
           >
             Open Daily Journal →
           </button>
         </div>
 
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-purple-50/70 dark:bg-purple-950/20 p-4 rounded-2xl border border-purple-200/50 dark:border-purple-800/30 text-xs">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-amber-50/80 dark:bg-amber-950/30 p-4 rounded-2xl border border-amber-200/60 dark:border-amber-800/40 text-xs">
           <div className="space-y-1">
             <div className="flex items-center space-x-2 font-bold text-zinc-900 dark:text-white">
               <span className="text-xl">{selectedMood || '🚀'}</span>
@@ -320,8 +320,8 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({ onNaviga
           </div>
 
           {(gratitude1 || gratitude2 || gratitude3) && (
-            <div className="space-y-1 text-purple-800 dark:text-purple-300 font-medium bg-white/70 dark:bg-[#1a1726] p-3 rounded-xl border border-purple-200/60 dark:border-purple-800 shrink-0 min-w-48">
-              <div className="font-bold text-[11px] text-purple-900 dark:text-purple-200">Grateful For:</div>
+            <div className="space-y-1 text-amber-900 dark:text-amber-300 font-medium bg-white/80 dark:bg-[#27272a] p-3 rounded-xl border border-amber-200 dark:border-amber-800 shrink-0 min-w-48">
+              <div className="font-bold text-[11px] text-amber-900 dark:text-amber-200">Grateful For:</div>
               {gratitude1 && <p className="truncate">• {gratitude1}</p>}
               {gratitude2 && <p className="truncate">• {gratitude2}</p>}
               {gratitude3 && <p className="truncate">• {gratitude3}</p>}

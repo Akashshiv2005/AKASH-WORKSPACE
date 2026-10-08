@@ -4,7 +4,6 @@ import { useWorkspaceStore } from '../../store/useWorkspaceStore';
 import { useAuthStore } from '../../store/useAuthStore';
 import {
   Plus,
-  Search,
   Settings,
   Trash2,
   PanelLeftClose,
@@ -33,7 +32,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
     createPage,
     restorePage,
     deletePermanently,
-    setSearching,
   } = usePageStore();
 
   const { workspaces, activeWorkspace, setActiveWorkspace, createWorkspace } = useWorkspaceStore();
@@ -318,18 +316,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, onBackT
 
         {/* Footer: Options, User Profile & Trash Bin */}
         <div className="p-2 border-t border-zinc-200 space-y-1 select-none">
-          <button
-            onClick={() => setSearching(true)}
-            className="w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg hover:bg-amber-100/60 text-xs text-zinc-800 hover:text-zinc-950 font-medium transition-all hover:scale-[1.01]"
-          >
-            <div className="flex items-center space-x-2">
-              <Search className="w-3.5 h-3.5 text-amber-600" />
-              <span>Search Workspace</span>
-            </div>
-            <kbd className="px-1.5 py-0.5 bg-amber-100 border border-amber-300 text-[10px] font-mono rounded text-amber-800">
-              Ctrl K
-            </kbd>
-          </button>
 
           <button
             onClick={() => setAuthModalOpen(true, 'login')}
