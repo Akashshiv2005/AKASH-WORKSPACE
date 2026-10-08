@@ -261,12 +261,15 @@ export const GeminiAssistantModal: React.FC<GeminiAssistantModalProps> = ({
   const generateDynamicChatGPTReply = (userText: string, actions: string[]): string => {
     const lower = userText.toLowerCase().trim();
 
-    // 1. Task Queries ("give the to do list", "show my tasks", "what is my to do list")
+    // 1. Task / Work Queries (handles typos like 'waht is the today work', 'today work', 'give the to do list', 'show tasks')
     if (
-      lower.includes('to do') ||
-      lower.includes('todo') ||
+      lower.includes('work') ||
       lower.includes('task') ||
-      lower.includes('work list')
+      lower.includes('todo') ||
+      lower.includes('to do') ||
+      lower.includes('today') ||
+      lower.includes('board') ||
+      lower.includes('job')
     ) {
       if (actions.length === 0) {
         const taskList = tasks.length > 0
@@ -277,7 +280,7 @@ export const GeminiAssistantModal: React.FC<GeminiAssistantModalProps> = ({
     }
 
     // 2. Habit Queries
-    if (lower.includes('habit') || lower.includes('streak') || lower.includes('routine')) {
+    if (lower.includes('habit') || lower.includes('streak') || lower.includes('routine') || lower.includes('daily')) {
       if (actions.length === 0) {
         const habitList = habits.length > 0
           ? habits.map((h) => `• ${h.icon} ${h.name} (${h.streak}d streak)`).join('\n')
@@ -287,7 +290,11 @@ export const GeminiAssistantModal: React.FC<GeminiAssistantModalProps> = ({
     }
 
     // 3. Greetings
-    if (['hi', 'hello', 'hey', 'greetings', 'good morning', 'good afternoon', 'sup'].includes(lower) || lower.startsWith('hi ') || lower.startsWith('hello ')) {
+    const words = lower.split(/\s+/);
+    if (
+      words.some((w) => ['hi', 'hello', 'hey', 'greetings', 'sup', 'gm'].includes(w)) ||
+      lower === 'hi' || lower === 'hello' || lower === 'hey'
+    ) {
       return "👋 Hello Akash Shiv! Great to connect with you. I am monitoring your workspace. How can I assist you with your habits, schedule, tasks, or productivity goals right now?";
     }
 
