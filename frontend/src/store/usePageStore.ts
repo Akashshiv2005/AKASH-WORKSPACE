@@ -8,7 +8,7 @@ export interface Page {
   icon?: string;
   cover_image?: string;
   content?: string | any;
-  widget_type?: 'habit_tracker' | 'todo_planner' | 'pomodoro' | 'journal' | 'expense_tracker' | 'dsa_planner' | 'plans_hub' | null;
+  widget_type?: 'habit_tracker' | 'todo_planner' | 'pomodoro' | 'journal' | 'expense_tracker' | 'dsa_planner' | 'plans_hub' | 'dashboard' | null;
   workspace_id: string;
   parent_id?: string | null;
   is_favorite: boolean;
@@ -32,7 +32,7 @@ interface PageState {
   setSearchQuery: (query: string) => void;
   setSearching: (open: boolean) => void;
 
-  createPage: (workspaceId: string, parentId?: string | null, title?: string, widgetType?: 'habit_tracker' | 'todo_planner' | 'pomodoro' | 'journal' | 'expense_tracker' | 'dsa_planner' | 'plans_hub' | null) => Promise<Page>;
+  createPage: (workspaceId: string, parentId?: string | null, title?: string, widgetType?: 'habit_tracker' | 'todo_planner' | 'pomodoro' | 'journal' | 'expense_tracker' | 'dsa_planner' | 'plans_hub' | 'dashboard' | null) => Promise<Page>;
   updatePage: (pageId: string, updates: Partial<Page>) => Promise<void>;
   toggleFavorite: (pageId: string) => Promise<void>;
   archivePage: (pageId: string) => Promise<void>;
@@ -42,6 +42,28 @@ interface PageState {
 }
 
 const DEMO_PAGES: Page[] = [
+  {
+    id: 'page-executive-dashboard',
+    title: '📊 Executive Workspace Dashboard',
+    icon: '📊',
+    cover_image: '',
+    content: JSON.stringify({
+      type: 'doc',
+      content: [
+        {
+          type: 'heading',
+          attrs: { level: 1 },
+          content: [{ type: 'text', text: "Akash's Executive Workspace Dashboard" }],
+        },
+      ],
+    }),
+    widget_type: 'dashboard',
+    workspace_id: 'workspace-akash-shiv',
+    parent_id: null,
+    is_favorite: true,
+    is_archived: false,
+    position: 0,
+  },
   {
     id: 'page-habit-tracker',
     title: 'Daily Habit Tracker & Streaks',

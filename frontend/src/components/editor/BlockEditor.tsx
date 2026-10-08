@@ -13,6 +13,7 @@ import { DailyJournal } from '../widgets/DailyJournal';
 import { ExpenseTracker } from '../widgets/ExpenseTracker';
 import { DsaPlanner } from '../widgets/DsaPlanner';
 import { PlansHub } from '../widgets/PlansHub';
+import { ExecutiveDashboard } from '../widgets/ExecutiveDashboard';
 import { GeminiMotivationBanner } from '../widgets/GeminiMotivationBanner';
 import {
   Heading1,
@@ -117,6 +118,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = ({ page }) => {
   const getEffectiveWidgetType = (): string | null => {
     if (page.widget_type) return page.widget_type;
     const titleLower = (page.title || '').toLowerCase();
+    if (titleLower.includes('dashboard') || titleLower.includes('overall') || titleLower.includes('overview') || titleLower.includes('executive') || titleLower.includes('home')) return 'dashboard';
     if (titleLower.includes('task') || titleLower.includes('to-do') || titleLower.includes('todo')) return 'todo_planner';
     if (titleLower.includes('habit')) return 'habit_tracker';
     if (titleLower.includes('expense')) return 'expense_tracker';
@@ -134,13 +136,14 @@ export const BlockEditor: React.FC<BlockEditorProps> = ({ page }) => {
       {/* Gemini AI Daily Motivation Banner */}
       <GeminiMotivationBanner />
 
+      {/* Widget Render: Executive Overall Dashboard */}
+      {effectiveWidgetType === 'dashboard' && <ExecutiveDashboard />}
+
       {/* Widget Render: Habit Tracker */}
       {effectiveWidgetType === 'habit_tracker' && <HabitTracker />}
 
       {/* Widget Render: To-Do Planner */}
       {effectiveWidgetType === 'todo_planner' && <TodoPlanner />}
-
-
 
       {/* Widget Render: Daily Journal & Reflection */}
       {effectiveWidgetType === 'journal' && <DailyJournal />}
