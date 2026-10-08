@@ -1,10 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   PanelRightClose,
-  Zap,
-  Play,
-  Pause,
-  RotateCcw,
   Award,
   Flame,
   Brain,
@@ -14,7 +10,6 @@ import {
   Smile,
   BookOpen,
   FileText,
-  Volume2,
   Shield,
   X
 } from 'lucide-react';
@@ -45,31 +40,9 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
   const { tasks } = useTaskStore();
   const { selectedMood, gratitude1, gratitude2, gratitude3 } = useJournalStore();
 
-  // Focus Timer State
-  const [timeLeft, setTimeLeft] = useState(25 * 60);
-  const [isRunning, setIsRunning] = useState(false);
-  const [sessionsCount, setSessionsCount] = useState(3);
   const [showAssistantBox, setShowAssistantBox] = useState(true);
 
-  useEffect(() => {
-    let timer: any = null;
-    if (isRunning && timeLeft > 0) {
-      timer = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
-      }, 1000);
-    } else if (timeLeft === 0) {
-      setSessionsCount((prev) => prev + 1);
-      setTimeLeft(25 * 60);
-      setIsRunning(false);
-    }
-    return () => clearInterval(timer);
-  }, [isRunning, timeLeft]);
-
   if (!isOpen) return null;
-
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
-  const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 
   const widgetType = activePage?.widget_type;
 
@@ -260,64 +233,7 @@ export const RightSidebar: React.FC<RightSidebarProps> = ({
           </div>
         )}
 
-        {/* DYNAMIC OPTION 3: ARC FOCUS STATION / POMODORO ACTIVE */}
-        {widgetType === 'pomodoro' && (
-          <div className="space-y-3 animate-fade-in-up">
-            {/* Full Focus Timer Widget */}
-            <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-3 text-center">
-              <div className="flex items-center justify-between text-[11px] font-bold text-amber-700">
-                <span className="flex items-center space-x-1">
-                  <Zap className="w-3.5 h-3.5 text-amber-500" />
-                  <span className="uppercase tracking-wider font-black">Focus Station</span>
-                </span>
-                <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300 font-bold">
-                  {sessionsCount} Done
-                </span>
-              </div>
 
-              <div className="text-3xl font-black font-mono text-red-600">
-                {formattedTime}
-              </div>
-
-              <div className="flex items-center justify-center space-x-2 pt-1">
-                <button
-                  onClick={() => setIsRunning(!isRunning)}
-                  className={`px-4 py-1.5 rounded-xl text-xs font-bold text-white shadow-md flex items-center space-x-1.5 transition-all hover:scale-105 ${
-                    isRunning ? 'bg-zinc-800 text-white' : 'bg-gradient-to-r from-red-600 via-red-500 to-amber-500'
-                  }`}
-                >
-                  {isRunning ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-white" />}
-                  <span>{isRunning ? 'Pause' : 'Start'}</span>
-                </button>
-                <button
-                  onClick={() => {
-                    setIsRunning(false);
-                    setTimeLeft(25 * 60);
-                  }}
-                  className="p-1.5 rounded-xl bg-zinc-100 text-zinc-700 hover:bg-zinc-200 border border-zinc-200"
-                >
-                  <RotateCcw className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </div>
-
-            {/* Audio Presets */}
-            <div className="p-4 rounded-2xl bg-white border border-zinc-200 text-zinc-900 shadow-sm space-y-2">
-              <div className="flex items-center space-x-1.5 text-amber-700 font-bold text-[11px]">
-                <Volume2 className="w-3.5 h-3.5 text-amber-600" />
-                <span className="uppercase tracking-wider font-black">Ambient Focus Audio</span>
-              </div>
-              <div className="space-y-1.5">
-                <button className="w-full text-left p-2 rounded-xl bg-zinc-50 hover:bg-amber-50 border border-zinc-200 text-zinc-800 font-medium text-[11px]">
-                  🎧 Deep Concentration (432Hz)
-                </button>
-                <button className="w-full text-left p-2 rounded-xl bg-zinc-50 hover:bg-amber-50 border border-zinc-200 text-zinc-800 font-medium text-[11px]">
-                  🌧️ High Altitude Rain & Focus
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* DYNAMIC OPTION 4: DAILY JOURNAL ACTIVE */}
         {widgetType === 'journal' && (() => {

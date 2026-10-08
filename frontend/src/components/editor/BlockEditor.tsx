@@ -9,7 +9,6 @@ import Underline from '@tiptap/extension-underline';
 import { Page, usePageStore } from '../../store/usePageStore';
 import { HabitTracker } from '../widgets/HabitTracker';
 import { TodoPlanner } from '../widgets/TodoPlanner';
-import { PomodoroTimer } from '../widgets/PomodoroTimer';
 import { DailyJournal } from '../widgets/DailyJournal';
 import { ExpenseTracker } from '../widgets/ExpenseTracker';
 import { DsaPlanner } from '../widgets/DsaPlanner';
@@ -141,8 +140,7 @@ export const BlockEditor: React.FC<BlockEditorProps> = ({ page }) => {
       {/* Widget Render: To-Do Planner */}
       {effectiveWidgetType === 'todo_planner' && <TodoPlanner />}
 
-      {/* Widget Render: Pomodoro Focus Timer */}
-      {effectiveWidgetType === 'pomodoro' && <PomodoroTimer />}
+
 
       {/* Widget Render: Daily Journal & Reflection */}
       {effectiveWidgetType === 'journal' && <DailyJournal />}

@@ -128,20 +128,34 @@ export const usePageStore = create<PageState>()(
       fetchPages: async (workspaceId) => {
         const token = localStorage.getItem('access_token');
         if (!token) {
-          set({ pages: get().pages.length ? get().pages : DEMO_PAGES });
+          const filteredLocal = get().pages.filter((p) => p.widget_type !== 'pomodoro' && p.id !== 'page-pomodoro');
+          const cleanPages = filteredLocal.length ? filteredLocal : DEMO_PAGES;
+          const isPomodoroActive = get().activePageId === 'page-pomodoro' || !cleanPages.some((p) => p.id === get().activePageId);
+          set({
+            pages: cleanPages,
+            activePageId: isPomodoroActive ? cleanPages[0].id : get().activePageId,
+          });
           return;
         }
         set({ isLoading: true });
         try {
           const res = await apiClient.get<Page[]>(`/workspaces/${workspaceId}/pages?archived=false`);
           if (res.data && res.data.length > 0) {
-            set({ pages: res.data });
-            if (!get().activePageId) {
-              set({ activePageId: res.data[0].id });
-            }
+            const cleanPages = res.data.filter((p) => p.widget_type !== 'pomodoro' && p.id !== 'page-pomodoro');
+            const isPomodoroActive = get().activePageId === 'page-pomodoro' || !cleanPages.some((p) => p.id === get().activePageId);
+            set({
+              pages: cleanPages.length > 0 ? cleanPages : DEMO_PAGES,
+              activePageId: isPomodoroActive ? (cleanPages[0]?.id || DEMO_PAGES[0].id) : get().activePageId,
+            });
           }
         } catch {
-          // keep fallback
+          const filteredLocal = get().pages.filter((p) => p.widget_type !== 'pomodoro' && p.id !== 'page-pomodoro');
+          const cleanPages = filteredLocal.length ? filteredLocal : DEMO_PAGES;
+          const isPomodoroActive = get().activePageId === 'page-pomodoro' || !cleanPages.some((p) => p.id === get().activePageId);
+          set({
+            pages: cleanPages,
+            activePageId: isPomodoroActive ? cleanPages[0].id : get().activePageId,
+          });
         } finally {
           set({ isLoading: false });
         }
