@@ -14,6 +14,7 @@ import { useExpenseStore } from '../../store/useExpenseStore';
 import { useJournalStore } from '../../store/useJournalStore';
 import { usePageStore } from '../../store/usePageStore';
 import { useAuthStore } from '../../store/useAuthStore';
+import { useWorkspaceStore } from '../../store/useWorkspaceStore';
 
 interface ExecutiveDashboardProps {
   onNavigateToWidget?: (widgetType: string) => void;
@@ -21,6 +22,7 @@ interface ExecutiveDashboardProps {
 
 export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({ onNavigateToWidget }) => {
   const { user } = useAuthStore();
+  const { activeWorkspace } = useWorkspaceStore();
   const { tasks, updateStatus } = useTaskStore();
   const { habits, toggleDay, getBestStreak, getOverallPercentage, getTotalCheckmarks } = useHabitStore();
   const { getTotalExpenses, savingsGoal } = useExpenseStore();
@@ -28,16 +30,16 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({ onNaviga
   const { setActivePageId, pages } = usePageStore();
 
   const fullName = user?.full_name || 'Akash Shiv';
+  const currentWsId = activeWorkspace?.id || 'workspace-akash-shiv';
 
   // Stats calculation
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter((t) => t.status === 'completed').length;
-  const inProgressTasks = tasks.filter((t) => t.status === 'in_progress').length;
-  const highPriorityTasks = tasks.filter((t) => t.priority === 'High' && t.status !== 'completed');
+  const pendingTasks = tasks.filter((t) => t.status !== 'completed').length;
 
   const totalSpent = getTotalExpenses();
-  const budget = savingsGoal || 5000;
-  const budgetPercent = Math.min(100, Math.round((totalSpent / (budget || 1)) * 100));
+  const goal = savingsGoal || 2000;
+  const goalPercent = Math.min(100, Math.round((totalSpent / (goal || 1)) * 100));
 
   const overallScore = getOverallPercentage();
   const bestStreak = getBestStreak();
@@ -119,12 +121,12 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({ onNaviga
               <CheckSquare className="w-5 h-5 text-red-500" />
             </span>
             <span className="text-xs font-bold text-red-600 dark:text-red-400 flex items-center">
-              <span>{completedTasks}/{totalTasks} Done</span>
+              <span>{completedTasks}/{totalTasks} Completed</span>
               <ArrowUpRight className="w-3.5 h-3.5 ml-0.5" />
             </span>
           </div>
           <div>
-            <div className="text-2xl font-black text-zinc-900 dark:text-white">{inProgressTasks + highPriorityTasks.length} Pending</div>
+            <div className="text-2xl font-black text-zinc-900 dark:text-white">{pendingTasks} Pending</div>
             <div className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">Tasks Needing Focus</div>
           </div>
           <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-1.5 rounded-full overflow-hidden">
@@ -171,16 +173,16 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({ onNaviga
               <DollarSign className="w-5 h-5 text-emerald-500" />
             </span>
             <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 flex items-center">
-              <span>₹{totalSpent.toLocaleString()} Spent</span>
+              <span>Goal: ₹{goal.toLocaleString()}</span>
               <ArrowUpRight className="w-3.5 h-3.5 ml-0.5" />
             </span>
           </div>
           <div>
-            <div className="text-2xl font-black text-zinc-900 dark:text-white">₹{(budget - totalSpent).toLocaleString()}</div>
-            <div className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">Remaining Monthly Budget</div>
+            <div className="text-2xl font-black text-zinc-900 dark:text-white">₹{totalSpent.toLocaleString()}</div>
+            <div className="text-xs font-semibold text-zinc-500 dark:text-zinc-400">Total Expenses Tracked</div>
           </div>
           <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-1.5 rounded-full overflow-hidden">
-            <div className="bg-emerald-500 h-full rounded-full transition-all" style={{ width: `${budgetPercent}%` }} />
+            <div className="bg-emerald-500 h-full rounded-full transition-all" style={{ width: `${goalPercent}%` }} />
           </div>
         </div>
       </div>
@@ -223,7 +225,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({ onNaviga
                   </div>
 
                   <button
-                    onClick={() => updateStatus('workspace-akash-shiv', task.id, task.status === 'completed' ? 'todo' : 'completed')}
+                    onClick={() => updateStatus(currentWsId, task.id, task.status === 'completed' ? 'todo' : 'completed')}
                     className={`px-3 py-1 rounded-xl text-[11px] font-bold transition-all shrink-0 ${
                       task.status === 'completed'
                         ? 'bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300'
@@ -274,7 +276,7 @@ export const ExecutiveDashboard: React.FC<ExecutiveDashboardProps> = ({ onNaviga
                     </div>
 
                     <button
-                      onClick={() => toggleDay('workspace-akash-shiv', habit.id, todayIdx)}
+                      onClick={() => toggleDay(currentWsId, habit.id, todayIdx)}
                       className={`p-1.5 rounded-xl border transition-all shrink-0 ${
                         isChecked
                           ? 'bg-emerald-500 text-white border-emerald-600'
