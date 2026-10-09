@@ -1,8 +1,10 @@
 name: Daily Task & Habit Email Digest
 on:
   schedule:
-    # Run daily at 14:30 UTC (8:00 PM IST)
-    - cron: '30 14 * * *'
+    # Morning Digest: 6:00 AM IST (00:30 UTC)
+    - cron: '30 0 * * *'
+    # Night Digest: 9:00 PM IST (15:30 UTC)
+    - cron: '30 15 * * *'
   workflow_dispatch: # Allows manual trigger from GitHub Actions
 
 jobs:

@@ -37,7 +37,7 @@ async def keep_alive():
         # Wait 3 minutes (Render sleeps after 15 minutes of inactivity)
         await asyncio.sleep(3 * 60)
 
-# Automated Background Task: Dispatches daily reminder digest at 8:00 PM IST if habits/tasks incomplete
+# Automated Background Task: Dispatches twice-daily digests at 6:00 AM IST & 9:00 PM IST
 async def daily_reminder_scheduler():
     from datetime import datetime, timezone, timedelta
     from app.db.session import SessionLocal
@@ -54,15 +54,22 @@ async def daily_reminder_scheduler():
             today_str = now_ist.strftime("%Y-%m-%d")
             hour_ist = now_ist.hour
 
-            # Evening reminder window: 8:00 PM IST onwards (hour >= 20)
-            if hour_ist >= 20:
+            current_slot = None
+            if 6 <= hour_ist < 12:
+                current_slot = "morning"
+            elif hour_ist >= 21:
+                current_slot = "night"
+
+            if current_slot:
+                slot_key = f"{today_str}_{current_slot}"
                 db = SessionLocal()
                 try:
                     settings_list = db.query(NotificationSetting).filter(
                         NotificationSetting.is_enabled == True
                     ).all()
                     for s in settings_list:
-                        if s.last_sent_at and s.last_sent_at.startswith(today_str):
+                        last_sent = s.last_sent_at or ""
+                        if slot_key in last_sent:
                             continue
                         success, msg, stats = trigger_daily_digest(
                             db=db,
@@ -71,15 +78,19 @@ async def daily_reminder_scheduler():
                             custom_user=s.custom_smtp_user,
                             custom_pass=s.custom_smtp_password,
                             force=False,
+                            time_slot=current_slot,
                         )
-                        print(f"[Daily Reminder Scheduler] {s.workspace_id}: {msg}")
+                        print(f"[Daily Reminder Scheduler - {current_slot.upper()}] {s.workspace_id}: {msg}")
+                        if success:
+                            s.last_sent_at = f"{last_sent},{slot_key}".strip(",")
+                            db.commit()
                 finally:
                     db.close()
         except Exception as e:
             print(f"[Daily Reminder Scheduler Error]: {e}")
 
-        # Check every 15 minutes
-        await asyncio.sleep(15 * 60)
+        # Check every 10 minutes
+        await asyncio.sleep(10 * 60)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

@@ -126,7 +126,7 @@ def send_smtp_email(
     try:
         # 1. Try SSL on port 465 first (cloud firewall friendly)
         try:
-            server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=5)
+            server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=20)
             server.login(smtp_user, smtp_password)
             server.sendmail(smtp_user, [to_email], msg.as_string())
             server.quit()
@@ -134,7 +134,7 @@ def send_smtp_email(
         except Exception as ssl_err:
             print(f"[SMTP SSL 465 failed: {ssl_err}. Trying STARTTLS 587...]")
             # 2. Fallback to STARTTLS on port 587
-            server = smtplib.SMTP("smtp.gmail.com", 587, timeout=5)
+            server = smtplib.SMTP("smtp.gmail.com", 587, timeout=20)
             server.ehlo()
             server.starttls()
             server.ehlo()
@@ -162,15 +162,15 @@ def generate_digest_html(
     tasks: List[Task],
     habits: List[Habit],
     date_str: str,
+    time_slot: str = "auto",
 ) -> str:
-    """Generate modern, responsive HTML email digest template."""
-    # Day of week index (Monday = 0, Sunday = 6)
+    """Generate modern, responsive HTML email digest template with Morning & Night sections."""
     today_idx = datetime.now().weekday()
     day_names = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     today_name = day_names[today_idx]
 
-    pending_tasks = [t for t in tasks if not t.is_archived and t.status.lower() != "done"]
-    done_tasks = [t for t in tasks if not t.is_archived and t.status.lower() == "done"]
+    pending_tasks = [t for t in tasks if not t.is_archived and t.status.lower() not in ("done", "completed")]
+    done_tasks = [t for t in tasks if not t.is_archived and t.status.lower() in ("done", "completed")]
 
     habits_done_today = []
     habits_pending_today = []
@@ -189,9 +189,11 @@ def generate_digest_html(
 
     has_pending = len(pending_tasks) > 0 or len(habits_pending_today) > 0
     hero_badge_color = "#f97316" if has_pending else "#10b981"
-    hero_status = "⚠️ Action Needed Today" if has_pending else "🎉 All Tasks & Habits Completed!"
 
-    # HTML Task Items
+    slot_title = "🌅 Morning Briefing (6:00 AM IST)" if time_slot == "morning" else ("🌙 Nightly Review (9:00 PM IST)" if time_slot == "night" else "📋 Daily Digest & Status")
+    hero_status = f"⚠️ {len(pending_tasks)} Pending Tasks & {len(habits_pending_today)} Habits Remaining" if has_pending else "🎉 All Tasks & Habits Completed!"
+
+    # Pending Tasks List
     pending_tasks_html = ""
     if pending_tasks:
         for t in pending_tasks:
@@ -206,7 +208,20 @@ def generate_digest_html(
             </div>
             """
     else:
-        pending_tasks_html = "<p style='color: #10b981; font-weight: 500; font-size: 14px;'>🎉 No pending tasks! You have completed everything on your board today.</p>"
+        pending_tasks_html = "<p style='color: #10b981; font-weight: 500; font-size: 14px;'>🎉 No pending tasks! Everything is completed on your board.</p>"
+
+    # Completed Tasks List
+    done_tasks_html = ""
+    if done_tasks:
+        for t in done_tasks:
+            done_tasks_html += f"""
+            <div style="padding: 8px 14px; margin-bottom: 6px; background-color: #f0fdf4; border-left: 4px solid #22c55e; border-radius: 6px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 500; color: #15803d; font-size: 13px; text-decoration: line-through;">{t.title}</span>
+                <span style="font-size: 11px; color: #16a34a; font-weight: bold;">✅ Completed</span>
+            </div>
+            """
+    else:
+        done_tasks_html = "<p style='color: #64748b; font-size: 13px;'>No tasks completed yet today.</p>"
 
     # HTML Habits Items
     habits_html = ""
@@ -244,20 +259,20 @@ def generate_digest_html(
                     <span style="font-size: 20px; font-weight: 800; letter-spacing: -0.5px;">🚀 Akash Workspace</span>
                     <span style="background: rgba(255,255,255,0.25); padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;">{today_name}, {date_str}</span>
                 </div>
-                <h1 style="margin: 6px 0 4px 0; font-size: 22px; font-weight: 800;">Daily Task & Habit Digest</h1>
-                <p style="margin: 0; font-size: 13px; opacity: 0.9;">Hello {user_name}, here is your productivity status for today.</p>
+                <h1 style="margin: 6px 0 4px 0; font-size: 22px; font-weight: 800;">{slot_title}</h1>
+                <p style="margin: 0; font-size: 13px; opacity: 0.9;">Hello {user_name}, here is your live task and habit status report.</p>
             </div>
 
             <!-- Hero Status Pill -->
             <div style="padding: 16px 24px; background: #fdfaf6; border-bottom: 1px solid #f0e8dc; display: flex; align-items: center; justify-content: space-between;">
                 <div>
-                    <span style="font-size: 11px; text-transform: uppercase; color: #78716c; font-weight: 700; letter-spacing: 0.5px;">Today's Overview</span>
+                    <span style="font-size: 11px; text-transform: uppercase; color: #78716c; font-weight: 700; letter-spacing: 0.5px;">Status Overview</span>
                     <div style="font-size: 15px; font-weight: 700; color: {hero_badge_color}; margin-top: 2px;">{hero_status}</div>
                 </div>
                 <div style="text-align: right;">
-                    <span style="font-size: 12px; color: #78716c;">Tasks: <b>{len(done_tasks)}/{total_tasks}</b></span>
+                    <span style="font-size: 12px; color: #78716c;">Tasks: <b>{len(done_tasks)}/{total_tasks} Done</b></span>
                     <span style="margin: 0 6px; color: #d6d3d1;">•</span>
-                    <span style="font-size: 12px; color: #78716c;">Habits: <b>{len(habits_done_today)}/{total_habits}</b></span>
+                    <span style="font-size: 12px; color: #78716c;">Habits: <b>{len(habits_done_today)}/{total_habits} Done</b></span>
                 </div>
             </div>
 
@@ -266,10 +281,19 @@ def generate_digest_html(
                 <!-- Pending Tasks Section -->
                 <div style="margin-bottom: 26px;">
                     <div style="display: flex; align-items: center; margin-bottom: 12px;">
-                        <span style="font-size: 16px; margin-right: 6px;">📝</span>
-                        <h2 style="margin: 0; font-size: 15px; font-weight: 700; color: #1c1917;">Tasks Today ({len(pending_tasks)} Pending)</h2>
+                        <span style="font-size: 16px; margin-right: 6px;">⏳</span>
+                        <h2 style="margin: 0; font-size: 15px; font-weight: 700; color: #1c1917;">Pending Tasks ({len(pending_tasks)})</h2>
                     </div>
                     {pending_tasks_html}
+                </div>
+
+                <!-- Completed Tasks Section -->
+                <div style="margin-bottom: 26px;">
+                    <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                        <span style="font-size: 16px; margin-right: 6px;">✅</span>
+                        <h2 style="margin: 0; font-size: 15px; font-weight: 700; color: #1c1917;">Completed Tasks ({len(done_tasks)})</h2>
+                    </div>
+                    {done_tasks_html}
                 </div>
 
                 <!-- Habits Section -->
@@ -284,14 +308,14 @@ def generate_digest_html(
                 <!-- Call To Action -->
                 <div style="text-align: center; margin: 30px 0 10px 0;">
                     <a href="https://akash-workspace.vercel.app" style="background: linear-gradient(135deg, #ff7a00, #ff9500); color: #ffffff; text-decoration: none; padding: 12px 28px; border-radius: 10px; font-size: 14px; font-weight: 700; display: inline-block; box-shadow: 0 4px 10px rgba(255,122,0,0.3);">
-                        Open Akash Workspace & Complete Tasks →
+                        Open Akash Workspace & Update Status →
                     </a>
                 </div>
             </div>
 
             <!-- Footer -->
             <div style="padding: 16px 24px; background: #fdfaf6; border-top: 1px solid #f0e8dc; text-align: center; font-size: 11px; color: #a8a29e;">
-                Sent automatically by Akash Workspace. You can configure notifications in your workspace settings.
+                Sent automatically twice daily (6:00 AM IST & 9:00 PM IST) by Akash Workspace.
             </div>
         </div>
     </body>
@@ -308,6 +332,7 @@ def trigger_daily_digest(
     custom_user: Optional[str] = None,
     custom_pass: Optional[str] = None,
     force: bool = False,
+    time_slot: str = "auto",
 ) -> Tuple[bool, str, dict]:
     """Gather tasks & habits, format digest, and send to recipient email."""
     # 1. Look up setting if workspace_id provided
@@ -338,6 +363,10 @@ def trigger_daily_digest(
         t for t in tasks
         if not t.is_archived and t.status.lower() not in ("done", "completed")
     ]
+    done_tasks = [
+        t for t in tasks
+        if not t.is_archived and t.status.lower() in ("done", "completed")
+    ]
     habits_done_today = [
         h for h in habits
         if not h.is_archived and isinstance(h.completed_days, list) and today_idx < len(h.completed_days) and h.completed_days[today_idx]
@@ -353,6 +382,21 @@ def trigger_daily_digest(
 
     has_incomplete_items = (len(pending_tasks) > 0) or (len(habits_pending_today) > 0)
 
+    # Determine time slot if auto
+    from datetime import timezone, timedelta
+    ist = timezone(timedelta(hours=5, minutes=30))
+    current_hour_ist = datetime.now(ist).hour
+
+    if time_slot == "auto":
+        if current_hour_ist < 12:
+            resolved_slot = "morning"
+        elif current_hour_ist >= 18:
+            resolved_slot = "night"
+        else:
+            resolved_slot = "general"
+    else:
+        resolved_slot = time_slot
+
     # If user set "notify_if_pending_only" AND everything is 100% completed today (0 pending tasks and 0 pending habits)
     if setting and setting.notify_if_pending_only and not has_incomplete_items and not force:
         return True, "All tasks and habits are 100% completed today. Notification skipped as per 'Alert Only If Incomplete' preference.", {
@@ -364,18 +408,25 @@ def trigger_daily_digest(
         }
 
     date_str = datetime.now().strftime("%B %d, %Y")
-    has_forgotten = len(pending_tasks) > 0
-    subject = (
-        f"⚠️ Reminder: You have {len(pending_tasks)} pending tasks today"
-        if has_forgotten
-        else "🎉 Daily Digest: All tasks & habits completed today!"
-    )
+
+    if resolved_slot == "morning":
+        subject = f"🌅 Morning Briefing (6:00 AM IST) - {len(pending_tasks)} Pending Tasks | {len(habits_pending_today)} Habits"
+    elif resolved_slot == "night":
+        subject = f"🌙 Nightly Digest (9:00 PM IST) - {len(done_tasks)} Completed | {len(pending_tasks)} Pending"
+    else:
+        has_forgotten = len(pending_tasks) > 0
+        subject = (
+            f"⚠️ Reminder: You have {len(pending_tasks)} pending tasks"
+            if has_forgotten
+            else "🎉 Daily Digest: All tasks & habits completed!"
+        )
 
     html_content = generate_digest_html(
         user_name="Akash",
         tasks=tasks,
         habits=habits,
         date_str=date_str,
+        time_slot=resolved_slot,
     )
 
     success, message = send_smtp_email(

@@ -315,7 +315,7 @@ export const EmailNotificationModal: React.FC = () => {
                       Enable Daily Email Reminders
                     </div>
                     <div className="text-[11px] text-[#78716c] dark:text-[#a8a29e]">
-                      Dispatches daily digest automatically every evening at 8:00 PM IST
+                      Dispatches twice daily: Morning at 6:00 AM IST & Night at 9:00 PM IST
                     </div>
                   </div>
                   <button
